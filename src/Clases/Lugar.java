@@ -3,7 +3,7 @@ package Clases;
 import javax.swing.ImageIcon;
 
 
-enum Sitio{SALA_DE_ESTUDIO, BAÑO, SALA_DE_ORDENADORES, CAFETERIA, }
+enum Sitio{CERO_UNO, BAÑO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CAMPO_DE_FUTBOL, CLAUSTRO}
 public class Lugar extends Asesinato{
 	
 	protected Sitio nombre;
@@ -23,7 +23,7 @@ public class Lugar extends Asesinato{
 	public Lugar() {
 		super(); 
 		Sitio[] sitios = Sitio.values();
-		int random = (int)(Math.random()*7);
+		int random = (int)(Math.random()*10);
 		this.nombre = sitios[random];
 		//Crear un hashmap con los nombres del enum y las fotos correspondientes
 		foto = new ImageIcon();
@@ -32,8 +32,11 @@ public class Lugar extends Asesinato{
 	
 	@Override
 	public String toString() {
-		return "Lugar [nombre=" + nombre + "implicado="+ this.implicado +"]";
+		return "Lugar [nombre=" + nombre + ", implicado="+ this.implicado +"]";
 	}
-	
+	public static void main(String[] args) {
+		Lugar lugar = new Lugar();
+		System.out.println(lugar);
+	}
 	
 }
