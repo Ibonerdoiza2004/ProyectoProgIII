@@ -67,7 +67,7 @@ public class Personaje { //TODO esta clase sirve para los 6 personajes que el ju
 	
 	@Override
 	public String toString() {
-		return "Personaje [nombre=" + nombre + ", imgRight=" + imgRight + ", imgLeft=" + imgLeft
+		return " Personaje [nombre=" + nombre + ", imgRight=" + imgRight + ", imgLeft=" + imgLeft
 				+ ", imgFront=" + imgFront + ", imgBack=" + imgBack + "]";
 	}
 	//Para probar que se coge un nombre de Personaje aleatorio 
