@@ -26,6 +26,12 @@ public class Asesinato {
 		this.foto = null;
 	}
 	
+	
+	public Asesinato(boolean implicado, ImageIcon foto) {
+		super();
+		this.implicado = implicado;
+		this.foto = foto;
+	}
 	@Override
 	public String toString() {
 		return "Asesinato [implicado=" + implicado + "]";
