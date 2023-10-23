@@ -4,22 +4,22 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-enum sospechosos{Andoni, Jenny, Carlos, Asier, Nekane, Iñaki}
+enum Sospechosos{Andoni, Jenny, Carlos, Asier, Nekane, Iñaki}
 
 public class Sospechoso extends Asesinato {
 	protected Random r;
-	protected sospechosos nombre;
+	protected Sospechosos nombre;
 
-	public sospechosos getNombre() {
+	public Sospechosos getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(sospechosos nombre) {
+	public void setNombre(Sospechosos nombre) {
 		this.nombre = nombre;
 	}
 	
 	
-	public Sospechoso(sospechosos nombre, boolean implicado, ImageIcon foto) {
+	public Sospechoso(Sospechosos nombre, boolean implicado, ImageIcon foto) {
 		super(implicado, foto);
 		this.nombre = nombre;
 	}
@@ -27,7 +27,7 @@ public class Sospechoso extends Asesinato {
 
 	public Sospechoso() {
 		super();
-		sospechosos[] sospechoso = sospechosos.values();
+		Sospechosos[] sospechoso = Sospechosos.values();
 		int random = (int)(Math.random()*7);
 		this.nombre = sospechoso[random];
 		foto = new ImageIcon();

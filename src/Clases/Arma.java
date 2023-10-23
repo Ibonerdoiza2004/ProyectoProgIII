@@ -2,6 +2,8 @@ package Clases;
 
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 enum Armas{puñal, candelabro, pistola, porra, cuerda, llaveInglesa};
 
 public class Arma extends Asesinato{
@@ -13,6 +15,14 @@ public class Arma extends Asesinato{
 		int indiceArma = random.nextInt(Armas.values().length);
 		nombreArma = Armas.values()[indiceArma];
 	}
+	
+
+	public Arma(Armas nombreArma, boolean bool, ImageIcon foto) {
+		super(bool, foto);
+		this.nombreArma = nombreArma;
+		
+	}
+
 
 	@Override
 	public String toString() {
