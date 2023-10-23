@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Personaje { //TODO esta clase sirve para los 6 personajes que el jugador puede elegir
 	
-	enum nombrePersonaje{MissScarlett, ColonelMustard, MrWhite, MrGreen, MrsPeacock, ProfesoraPlum};
+	enum nombrePersonaje{Miss_Scarlett, Colonel_Mustard, Mr_White, Mr_Green, Mrs_Peacock, Profesora_Plum};
 	protected Random r = new Random();
 	//Atributos
 	protected String nombre;
