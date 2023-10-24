@@ -67,7 +67,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 
 	public Jugador(Personaje personaje) {
 		this.codigo = contador;
-		this.contador ++;
+		contador ++;
 		this.personaje = personaje;
 		this.cartas = new ArrayList<Asesinato>();
 		this.acusacionFinal = false;
@@ -80,7 +80,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 			boolean acusacionFinal, HashMap<Asesinato, OpcionesLista> lista) {
 		super();
 		this.codigo = contador;
-		this.contador ++;
+		contador ++;
 		this.cartas = cartas;
 		this.personaje = personaje;
 		this.acusacion = acusacion;

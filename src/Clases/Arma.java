@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-enum Armas{puñal, candelabro, pistola, porra, cuerda, llaveInglesa};
+enum Armas{cuchillo, candelabro, pistola, porra, cuerda, llaveInglesa};
 
 public class Arma extends Asesinato{
 	protected Armas nombreArma;
