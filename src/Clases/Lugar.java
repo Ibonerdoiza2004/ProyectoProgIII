@@ -23,7 +23,7 @@ public class Lugar extends Asesinato{
 	public Lugar() {
 		super(); 
 		Sitio[] sitios = Sitio.values();
-		int random = (int)(Math.random()*10);
+		int random = (int)(Math.random()*sitios.length);
 		this.nombre = sitios[random];
 		//Crear un hashmap con los nombres del enum y las fotos correspondientes
 		foto = new ImageIcon();

@@ -41,13 +41,13 @@ public class Contenedor implements Serializable{
 		
 		
 		this.implicados = new HashMap<Implicados, Asesinato>();
-		Arma arma = armas.get((int)(Math.random()*6));
+		Arma arma = armas.get((int)(Math.random()*armas.size()));
 		arma.setImplicado(true);
 		implicados.put(Implicados.ARMA, arma);
-		Sospechoso sospechoso = sospechosos.get((int)(Math.random()*6));
+		Sospechoso sospechoso = sospechosos.get((int)(Math.random()*sospechosos.size()));
 		sospechoso.setImplicado(true);
 		implicados.put(Implicados.PERSONA, sospechoso);
-		Lugar lugar = lugares.get((int)(Math.random()*10));
+		Lugar lugar = lugares.get((int)(Math.random()*lugares.size()));
 		lugar.setImplicado(true);
 		implicados.put(Implicados.LUGAR, lugar);
 		
