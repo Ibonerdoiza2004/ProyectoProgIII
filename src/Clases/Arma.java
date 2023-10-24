@@ -31,6 +31,7 @@ public class Arma extends Asesinato{
 	
 //	public static void main(String[] args) {
 //		Arma arma1 = new Arma();
-//		System.out.println(arma1);
+//		Arma arma2 = new Arma();
+//		System.out.println(arma1 + "" +arma2);
 //	}
 }

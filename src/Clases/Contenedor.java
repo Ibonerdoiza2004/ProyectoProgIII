@@ -41,6 +41,15 @@ public class Contenedor implements Serializable{
 		
 		
 		this.implicados = new HashMap<Implicados, Asesinato>();
+		Arma arma = armas.get((int)(Math.random()*6));
+		arma.setImplicado(true);
+		implicados.put(Implicados.ARMA, arma);
+		Sospechoso sospechoso = sospechosos.get((int)(Math.random()*6));
+		sospechoso.setImplicado(true);
+		implicados.put(Implicados.PERSONA, sospechoso);
+		Lugar lugar = lugares.get((int)(Math.random()*10));
+		lugar.setImplicado(true);
+		implicados.put(Implicados.LUGAR, lugar);
 		
 	}
 	public static void main(String[]args) {
@@ -48,6 +57,7 @@ public class Contenedor implements Serializable{
 		System.out.println(c1.armas);
 		System.out.println(c1.sospechosos);
 		System.out.println(c1.lugares);
+		System.out.println(c1.implicados);
 	}
 
 }
