@@ -8,14 +8,16 @@ public class Contenedor implements Serializable{
 	protected ArrayList<Sospechoso>sospechosos = new ArrayList<>();
 	protected ArrayList<Lugar>lugares = new ArrayList<>();
 	protected HashMap<Implicados, Asesinato> implicados = new HashMap<>();
+	protected ArrayList<Asesinato>todasLasCartas = new ArrayList<>();
 	
 	public Contenedor(ArrayList<Arma> armas, ArrayList<Sospechoso> sospechosos, ArrayList<Lugar> lugares,
-			HashMap<Implicados, Asesinato> implicados) {
+			HashMap<Implicados, Asesinato> implicados, ArrayList<Asesinato> todasLasCartas) {
 		super();
 		this.armas = armas;
 		this.sospechosos = sospechosos;
 		this.lugares = lugares;
 		this.implicados = implicados;
+		this.todasLasCartas = todasLasCartas;
 	}
 	
 	public Contenedor() {
@@ -51,6 +53,15 @@ public class Contenedor implements Serializable{
 		lugar.setImplicado(true);
 		implicados.put(Implicados.LUGAR, lugar);
 		
+		for (Arma arma1:armas) {
+			todasLasCartas.add(arma1);
+		}
+		for (Sospechoso sospechoso1:sospechosos) {
+			todasLasCartas.add(sospechoso1);
+		}
+		for (Lugar lugar1:lugares) {
+			todasLasCartas.add(lugar1);
+		}
 	}
 	public static void main(String[]args) {
 		Contenedor c1 = new Contenedor();
@@ -58,6 +69,7 @@ public class Contenedor implements Serializable{
 		System.out.println(c1.sospechosos);
 		System.out.println(c1.lugares);
 		System.out.println(c1.implicados);
+		System.out.println(c1.todasLasCartas);
 	}
 
 }
