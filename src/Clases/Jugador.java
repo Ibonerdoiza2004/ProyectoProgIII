@@ -3,7 +3,7 @@ package Clases;
 import java.util.*;
 enum OpcionesLista{SI, NO, REGULAR}
 
-public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos
+public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
 	
 	private Random r = new Random();
 	
