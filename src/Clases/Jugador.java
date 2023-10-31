@@ -16,7 +16,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	protected HashMap<Implicados, Asesinato> acusacion = new HashMap<>(); //Para al acusar que salga un HashMap con las tres acusaciones
 	protected boolean acusacionFinal = false; // Para cuando quieras hacer tu acusación final
 	protected HashMap<Asesinato, OpcionesLista> lista = new HashMap<>(); //Lista que se rellena con la información
-	
+	protected int[] posicion = new int[2];
 	
 	public static int getContador() {
 		return contador;

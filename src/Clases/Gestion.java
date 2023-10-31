@@ -94,11 +94,43 @@ public class Gestion {
 			copiaCartas.remove(carta);
 		}
 	}
+	
+	public void crearMatriz(int filas, int columnas) {
+		ArrayList<ArrayList<Integer>> matrizMapa = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer>unos= new ArrayList<Integer>();
+		for (int i=0; i<filas; i++) {
+			ArrayList<Integer> fila = new ArrayList<Integer>();
+			for (int j=0; j<columnas; j++) {
+				if (i==j){
+					fila.add(1);
+					unos.add(j);
+				} else if ((i+1==j)&&(j%23!=0)) {
+					fila.add(1);
+					unos.add(j);
+				} else if ((j-23==i)||(j+23==i)){
+					fila.add(1);
+					unos.add(j);
+				} else if ((i-1==j)&&(j%23!=0)) {
+					fila.add(1);
+					unos.add(j);
+				} else {
+					fila.add(0);
+				}
+			
+			}
+			matrizMapa.add(fila);
+		}
+		System.out.println(matrizMapa);
+		System.out.println(unos);
+	}
+
 	public static void main(String[] args) {
 		Gestion g =new Gestion();
 		g.eleccionJugadores(3);
 		g.repartirCartas(g.datosPartida.todasLasCartas);
 		System.out.println(g.jugadores);
+		
+		g.crearMatriz(529, 529);
 	}
 	
 }
