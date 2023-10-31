@@ -5,6 +5,8 @@ enum OpcionesLista{SI, NO, REGULAR}
 
 public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
 	
+	
+
 	private Random r = new Random();
 	
 	private static int contador = 1;
@@ -87,5 +89,10 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacionFinal = acusacionFinal;
 		this.lista = lista;
 	}
-	
+	@Override
+	public String toString() {
+		return "Jugador [codigo=" + codigo + ", cartas=" + cartas + ", personaje=" + personaje.getNombre()
+				+ ", acusacion=" + acusacion + ", acusacionFinal=" + acusacionFinal + ", lista=" + lista + "]";
+	}
+
 }
