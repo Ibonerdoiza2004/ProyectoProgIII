@@ -27,7 +27,7 @@ public class Gestion {
 	}
 
 	public void setTurno(int turno) {
-		turno = turno;
+		this.turno = turno;
 	}
 
 	public ArrayList<Jugador> getJugadores() {
@@ -107,7 +107,7 @@ public class Gestion {
 				if (i==j){
 					fila.add(1);
 					unos.add(j);
-				} else if (((i+1==j)&&(j%columnasMapa!=0)) || ((i-i==j) && (i%columnasMapa!=0))){
+				} else if (((i+1==j)&&(j%columnasMapa!=0)) || ((i-1==j) && (i%columnasMapa!=0))){
 					fila.add(1);
 					unos.add(j);
 				} else if ((j-columnasMapa==i)||(j+columnasMapa==i)){
@@ -122,7 +122,25 @@ public class Gestion {
 		}
 		return matrizMapa;
 	}
-
+	public ArrayList<ArrayList<Integer>> elevarMatriz(int potencia, ArrayList<ArrayList<Integer>>matriz) {
+		ArrayList<ArrayList<Integer>>resultado= new ArrayList<>(matriz);
+		for (int p = 1; p<potencia;p++) {
+			ArrayList<ArrayList<Integer>>temp= new ArrayList<>();
+			for(int i = 0; i<matriz.size();i++) {
+				ArrayList<Integer>fila= new ArrayList<>();
+				for(int j = 0;j<matriz.get(0).size();j++) {
+					int pos = 0;
+					for(int k = 0;k<matriz.get(0).size();k++) {
+						pos = pos + matriz.get(i).get(k)*resultado.get(k).get(j);
+					}
+					fila.add(pos);
+				}
+				temp.add(fila);
+			}
+			resultado = new ArrayList<>(temp);
+		}
+		return resultado;
+	}
 
 	public void turnoJugador() {
 		
@@ -135,8 +153,8 @@ public class Gestion {
 		g.eleccionJugadores(3);
 		g.repartirCartas(g.datosPartida.todasLasCartas);
 		System.out.println(g.jugadores);
-		
-		g.crearMatriz(529, 529);
+		//System.out.println(g.crearMatriz(23, 23));
+		System.out.println(g.elevarMatriz(12,g.crearMatriz(23, 23)));
 	}
 	
 }
