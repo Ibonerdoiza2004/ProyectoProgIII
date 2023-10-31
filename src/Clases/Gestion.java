@@ -10,6 +10,7 @@ public class Gestion {
 	protected int turno;
 	protected ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
 	protected int movimiento; //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.
+	protected VentanaDado resultadoDado;
 	
 	protected Contenedor datosPartida;
 	
@@ -81,7 +82,7 @@ public class Gestion {
 			jugadores.add(jugador);
 		}
 	}
-	public void repartirCartas(ArrayList<Asesinato>cartas) {
+	public void repartirCartas(ArrayList<Asesinato> cartas) {
 		ArrayList<Asesinato>copiaCartas = new ArrayList<>(cartas);
 		int numCartas = cartas.size();
 		int j = 0;
@@ -94,6 +95,12 @@ public class Gestion {
 			copiaCartas.remove(carta);
 		}
 	}
+	
+	public void turnoJugador() {
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		Gestion g =new Gestion();
 		g.eleccionJugadores(3);
