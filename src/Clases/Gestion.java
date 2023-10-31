@@ -97,22 +97,20 @@ public class Gestion {
 	}
 	
 
-	public void crearMatriz(int filas, int columnas) {
+	public ArrayList<ArrayList<Integer>> crearMatriz(int filasMapa, int columnasMapa) {
 		ArrayList<ArrayList<Integer>> matrizMapa = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer>unos= new ArrayList<Integer>();
-		for (int i=0; i<filas; i++) {
+		int verticesMatriz = filasMapa * columnasMapa;
+		for (int i=0; i<verticesMatriz; i++) {
 			ArrayList<Integer> fila = new ArrayList<Integer>();
-			for (int j=0; j<columnas; j++) {
+			for (int j=0; j<verticesMatriz; j++) {
 				if (i==j){
 					fila.add(1);
 					unos.add(j);
-				} else if ((i+1==j)&&(j%22!=0)) {
+				} else if (((i+1==j)&&(j%columnasMapa!=0)) || ((i-i==j) && (i%columnasMapa!=0))){
 					fila.add(1);
 					unos.add(j);
-				} else if ((j-23==i)||(j+23==i)){
-					fila.add(1);
-					unos.add(j);
-				} else if ((i-1==j)&&(j%22!=0)) {
+				} else if ((j-columnasMapa==i)||(j+columnasMapa==i)){
 					fila.add(1);
 					unos.add(j);
 				} else {
@@ -122,8 +120,7 @@ public class Gestion {
 			}
 			matrizMapa.add(fila);
 		}
-		System.out.println(matrizMapa);
-		System.out.println(unos);
+		return matrizMapa;
 	}
 
 
