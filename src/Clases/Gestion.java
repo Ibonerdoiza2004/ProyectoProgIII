@@ -106,13 +106,13 @@ public class Gestion {
 				if (i==j){
 					fila.add(1);
 					unos.add(j);
-				} else if ((i+1==j)&&(j%23!=0)) {
+				} else if ((i+1==j)&&(j%22!=0)) {
 					fila.add(1);
 					unos.add(j);
 				} else if ((j-23==i)||(j+23==i)){
 					fila.add(1);
 					unos.add(j);
-				} else if ((i-1==j)&&(j%23!=0)) {
+				} else if ((i-1==j)&&(j%22!=0)) {
 					fila.add(1);
 					unos.add(j);
 				} else {
