@@ -25,6 +25,7 @@ public class VentanaDado extends JFrame{
 		
 		VentanaDado ventDados = new VentanaDado();
 		ventDados.setVisible(true);
+		//Mirar si funcionan los datos. Ver si se actualiza el movimineto del jugador (las celdas que pede avanzar, el atributo movimiento)
 		
 	}
 	
@@ -35,6 +36,7 @@ public class VentanaDado extends JFrame{
 	private JLabel lblD2;
 	private int valorDado1;
 	private int valorDado2;
+	private Gestion g = new Gestion();
 	
 	public VentanaDado() {
 		
@@ -81,9 +83,10 @@ public class VentanaDado extends JFrame{
 	}
 
 
-
-
 	public void tirarDado() {
+		
+		JLabel lDado1 = new JLabel();
+		JLabel lDado2 = new JLabel();
 		
 		Thread hilo = new Thread() {
 			
@@ -91,9 +94,9 @@ public class VentanaDado extends JFrame{
 			public void run() {
 				
 				btnTirar.setEnabled( false );
-				long tiemploInicail = System.currentTimeMillis();
+				long tiemploInicial = System.currentTimeMillis();
 				
-				while(System.currentTimeMillis() - tiemploInicail < 5000) { //La aimación de tirar dados durará 5 segundos aproximadamente
+				while(System.currentTimeMillis() - tiemploInicial < 5000) { //La aimación de tirar dados durará 5 segundos aproximadamente
 					
 					int num = r.nextInt(6)+1;
 					switch(num) {
@@ -156,10 +159,16 @@ public class VentanaDado extends JFrame{
 						break;
 					}
 					
-					//Sigo aquí 
-//					if (System.currentTimeMillis()) { //Guardar la foto al de dos sgundos y al de cinco que se pongann esas dos fotos
-//						
-//					}
+					//Cojo las fotos después de que hayan pasado entre 1.8 y 2 segundos pero que siga la animacíon para que de tiempo a cargar las fotos
+					if (System.currentTimeMillis() - tiemploInicial > 1800 & System.currentTimeMillis() - tiemploInicial < 2000) { //Guardar la foto al de dos sgundos y al de cinco que se pongan esas dos fotos
+						lDado1.setIcon(lblD1.getIcon());
+						lDado2.setIcon(lblD2.getIcon());
+						int n1 = getValorDado1();
+						int n2 = getValorDado2();
+						System.out.println(n1 + n2 + "------------"); //Prueba
+						g.tiradaDados(n1, n2);
+						System.out.println("Celdas que puede avanzar este jugador: " + g.getMovimiento());
+					}
 					
 					pnlDado.add(lblD1);
 					pnlDado.add(lblD2);
@@ -171,6 +180,10 @@ public class VentanaDado extends JFrame{
 						e.printStackTrace();
 					}
 				}
+				lblD1.setIcon(lDado1.getIcon());
+				lblD2.setIcon(lDado2.getIcon());
+				pnlDado.add(lblD1);
+				pnlDado.add(lblD2);
 				btnTirar.setEnabled(true);
 			}
 			
