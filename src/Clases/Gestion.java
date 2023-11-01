@@ -128,6 +128,9 @@ public class Gestion {
 		}
 		return matrizMapa;
 	}
+	
+	//PruebaGithub
+	
 	public ArrayList<ArrayList<Integer>> elevarMatriz(int potencia, ArrayList<ArrayList<Integer>>matriz) {
 		ArrayList<ArrayList<Integer>>resultado= new ArrayList<>(matriz);
 		for (int p = 1; p<potencia;p++) {
