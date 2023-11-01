@@ -103,8 +103,6 @@ public class Gestion {
 		this.movimiento = resultadoDado1 + resultadoDado2;
 	}
 	
-
-
 	public ArrayList<ArrayList<Integer>> crearMatriz(int filasMapa, int columnasMapa) {
 		ArrayList<ArrayList<Integer>> matrizMapa = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer>unos= new ArrayList<Integer>();
@@ -150,6 +148,61 @@ public class Gestion {
 		return resultado;
 	}
 	
+	
+	
+	//En este mértodo se crea una matriz de 23x23 para representar el tablero. Añade un 1 en las posiciones que son utilizables, 
+	//es decir, que tienen casillas, y añade un 0 en las posiciones que no lo son (habitaciones). 
+	//Una vez creado el tablero, cuando el jugador tira los dados, hay una función recursiva que recibe la posición del jugador
+	//y los movimientos que tiene y calcula a qué casillas puede llegar
+	//VENTAJAS: Es mucho más eficiente que el otro método (Comprobar con 12 movimientos)
+	//DESVENTAJAS: Solo calcula los movimientos para la casilla actual (El otro método se puede cargar antes de que empiece 
+	//             la partida y reutilizarlo)
+	public ArrayList<ArrayList<Integer>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
+		ArrayList <ArrayList<Integer>> casillasPosibles = new ArrayList<>();
+		movimientoCasillasRecursive(fila, columna, movimiento, 0, casillasPosibles, tablero);
+		return casillasPosibles;
+	}
+	
+	private void movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList<ArrayList<Integer>> tablero) {
+		ArrayList<Integer> pos = new ArrayList<>();
+		pos.add(fila);
+		pos.add(columna);
+		if(!casillasPosibles.contains(pos)) {
+			casillasPosibles.add(pos);
+			if(iteracion<movimiento) {
+				if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)==1)) {
+					movimientoCasillasRecursive(fila+1, columna, movimiento, iteracion+1, casillasPosibles, tablero);
+				}
+				if((fila!=0)&&(tablero.get(fila-1).get(columna)==1)) {
+					movimientoCasillasRecursive(fila-1, columna, movimiento, iteracion+1, casillasPosibles, tablero);
+				}
+				if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)==1)) {
+					movimientoCasillasRecursive(fila, columna+1, movimiento, iteracion+1, casillasPosibles, tablero);
+				}
+				if((columna!=0)&&(tablero.get(fila).get(columna-1)==1)) {	
+					movimientoCasillasRecursive(fila, columna-1, movimiento, iteracion+1, casillasPosibles, tablero);
+				}
+			}
+		}
+	}
+	public ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
+		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
+		for (int i=0; i<filas; i++) {
+			ArrayList<Integer>fila = new ArrayList<>();
+			for (int j=0; j<columnas; j++) {
+				fila.add(1);
+			}
+			tablero.add(fila);
+		}
+		return tablero;
+	}
+
+	
+	
+
+	
+	
+	
 	public void turnoJugador() {
 		
 	}
@@ -159,9 +212,13 @@ public class Gestion {
 		Gestion g =new Gestion();
 		g.eleccionJugadores(3);
 		g.repartirCartas(g.datosPartida.todasLasCartas);
-		System.out.println(g.jugadores);
-		//System.out.println(g.crearMatriz(23, 23));
+		
+		//MÉTODO 1
+		System.out.println(g.crearMatriz(23, 23));
 		System.out.println(g.elevarMatriz(12,g.crearMatriz(23, 23)));
+		//MÉTODO 2
+		ArrayList<ArrayList<Integer>> tablero = g.crearTablero(23, 23);
+		System.out.println(g.calcularMovimiento(6, 5, 12, tablero));
 	}
 	
 }
