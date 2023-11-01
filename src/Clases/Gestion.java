@@ -96,6 +96,12 @@ public class Gestion {
 		}
 	}
 	
+	public void tiradaDados() {
+		VentanaDado ventDado = new VentanaDado();
+		ventDado.tirarDado();
+		this.movimiento = ventDado.getValorDado1()+ventDado.getValorDado2();
+	}
+	
 	public void turnoJugador() {
 		
 	}

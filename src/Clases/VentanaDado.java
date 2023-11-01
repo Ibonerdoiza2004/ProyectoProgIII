@@ -33,6 +33,8 @@ public class VentanaDado extends JFrame{
 	private JPanel pnlDado;
 	private JLabel lblD1;
 	private JLabel lblD2;
+	private int valorDado1;
+	private int valorDado2;
 	
 	public VentanaDado() {
 		
@@ -61,6 +63,26 @@ public class VentanaDado extends JFrame{
 		
 	}
 	
+	
+	public int getValorDado1() {
+		return valorDado1;
+	}
+
+	public void setValorDado1(int valorDado1) {
+		this.valorDado1 = valorDado1;
+	}
+
+	public int getValorDado2() {
+		return valorDado2;
+	}
+
+	public void setValorDado2(int valorDado2) {
+		this.valorDado2 = valorDado2;
+	}
+
+
+
+
 	public void tirarDado() {
 		
 		Thread hilo = new Thread() {
@@ -77,44 +99,67 @@ public class VentanaDado extends JFrame{
 					switch(num) {
 					case (1):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+						setValorDado1(num);
+						System.out.println(valorDado1);
 						break; 
 					case (2):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("dos.jpg")));
+						setValorDado1(num);
+						System.out.println(valorDado1);
 						break;
 					case (3):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("tres.jpg")));
+						setValorDado1(num);
+						System.out.println(valorDado1);
 						break;
 					case (4):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("cuatro.jpg")));
+						setValorDado1(num);
+						System.out.println(valorDado1);
 						break;
 					case (5):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("cinco.jpg")));
+						setValorDado1(num);
+						System.out.println(valorDado1);
 						break;
 					case (6):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("seis.jpg")));
+						setValorDado1(num);
+						System.out.println(valorDado1);
 						break;
 					}
 					int num2 = r.nextInt(6)+1;
 					switch(num2) {
 					case (1):
 						lblD2.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+						setValorDado2(num2);
 						break;
 					case (2):
 						lblD2.setIcon(new ImageIcon(getClass().getResource("dos.jpg")));
+						setValorDado2(num2);
 						break;
 					case (3):
 						lblD2.setIcon(new ImageIcon(getClass().getResource("tres.jpg")));
+						setValorDado2(num2);
 						break;
 					case (4):
 						lblD2.setIcon(new ImageIcon(getClass().getResource("cuatro.jpg")));
+						setValorDado2(num2);
 						break;
 					case (5):
 						lblD1.setIcon(new ImageIcon(getClass().getResource("cinco.jpg")));
+						setValorDado2(num2);
 						break;
 					case (6):
 						lblD2.setIcon(new ImageIcon(getClass().getResource("seis.jpg")));
+						setValorDado2(num2);
 						break;
 					}
+					
+					//Sigo aquí 
+//					if (System.currentTimeMillis()) { //Guardar la foto al de dos sgundos y al de cinco que se pongann esas dos fotos
+//						
+//					}
 					
 					pnlDado.add(lblD1);
 					pnlDado.add(lblD2);
