@@ -193,10 +193,18 @@ public class Gestion {
 		for (int i=0; i<filas; i++) {
 			ArrayList<Integer>fila = new ArrayList<>();
 			for (int j=0; j<columnas; j++) {
-				fila.add(1);
+				if ((i<7&&j<6)  ||  ((i==9&&j<5)||((i>9&&i<16)&&(j<8)))  ||  ((i>18)&&(j<7))  ||
+						(i==0&&(j>9&&j<14))||((i>0&&i<8)&&(j>7&&j<16))  ||  ((i>9 && i<17)&&(j>9 && j<15))  ||  ((i>17)&&(j>8 && j<15)) ||
+						(i<6&&j>17)  || ((i>7&&i<13)&&j>17)  || ((i>13&&i<19)&&j>17)||((i>14&&i<18)&&j==17)  ||  (i>20&&j>16)){  
+					fila.add(0);
+				}
+				else {	
+					fila.add(1);
+				}
 			}
 			tablero.add(fila);
 		}
+		
 		return tablero;
 	}
 
@@ -217,11 +225,24 @@ public class Gestion {
 		g.repartirCartas(g.datosPartida.todasLasCartas);
 		
 		//MÉTODO 1
-		System.out.println(g.crearMatriz(23, 23));
-		System.out.println(g.elevarMatriz(12,g.crearMatriz(23, 23)));
+		//System.out.println(g.crearMatriz(23, 23));
+		//System.out.println(g.elevarMatriz(12,g.crearMatriz(23, 23)));
 		//MÉTODO 2
-		ArrayList<ArrayList<Integer>> tablero = g.crearTablero(23, 23);
-		System.out.println(g.calcularMovimiento(6, 5, 12, tablero));
+		ArrayList<ArrayList<Integer>> tablero = g.crearTablero(25, 24);
+		System.out.println(tablero);
+		for(ArrayList<Integer>a:tablero) {
+			for(Integer i: a) {
+				if(i==1) {
+					System.out.print("  ,");
+				}else {
+					System.out.print(" 0,");
+				}
+			}
+			System.out.println("");
+		}
+		ArrayList<ArrayList<Integer>> movimientos = g.calcularMovimiento(8, 10, 12, tablero);
+		System.out.println(movimientos);
+		System.out.println(movimientos.size());
 	}
 	
 }
