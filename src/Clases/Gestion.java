@@ -129,7 +129,6 @@ public class Gestion {
 		return matrizMapa;
 	}
 	
-	
 	public ArrayList<ArrayList<Integer>> elevarMatriz(int potencia, ArrayList<ArrayList<Integer>>matriz) {
 		ArrayList<ArrayList<Integer>>resultado= new ArrayList<>(matriz);
 		for (int p = 1; p<potencia;p++) {
@@ -187,7 +186,6 @@ public class Gestion {
 			}
 		}
 	}
-	//
 	public ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
 		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
 		for (int i=0; i<filas; i++) {
@@ -228,11 +226,6 @@ public class Gestion {
 		return tablero;
 	}
 
-	
-	
-
-	
-	
 	
 	public void turnoJugador() {
 		
