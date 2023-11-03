@@ -193,12 +193,32 @@ public class Gestion {
 		for (int i=0; i<filas; i++) {
 			ArrayList<Integer>fila = new ArrayList<>();
 			for (int j=0; j<columnas; j++) {
-				if ((i<7&&j<6)  ||  ((i==9&&j<5)||((i>9&&i<16)&&(j<8)))  ||  ((i>18)&&(j<7))  ||
+				if (i==5&&j==5) {
+					fila.add(2);
+					
+				}else if(i==13&&j==7) {
+					fila.add(3);
+				}
+				else if(i==22&&j==6) {
+					fila.add(4);
+				}else if(i==7&&j==12) {
+					fila.add(5);
+				}else if(i==18&&j==12) {
+					fila.add(6);
+				}else if(i==2&&j==18) {
+					fila.add(7);
+				}else if(i==10&&j==18) {
+					fila.add(8);
+				}else if(i==16&&j==17) {
+					fila.add(9);
+				}else if(i==23&&j==17) {
+					fila.add(10);
+					
+				}else if ((i<7&&j<6)  ||  ((i==9&&j<5)||((i>9&&i<16)&&(j<8)))  ||  ((i>18)&&(j<7))  ||
 						(i==0&&(j>9&&j<14))||((i>0&&i<8)&&(j>7&&j<16))  ||  ((i>9 && i<17)&&(j>9 && j<15))  ||  ((i>17)&&(j>8 && j<15)) ||
 						(i<6&&j>17)  || ((i>7&&i<13)&&j>17)  || ((i>13&&i<19)&&j>17)||((i>14&&i<18)&&j==17)  ||  (i>20&&j>16)){  
 					fila.add(0);
-				}
-				else {	
+				}else {	
 					fila.add(1);
 				}
 			}
@@ -233,9 +253,12 @@ public class Gestion {
 		for(ArrayList<Integer>a:tablero) {
 			for(Integer i: a) {
 				if(i==1) {
-					System.out.print("  ,");
-				}else {
-					System.out.print(" 0,");
+					System.out.print("()");
+				}else if(i==0){
+					System.out.print("  ");
+				}
+				else {
+					System.out.print(i+" ");
 				}
 			}
 			System.out.println("");
