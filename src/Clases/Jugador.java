@@ -76,11 +76,12 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacionFinal = false;
 		this.acusacion = new HashMap<Implicados, Asesinato>();
 		this.lista = new HashMap<Asesinato, OpcionesLista>();
+		npc = false;
 	}
 
 	
 	public Jugador(ArrayList<Asesinato> cartas, Personaje personaje, HashMap<Implicados, Asesinato> acusacion,
-			boolean acusacionFinal, HashMap<Asesinato, OpcionesLista> lista) {
+			boolean acusacionFinal, HashMap<Asesinato, OpcionesLista> lista, boolean npc) {
 		super();
 		this.codigo = contador;
 		contador ++;
@@ -89,6 +90,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacion = acusacion;
 		this.acusacionFinal = acusacionFinal;
 		this.lista = lista;
+		this.npc = npc;
 	}
 	@Override
 	public String toString() {

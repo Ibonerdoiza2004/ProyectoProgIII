@@ -68,7 +68,7 @@ public class Gestion {
 			for(Asesinato asesinato: datosPartida.todasLasCartas) {
 				listaVacia.put(asesinato, OpcionesLista.NO);
 			}
-			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(/*El enum */) , new HashMap<Implicados, Asesinato>(), false, listaVacia); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
+			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(/*El enum */) , new HashMap<Implicados, Asesinato>(), false, listaVacia, false); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
 			jugadores.add(jugador);
 		}
 	}
@@ -78,7 +78,7 @@ public class Gestion {
 			for(Asesinato asesinato: datosPartida.todasLasCartas) {
 				listaVacia.put(asesinato, OpcionesLista.NO);
 			}
-			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje() , new HashMap<Implicados, Asesinato>(), false, listaVacia); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
+			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje() , new HashMap<Implicados, Asesinato>(), false, listaVacia, true); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
 			jugadores.add(jugador);
 		}
 	}
