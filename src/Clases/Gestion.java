@@ -187,6 +187,7 @@ public class Gestion {
 			}
 		}
 	}
+	//
 	public ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
 		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
 		for (int i=0; i<filas; i++) {
