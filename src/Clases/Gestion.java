@@ -95,6 +95,14 @@ public class Gestion {
 			copiaCartas.remove(carta);
 		}
 	}
+	public void eleccionOrdenJugadores(ArrayList<Jugador>jugadores){
+		for (Jugador j:jugadores) {
+			//Añadir la ventana de tirar dados
+			//Poner una pantalla para avisar que le toca al siguiente jugador
+			//Guardar el mayor valor y quien lo ha conseguido
+		}
+		//Establecer turno con el codigo del jugador que ha conseguido el mayor valor
+	}
 	
 	//Este método lo llamo desde la clase 'VentanaDado' para pasarle los valores
 	public void tiradaDados(int resultadoDado1, int resultadoDado2) {
@@ -151,7 +159,7 @@ public class Gestion {
 	
 	
 	
-	//En este mértodo se crea una matriz de 23x23 para representar el tablero. Añade un 1 en las posiciones que son utilizables, 
+	//En este método se crea una matriz de 23x23 para representar el tablero. Añade un 1 en las posiciones que son utilizables, 
 	//es decir, que tienen casillas, y añade un 0 en las posiciones que no lo son (habitaciones). 
 	//Una vez creado el tablero, cuando el jugador tira los dados, hay una función recursiva que recibe la posición del jugador
 	//y los movimientos que tiene y calcula a qué casillas puede llegar
