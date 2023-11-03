@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Personaje { //TODO esta clase sirve para los 6 personajes que el jugador puede elegir
 	
-	enum nombrePersonaje{Miss_Scarlett, Colonel_Mustard, Mr_White, Mr_Green, Mrs_Peacock, Profesora_Plum};
+	enum NombrePersonaje{Miss_Scarlett, Colonel_Mustard, Mr_White, Mr_Green, Mrs_Peacock, Profesora_Plum};
 	protected Random r = new Random();
 	//Atributos
 	protected String nombre;
@@ -48,22 +48,51 @@ public class Personaje { //TODO esta clase sirve para los 6 personajes que el ju
 	}
 	
 	public Personaje() {
-		this.nombre = nombrePersonaje.values()[r.nextInt((int)nombrePersonaje.values().length)].toString();
-		this.imgRight = null;
-		this.imgLeft = null;
-		this.imgFront = null;
-		this.imgBack = null;
+		NombrePersonaje personaje = NombrePersonaje.values()[r.nextInt((int)NombrePersonaje.values().length)];
+		this.nombre = personaje.toString();
+		setImagenes(personaje);
 	}
 	
-	public Personaje(ImageIcon imgRight, ImageIcon imgLeft, ImageIcon imgFront, ImageIcon imgBack) {
-		this.nombre = nombrePersonaje.values()[r.nextInt((int)nombrePersonaje.values().length)].toString();;
-		this.imgRight = imgRight;
-		this.imgLeft = imgLeft;
-		this.imgFront = imgFront;
-		this.imgBack = imgBack;
+	public Personaje(NombrePersonaje nombre) {
+		this.nombre = nombre.toString();
+		setImagenes(nombre);
+		
 	}
 	
-	
+	public void setImagenes(NombrePersonaje nombre) {
+		switch(nombre) {
+		case Colonel_Mustard:
+			this.imgRight = null; //Aqui añadir las imagenes de cada personaje
+			this.imgLeft = null;
+			this.imgFront = null;
+			this.imgBack = null;
+		case Miss_Scarlett:
+			this.imgRight = null;
+			this.imgLeft = null;
+			this.imgFront = null;
+			this.imgBack = null;
+		case Mr_Green:
+			this.imgRight = null;
+			this.imgLeft = null;
+			this.imgFront = null;
+			this.imgBack = null;
+		case Mr_White:
+			this.imgRight = null;
+			this.imgLeft = null;
+			this.imgFront = null;
+			this.imgBack = null;
+		case Mrs_Peacock:
+			this.imgRight = null;
+			this.imgLeft = null;
+			this.imgFront = null;
+			this.imgBack = null;
+		case Profesora_Plum:
+			this.imgRight = null;
+			this.imgLeft = null;
+			this.imgFront = null;
+			this.imgBack = null;
+		}
+	}
 	
 	@Override
 	public String toString() {
