@@ -1,5 +1,6 @@
 package Clases;
 
+import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Dimension;
 
@@ -15,9 +16,9 @@ public class VentanaAcusacion extends JFrame{
 	//Atributos:
 	private JPanel pnlCombo;
 	
-	private JComboBox<Sospechoso> cbSospechoso;
-	private JComboBox<Arma> cbArma;
-	private JComboBox<Lugar> cbLugar;
+	private JComboBox<Sospechosos> cbSospechoso;
+	private JComboBox<Armas> cbArma;
+	private JComboBox<Sitio> cbLugar;
 	
 	private JLabel lblSospechoso;
 	private JLabel lblArma;
@@ -33,14 +34,38 @@ public class VentanaAcusacion extends JFrame{
 	
 	public VentanaAcusacion() {
 		
-		//No necesito ni size ni location
+		setSize(new Dimension(640,480));
+		setLocationRelativeTo( null );
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("VENTANA ACUSACION");
 		
 		pnlCombo = new JPanel();
-		cbSospechoso = new JComboBox<Sospechoso>();
-		//for 
+		
+		cbSospechoso = new JComboBox<Sospechosos>();
+		for (Sospechosos sospechoso: Sospechosos.values()) {
+			//System.out.println(sospechoso);
+			cbSospechoso.addItem(sospechoso);
+		}
+		cbArma = new JComboBox<Armas>();
+		for (Armas arma: Armas.values()) {
+			cbArma.addItem(arma);
+		}
+		cbLugar = new JComboBox<Sitio>();
+		for (Sitio sitio: Sitio.values()) {
+			cbLugar.addItem(sitio);
+		}
+		
+		pnlCombo.add(cbSospechoso);
+		pnlCombo.add(cbArma);
+		pnlCombo.add(cbLugar);
+		
+		getContentPane().add(pnlCombo, BorderLayout.WEST);
+		
 	}
 	
+	public static void main(String[] args) {
+		VentanaAcusacion vent = new VentanaAcusacion();
+		vent.setVisible( true );
+	}
 
 }
