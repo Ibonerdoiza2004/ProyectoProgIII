@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class VentanaDado extends JFrame{
 	
@@ -63,6 +65,10 @@ public class VentanaDado extends JFrame{
 		
 		getContentPane().add(btnTirar, BorderLayout.NORTH);
 		
+		//Prueba:
+		lblD1.setIcon(new ImageIcon("FotosDado/dos.jpg"));
+		pnlDado.add(lblD1);
+		getContentPane().add(pnlDado);
 	}
 	
 	
@@ -85,8 +91,8 @@ public class VentanaDado extends JFrame{
 
 	public void tirarDado() {
 		
-		JLabel lDado1 = new JLabel();
-		JLabel lDado2 = new JLabel();
+//		JLabel lDado1 = new JLabel();
+//		JLabel lDado2 = new JLabel();
 		
 		Thread hilo = new Thread() {
 			
@@ -101,68 +107,69 @@ public class VentanaDado extends JFrame{
 					int num = r.nextInt(6)+1;
 					switch(num) {
 					case (1):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/uno.jpg"));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break; 
 					case (2):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("dos.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/dos.jpg"));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (3):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("tres.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/tres.jpg"));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (4):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("cuatro.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/cuatro.jpg"));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (5):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("cinco.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/cinco.jpg"));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (6):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("seis.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/seis.jpg"));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					}
+					
 					int num2 = r.nextInt(6)+1;
 					switch(num2) {
 					case (1):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+						lblD2.setIcon(new ImageIcon("FotosDado/uno.jpg"));
 						setValorDado2(num2);
 						break;
 					case (2):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("dos.jpg")));
+						lblD2.setIcon(new ImageIcon("FotosDado/dos.jpg"));
 						setValorDado2(num2);
 						break;
 					case (3):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("tres.jpg")));
+						lblD2.setIcon(new ImageIcon("FotosDado/tres.jpg"));
 						setValorDado2(num2);
 						break;
 					case (4):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("cuatro.jpg")));
+						lblD2.setIcon(new ImageIcon("FotosDado/cuatro.jpg"));
 						setValorDado2(num2);
 						break;
 					case (5):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("cinco.jpg")));
+						lblD1.setIcon(new ImageIcon("FotosDado/cinco.jpg"));
 						setValorDado2(num2);
 						break;
 					case (6):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("seis.jpg")));
+						lblD2.setIcon(new ImageIcon("FotosDado/seis.jpg"));
 						setValorDado2(num2);
 						break;
 					}
 					
 					//Cojo las fotos después de que hayan pasado entre 1.8 y 2 segundos pero que siga la animacíon para que de tiempo a cargar las fotos
 					if (System.currentTimeMillis() - tiemploInicial > 1800 & System.currentTimeMillis() - tiemploInicial < 2000) { //Guardar la foto al de dos sgundos y al de cinco que se pongan esas dos fotos
-						lDado1.setIcon(lblD1.getIcon());
-						lDado2.setIcon(lblD2.getIcon());
+						lblD1.setIcon(lblD1.getIcon());
+						lblD2.setIcon(lblD2.getIcon());
 						int n1 = getValorDado1();
 						int n2 = getValorDado2();
 						System.out.println(n1 + n2 + "------------"); //Prueba
@@ -170,9 +177,9 @@ public class VentanaDado extends JFrame{
 						System.out.println("Celdas que puede avanzar este jugador: " + g.getMovimiento());
 					}
 					
-					pnlDado.add(lblD1);
-					pnlDado.add(lblD2);
-					getContentPane().add(pnlDado);
+					pnlDado.add(lblD1, BorderLayout.WEST);
+					pnlDado.add(lblD2, BorderLayout.EAST);
+					getContentPane().add(pnlDado, BorderLayout.CENTER);
 					
 					try {
 						Thread.sleep(200);
@@ -180,10 +187,11 @@ public class VentanaDado extends JFrame{
 						e.printStackTrace();
 					}
 				}
-				lblD1.setIcon(lDado1.getIcon());
-				lblD2.setIcon(lDado2.getIcon());
-				pnlDado.add(lblD1);
-				pnlDado.add(lblD2);
+				//Esto se hace simplemente para que vaya cargando el mapa
+				lblD1.setIcon(lblD1.getIcon());
+				lblD2.setIcon(lblD2.getIcon());
+				pnlDado.add(lblD1, BorderLayout.WEST);
+				pnlDado.add(lblD2, BorderLayout.EAST);
 				btnTirar.setEnabled(true);
 			}
 			
