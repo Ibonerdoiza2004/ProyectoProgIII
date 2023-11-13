@@ -25,35 +25,40 @@ public class VentanaInicio extends JFrame{
 	protected JButton nuevaLocal;
 	protected JButton cargarLocal;
 	protected JButton opciones;
+	protected JButton cerrar;
 	
 	public VentanaInicio() {
 		
 		
-		pnlCentral = new JPanel(new GridLayout(3,1));
+		pnlCentral = new JPanel(new GridLayout(4,1));
 		
 		
 		
 		
 		pnlLocal = new JPanel(new GridLayout(1,2));
 		
-		nuevaOnline = new JButton("Nueva Partida Online");
+		nuevaOnline = new JButton("NUEVA PARTIDA ONLINE");
 		pnlCentral.add(nuevaOnline);
 		
 		
-		nuevaLocal = new JButton("<html><div style='text-align: center;'>Nueva Partida<br>Local</div></html>");
+		nuevaLocal = new JButton("<html><div style='text-align: center;'>NUEVA PARTIDA<br>LOCAL</div></html>");
 		nuevaLocal.setHorizontalAlignment(SwingConstants.CENTER);
 		nuevaLocal.setVerticalAlignment(SwingConstants.CENTER);
 		pnlLocal.add(nuevaLocal);
 		
-		cargarLocal = new JButton("<html><div style='text-align: center;'>Cargar Partida<br>Local</div></html>");
+		cargarLocal = new JButton("<html><div style='text-align: center;'>CARGAR PARTIDA<br>LOCAL</div></html>");
 		cargarLocal.setHorizontalAlignment(SwingConstants.CENTER);
 		cargarLocal.setVerticalAlignment(SwingConstants.CENTER);
 		pnlLocal.add(cargarLocal);
 		
 		pnlCentral.add(pnlLocal);
 		
-		opciones = new JButton("Opciones");
+		opciones = new JButton("AJUSTES");
 		pnlCentral.add(opciones);
+		
+		cerrar = new JButton("CERRAR CLUEDO");
+		pnlCentral.add(cerrar);
+		
 		
 		JLabel lblLogo = new JLabel();
 		ImageIcon iconoLogo = new ImageIcon(getClass().getResource("LogoCluedo.png"));
@@ -88,13 +93,33 @@ public class VentanaInicio extends JFrame{
 		pnlVentana.add(new JLabel(" "));
 		pnlVentana.add(new JLabel(" "));
 		
+		cerrar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();	
+			}
+		});
+		
+		opciones.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaAjustes();
+				
+			}
+			
+		});
+		
 		setContentPane(pnlVentana);
 		
 		
 		
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setUndecorated(true);
+		
 		this.setTitle("CLUEDO");
-		this.setSize(800, 600);
 		this.setVisible(true);
 		
 		Font defaultFont = nuevaOnline.getFont();
