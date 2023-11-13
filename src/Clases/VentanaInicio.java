@@ -2,10 +2,14 @@ package Clases;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,7 +19,6 @@ import javax.swing.SwingConstants;
 
 public class VentanaInicio extends JFrame{
 	
-	protected JLabel lblLogo;
 	protected JPanel pnlCentral;
 	protected JPanel pnlLocal;
 	protected JButton nuevaOnline;
@@ -25,18 +28,10 @@ public class VentanaInicio extends JFrame{
 	
 	public VentanaInicio() {
 		
-		this.setLayout(new GridLayout(3,3));
+		
 		pnlCentral = new JPanel(new GridLayout(3,1));
 		
-		this.add(new JLabel(" "));
-		this.add(new JLabel(" "));
-		this.add(new JLabel(" "));
-		this.add(new JLabel(" "));
-		this.add(pnlCentral);
-		this.add(new JLabel(" "));
-		this.add(new JLabel(" "));
-		this.add(new JLabel(" "));
-		this.add(new JLabel(" "));
+		
 		
 		
 		pnlLocal = new JPanel(new GridLayout(1,2));
@@ -45,10 +40,14 @@ public class VentanaInicio extends JFrame{
 		pnlCentral.add(nuevaOnline);
 		
 		
-		nuevaLocal = new JButton("<html>Nueva Partida<br>     Local</html>");
+		nuevaLocal = new JButton("<html><div style='text-align: center;'>Nueva Partida<br>Local</div></html>");
+		nuevaLocal.setHorizontalAlignment(SwingConstants.CENTER);
+		nuevaLocal.setVerticalAlignment(SwingConstants.CENTER);
 		pnlLocal.add(nuevaLocal);
 		
-		cargarLocal = new JButton("Cargar Local");
+		cargarLocal = new JButton("<html><div style='text-align: center;'>Cargar Partida<br>Local</div></html>");
+		cargarLocal.setHorizontalAlignment(SwingConstants.CENTER);
+		cargarLocal.setVerticalAlignment(SwingConstants.CENTER);
 		pnlLocal.add(cargarLocal);
 		
 		pnlCentral.add(pnlLocal);
@@ -56,7 +55,40 @@ public class VentanaInicio extends JFrame{
 		opciones = new JButton("Opciones");
 		pnlCentral.add(opciones);
 		
-		lblLogo = new JLabel("");
+		JLabel lblLogo = new JLabel();
+		ImageIcon iconoLogo = new ImageIcon(getClass().getResource("LogoCluedo.png"));
+		Image imagenLogo = iconoLogo.getImage();
+		Image tamanoLogo = imagenLogo.getScaledInstance(260, 80, java.awt.Image.SCALE_SMOOTH);
+		iconoLogo = new ImageIcon(tamanoLogo);
+		lblLogo.setIcon(iconoLogo);
+		
+
+	
+		
+		JPanel pnlVentana = new JPanel(new GridLayout(3,3)) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoInicio.jpg"));
+                Image imagenFondo = iconoFondo.getImage();
+                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        
+        
+		
+		pnlVentana.add(new JLabel(" "));
+		lblLogo.setHorizontalAlignment(JLabel.CENTER);
+		pnlVentana.add(lblLogo);
+		pnlVentana.add(new JLabel(" "));
+		pnlVentana.add(new JLabel(" "));
+		pnlVentana.add(pnlCentral);
+		pnlVentana.add(new JLabel(" "));
+		pnlVentana.add(new JLabel(" "));
+		pnlVentana.add(new JLabel(" "));
+		pnlVentana.add(new JLabel(" "));
+		
+		setContentPane(pnlVentana);
 		
 		
 		
