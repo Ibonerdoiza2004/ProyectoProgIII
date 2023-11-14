@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -17,9 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 
 
@@ -42,13 +47,15 @@ public class VentanaAcusacion extends JFrame{
 	private JLabel lblArma;
 	private JLabel lblLugar;
 	
+	private JTable tablaLista;
+	private TablaLista modeloTabla;
 //	private JList<SospechosoItem> jlSospechoso;
 //	private JList<ArmaItem> jlArma;
 //	private JList<JCheckBox> jlLugar;
-	
-	private JCheckBox chSospechoso;
-	private JCheckBox chArma;
-	private JCheckBox chLugar;
+//	
+//	private JCheckBox chSospechoso;
+//	private JCheckBox chArma;
+//	private JCheckBox chLugar;
 	
 	public VentanaAcusacion() {
 		
@@ -120,6 +127,49 @@ public class VentanaAcusacion extends JFrame{
 		getContentPane().add(pnlLabel, BorderLayout.CENTER);
 		//getContentPane().add(new JScrollPane(jlSospechoso), BorderLayout.EAST);
 		
+		modeloTabla = new TablaLista();
+		tablaLista = new JTable(modeloTabla);
+		
+		tablaLista.setDefaultRenderer(JPanel.class, new DefaultTableCellRenderer() {
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				table.setRowHeight(35);
+				JPanel pnl = new JPanel();
+//				pnl.add(new JRadioButton("100%"));
+//				pnl.add(new JRadioButton("jsijs"));
+				JRadioButton r1 = new JRadioButton("100%");
+				JRadioButton r2 = new JRadioButton("Duda");
+				JRadioButton r3 = new JRadioButton("0%");
+				pnl.add(r1);
+				pnl.add(r2);
+				pnl.add(r3);
+				return pnl;
+			}
+		});
+		
+		tablaLista.setDefaultEditor(JPanel.class, new DefaultCellEditor(new JTextField() ) {
+
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+					int column) {
+				return super.getTableCellEditorComponent(table, value, isSelected, row, column);
+				
+			}
+			
+		});
+		
+		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
+		
+//		JPanel pnl = new JPanel();
+//		JRadioButton r1 = new JRadioButton("100%");
+//		JRadioButton r2 = new JRadioButton("Duda");
+//		JRadioButton r3 = new JRadioButton("0%");
+//		pnl.add(r1);
+//		pnl.add(r2);
+//		pnl.add(r3);
+//		getContentPane().add(pnl, BorderLayout.SOUTH);
 		
 	}
 	
