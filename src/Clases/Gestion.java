@@ -204,8 +204,7 @@ public class Gestion {
 					
 				}else if(i==13&&j==7) {
 					fila.add(3);
-				}
-				else if(i==22&&j==6) {
+				}else if(i==22&&j==6) {
 					fila.add(4);
 				}else if(i==7&&j==12) {
 					fila.add(5);
