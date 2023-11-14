@@ -5,13 +5,16 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -63,8 +66,8 @@ public class VentanaAcusacion extends JFrame{
 		setLocationRelativeTo( null );
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("VENTANA ACUSACION");
-		
-		pnlCombo = new JPanel();
+       
+		pnlCombo = new JPanel(new GridLayout(3,1));
 		
 		cbSospechoso = new JComboBox<Sospechosos>();
 		for (Sospechosos sospechoso: Sospechosos.values()) {
@@ -130,7 +133,7 @@ public class VentanaAcusacion extends JFrame{
 		modeloTabla = new TablaLista();
 		tablaLista = new JTable(modeloTabla);
 		
-		tablaLista.setDefaultRenderer(JPanel.class, new DefaultTableCellRenderer() {
+		tablaLista.setDefaultRenderer(Boolean.class, new DefaultTableCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -149,28 +152,19 @@ public class VentanaAcusacion extends JFrame{
 			}
 		});
 		
-		tablaLista.setDefaultEditor(JPanel.class, new DefaultCellEditor(new JTextField() ) {
-
-			@Override
-			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-					int column) {
-				return super.getTableCellEditorComponent(table, value, isSelected, row, column);
-				
-			}
-			
-		});
+		//SEGUIR AQUI------------------------------------------------------------------------------
+//		tablaLista.setDefaultEditor(JPanel.class, new DefaultCellEditor(new JTextField() ) {
+//
+//			@Override
+//			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+//					int column) {
+//				return super.getTableCellEditorComponent(table, value, isSelected, row, column);
+//				
+//			}
+//			
+//		});
 		
 		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
-		
-//		JPanel pnl = new JPanel();
-//		JRadioButton r1 = new JRadioButton("100%");
-//		JRadioButton r2 = new JRadioButton("Duda");
-//		JRadioButton r3 = new JRadioButton("0%");
-//		pnl.add(r1);
-//		pnl.add(r2);
-//		pnl.add(r3);
-//		getContentPane().add(pnl, BorderLayout.SOUTH);
-		
 	}
 	
 	

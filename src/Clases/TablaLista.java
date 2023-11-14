@@ -55,7 +55,7 @@ public class TablaLista implements TableModel{
 		return cabeceras[columnIndex];
 	}
 
-	private static final Class<?>[] clases = {Object.class, JPanel.class};
+	private static final Class<?>[] clases = {Object.class, Boolean.class};
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return clases[columnIndex];
