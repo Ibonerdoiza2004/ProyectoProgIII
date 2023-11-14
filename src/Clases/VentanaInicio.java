@@ -63,7 +63,7 @@ public class VentanaInicio extends JFrame{
 		JLabel lblLogo = new JLabel();
 		ImageIcon iconoLogo = new ImageIcon(getClass().getResource("LogoCluedo.png"));
 		Image imagenLogo = iconoLogo.getImage();
-		Image tamanoLogo = imagenLogo.getScaledInstance(260, 80, java.awt.Image.SCALE_SMOOTH);
+		Image tamanoLogo = imagenLogo.getScaledInstance(400, 150, java.awt.Image.SCALE_SMOOTH);
 		iconoLogo = new ImageIcon(tamanoLogo);
 		lblLogo.setIcon(iconoLogo);
 		
