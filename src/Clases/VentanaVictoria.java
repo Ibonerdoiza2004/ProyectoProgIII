@@ -1,7 +1,6 @@
 package Clases;
 
 
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
