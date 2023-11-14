@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -15,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class VentanaDado extends JFrame{
 	
@@ -31,12 +35,13 @@ public class VentanaDado extends JFrame{
 	
 	private JButton btnTirar;
 	private Random r = new Random();
-	private JPanel pnlDado;
+	//private JPanel pnlDado;
 	private JLabel lblD1;
 	private JLabel lblD2;
 	private int valorDado1;
 	private int valorDado2;
 	private Gestion g = new Gestion();
+	private JPanel pnlVentana;
 	
 	public VentanaDado() {
 		
@@ -45,8 +50,18 @@ public class VentanaDado extends JFrame{
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationRelativeTo( null ); //La pone respectivo a la ventana
 		
-		pnlDado = new JPanel();
-		pnlDado.setBackground(Color.gray);
+		pnlVentana = new JPanel(new GridLayout(4,1)) { //4: dos dados y dos botones
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoDados.jpeg"));
+                Image imagenFondo = iconoFondo.getImage();
+                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+		
+//		pnlDado = new JPanel(new GridLayout(2,1));
+//		pnlDado.setBackground(Color.gray);
 		
 		lblD1 = new JLabel();
 		lblD2 = new JLabel();
@@ -61,8 +76,13 @@ public class VentanaDado extends JFrame{
 			}
 		});
 		
-		getContentPane().add(btnTirar, BorderLayout.NORTH);
+		pnlVentana.add(btnTirar, BorderLayout.NORTH);
 		
+		setContentPane(pnlVentana);
+		//Prueba:
+//		lblD1.setIcon(new ImageIcon("FotosDado/dos.jpg"));
+//		pnlDado.add(lblD1);
+//		getContentPane().add(pnlDado);
 	}
 	
 	
@@ -85,8 +105,8 @@ public class VentanaDado extends JFrame{
 
 	public void tirarDado() {
 		
-		JLabel lDado1 = new JLabel();
-		JLabel lDado2 = new JLabel();
+//		JLabel lDado1 = new JLabel();
+//		JLabel lDado2 = new JLabel();
 		
 		Thread hilo = new Thread() {
 			
@@ -131,6 +151,7 @@ public class VentanaDado extends JFrame{
 						System.out.println(valorDado1);
 						break;
 					}
+					
 					int num2 = r.nextInt(6)+1;
 					switch(num2) {
 					case (1):
@@ -161,8 +182,8 @@ public class VentanaDado extends JFrame{
 					
 					//Cojo las fotos después de que hayan pasado entre 1.8 y 2 segundos pero que siga la animacíon para que de tiempo a cargar las fotos
 					if (System.currentTimeMillis() - tiemploInicial > 1800 & System.currentTimeMillis() - tiemploInicial < 2000) { //Guardar la foto al de dos sgundos y al de cinco que se pongan esas dos fotos
-						lDado1.setIcon(lblD1.getIcon());
-						lDado2.setIcon(lblD2.getIcon());
+						lblD1.setIcon(lblD1.getIcon());
+						lblD2.setIcon(lblD2.getIcon());
 						int n1 = getValorDado1();
 						int n2 = getValorDado2();
 						System.out.println(n1 + n2 + "------------"); //Prueba
@@ -170,9 +191,9 @@ public class VentanaDado extends JFrame{
 						System.out.println("Celdas que puede avanzar este jugador: " + g.getMovimiento());
 					}
 					
-					pnlDado.add(lblD1);
-					pnlDado.add(lblD2);
-					getContentPane().add(pnlDado);
+					pnlVentana.add(lblD1, BorderLayout.NORTH);
+					pnlVentana.add(lblD2, BorderLayout.SOUTH);
+					setContentPane(pnlVentana);
 					
 					try {
 						Thread.sleep(200);
@@ -180,10 +201,12 @@ public class VentanaDado extends JFrame{
 						e.printStackTrace();
 					}
 				}
-				lblD1.setIcon(lDado1.getIcon());
-				lblD2.setIcon(lDado2.getIcon());
-				pnlDado.add(lblD1);
-				pnlDado.add(lblD2);
+				//Esto se hace simplemente para que vaya cargando el mapa
+				lblD1.setIcon(lblD1.getIcon());
+				lblD2.setIcon(lblD2.getIcon());
+				pnlVentana.add(lblD1);
+				pnlVentana.add(lblD2);
+				setContentPane(pnlVentana);
 				btnTirar.setEnabled(true);
 			}
 			
