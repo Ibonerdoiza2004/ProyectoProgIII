@@ -1,6 +1,7 @@
 package Clases;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -11,9 +12,12 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
 
@@ -125,8 +129,6 @@ public class VentanaInicio extends JFrame{
 		Font defaultFont = nuevaOnline.getFont();
 		System.out.println(defaultFont);
 	}
-	
-	
 	
 	
 	public static void main(String[] args) {
