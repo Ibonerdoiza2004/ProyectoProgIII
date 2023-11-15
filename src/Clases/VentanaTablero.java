@@ -33,7 +33,7 @@ public class VentanaTablero extends JFrame{
 					}
 				};
 				panelDesplegable.setLayout(null);
-				panelDesplegable.setBounds((int)sizePantalla.getHeight(), 2*altoBoton, (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),(int)sizePantalla.getHeight()-2*altoBoton);
+				panelDesplegable.setBounds((int)sizePantalla.getHeight(), (int)sizePantalla.getHeight(), (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),(int)sizePantalla.getHeight()-2*altoBoton);
 				
 				botonPlegar.setFocusable(false);
 				botonPlegar.setText("\\/");
@@ -41,7 +41,6 @@ public class VentanaTablero extends JFrame{
 				botonPlegar.setBounds(0,0,(int)(sizePantalla.getWidth()-sizePantalla.getHeight()), altoBoton);
 				
 				panelDesplegable.add(botonPlegar);
-				panelDesplegable.setVisible(false);
 				add(panelDesplegable);
 		
 		//PanelIzquierda
@@ -80,16 +79,50 @@ public class VentanaTablero extends JFrame{
 		botonDesplegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				panelDesplegable.setVisible(true);
-				botonDesplegar.setVisible(false);
+				
+				Thread t1 = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						int coordX = (int)(sizePantalla.getHeight());
+						int ancho = (int)(sizePantalla.getWidth()-coordX);
+						double coordY = sizePantalla.getHeight();
+						int alto = (int)(sizePantalla.getHeight()-2*altoBoton);
+						botonDesplegar.setEnabled(false);
+						while((int)coordY>2*altoBoton) {
+							
+							coordY = coordY-0.2;
+							System.out.println(coordY);
+							panelDesplegable.setBounds(coordX,(int)coordY,ancho,alto);
+						}
+						botonPlegar.setEnabled(true);
+					}
+				});
+				t1.start();
 				System.out.println(botonPlegar.getSize()+""+botonPlegar.getBounds());
 			}
 		});
 		botonPlegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				panelDesplegable.setVisible(false);
-				botonDesplegar.setVisible(true);
+				botonPlegar.setEnabled(false);
+				Thread t2 = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						int coordX = (int)(sizePantalla.getHeight());
+						int ancho = (int)(sizePantalla.getWidth()-coordX);
+						double coordY = 2*altoBoton;
+						int alto = (int)(sizePantalla.getHeight()-2*altoBoton);
+						while((int)coordY<=sizePantalla.getHeight()) {
+							coordY = coordY+0.07;
+							System.out.println(coordY);
+							panelDesplegable.setBounds(coordX,(int)coordY,ancho,alto);
+						}
+						botonDesplegar.setEnabled(true);
+					}
+				});
+				t2.start();
+				
+				System.out.println(botonPlegar.getSize()+""+botonPlegar.getBounds());
 				System.out.println(botonPlegar.getSize()+""+botonPlegar.getBounds());
 			}
 		});
