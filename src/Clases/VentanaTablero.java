@@ -14,6 +14,7 @@ public class VentanaTablero extends JFrame{
 	JButton botonDesplegar = new JButton();
 	JButton botonPlegar = new JButton();
 	JPanel panelDesplegable = new JPanel();
+	JPanel panelLista;
 	public VentanaTablero() {
 		Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -24,15 +25,17 @@ public class VentanaTablero extends JFrame{
 		
 		//PanelDesplegable	
 		int inicioPanelDesplegable = 2*altoBoton;
-		panelDesplegable = new JPanel() {
+		panelLista = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
 				ImageIcon iconoLista = new ImageIcon(getClass().getResource("seis.jpg"));
 				Image imagenLista = iconoLista.getImage();
-				g.drawImage(imagenLista, 0, altoBoton, getWidth(), getHeight()-altoBoton, this);
+				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
 		panelDesplegable.setLayout(null);
+		panelLista.setBounds(0, altoBoton, (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),(int)sizePantalla.getHeight()-3*altoBoton);
+		panelDesplegable.add(panelLista);
 		panelDesplegable.setBounds((int)sizePantalla.getHeight()-altoBoton, (int)sizePantalla.getHeight(), (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),(int)sizePantalla.getHeight()-2*altoBoton);
 		
 		botonPlegar.setFocusable(false);
@@ -78,7 +81,7 @@ public class VentanaTablero extends JFrame{
 		botonDesplegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				botonPlegar.setVisible(true);
+				panelDesplegable.setVisible(true);
 				botonPlegar.setEnabled(false);
 				botonDesplegar.setVisible(false);
 				
@@ -154,7 +157,7 @@ public class VentanaTablero extends JFrame{
 								e.printStackTrace();
 							}
 						}
-						botonPlegar.setVisible(false);
+						panelDesplegable.setVisible(false);
 						botonDesplegar.setVisible(true);
 					}
 				});
