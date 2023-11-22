@@ -1,11 +1,14 @@
 package Clases;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Gestion {
 
 	//Atributos
+	protected static Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 	private static int numTurno = 0;
 	protected static ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
 	protected static int movimiento = 0; //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.

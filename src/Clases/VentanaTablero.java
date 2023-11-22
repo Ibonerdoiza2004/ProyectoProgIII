@@ -34,17 +34,16 @@ public class VentanaTablero extends JFrame{
 	JPanel panelLista;
 	JPanel panelTablero;
 	public VentanaTablero() {
-		Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setUndecorated(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(sizePantalla);
+		setSize(Gestion.sizePantalla);
 		setLayout(null);
 		int altoBoton = 100;
-		coorXInicioTablero =(int) (2*sizePantalla.getHeight())/37;
-		coorXFinalTablero =(int) (sizePantalla.getHeight()-(sizePantalla.getHeight())/19);
-		coorYInicioTablero = (int) (sizePantalla.getHeight())/29;
-		coorYFinalTablero =(int) (sizePantalla.getHeight()-(sizePantalla.getHeight())/29);
+		coorXInicioTablero =(int) (2*Gestion.sizePantalla.getHeight())/37;
+		coorXFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/19);
+		coorYInicioTablero = (int) (Gestion.sizePantalla.getHeight())/29;
+		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/29);
 		anchoColumnaTablero = ((double)(-coorXInicioTablero+coorXFinalTablero))/(double)(Gestion.numColumnas);
 		altoFilaTablero = ((double)(-coorYInicioTablero+coorYFinalTablero))/((double)Gestion.numFilas);
 		
@@ -55,28 +54,28 @@ public class VentanaTablero extends JFrame{
 					protected void paintComponent(Graphics g) {
 						Image imagenTablero = (new ImageIcon(getClass().getResource("tablero.jpg"))).getImage();
 						g.drawImage(imagenTablero, 0, 0, getWidth(), getHeight(), this);
-						if (coordsFilas!=null) {
-							System.out.println(coorYInicioTablero+" "+coorYFinalTablero);
-							System.out.println();
-							System.out.println(altoFilaTablero);
-							for (int i = 0; i<coordsFilas.size()||i<coordsColumnas.size();i++) {
-								if(i<coordsFilas.size()) {
-									g.drawLine(0, coordsFilas.get(i).get(0), getWidth(), coordsFilas.get(i).get(0));
-								}
-								if(i<coordsColumnas.size()) {
-									g.drawLine(coordsColumnas.get(i).get(0),0,coordsColumnas.get(i).get(0) ,getHeight() );
-								}
-							}
-
-							g.drawLine(0, coordsFilas.get(coordsFilas.size()-1).get(1), getWidth(), coordsFilas.get(coordsFilas.size()-1).get(1));
-							g.drawLine(coordsColumnas.get(coordsColumnas.size()-1).get(1), 0, coordsColumnas.get(coordsColumnas.size()-1).get(1), getHeight());
-							System.out.println(coordsFilas.get(coordsColumnas.size()-1).get(1));
-						}
+//						if (coordsFilas!=null) {
+//							System.out.println(coorYInicioTablero+" "+coorYFinalTablero);
+//							System.out.println();
+//							System.out.println(altoFilaTablero);
+//							for (int i = 0; i<coordsFilas.size()||i<coordsColumnas.size();i++) {
+//								if(i<coordsFilas.size()) {
+//									g.drawLine(0, coordsFilas.get(i).get(0), getWidth(), coordsFilas.get(i).get(0));
+//								}
+//								if(i<coordsColumnas.size()) {
+//									g.drawLine(coordsColumnas.get(i).get(0),0,coordsColumnas.get(i).get(0) ,getHeight() );
+//								}
+//							}
+//
+//							g.drawLine(0, coordsFilas.get(coordsFilas.size()-1).get(1), getWidth(), coordsFilas.get(coordsFilas.size()-1).get(1));
+//							g.drawLine(coordsColumnas.get(coordsColumnas.size()-1).get(1), 0, coordsColumnas.get(coordsColumnas.size()-1).get(1), getHeight());
+//							System.out.println(coordsFilas.get(coordsColumnas.size()-1).get(1));
+//						}
 						
 					}
 				};
 				panelTablero.setLayout(null);
-				panelTablero.setBounds(0,0,(int)sizePantalla.getHeight(),(int)sizePantalla.getHeight());
+				panelTablero.setBounds(0,0,(int)Gestion.sizePantalla.getHeight(),(int)Gestion.sizePantalla.getHeight());
 				add(panelTablero);
 				
 		//PanelDesplegable	
@@ -90,14 +89,14 @@ public class VentanaTablero extends JFrame{
 			}
 		};
 		panelDesplegable.setLayout(null);
-		panelLista.setBounds(0, altoBoton, (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),(int)sizePantalla.getHeight()-3*altoBoton);
+		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-3*altoBoton);
 		panelDesplegable.add(panelLista);
-		panelDesplegable.setBounds((int)sizePantalla.getHeight()-altoBoton, (int)sizePantalla.getHeight(), (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),(int)sizePantalla.getHeight()-2*altoBoton);
+		panelDesplegable.setBounds((int)Gestion.sizePantalla.getHeight()-altoBoton, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
 		
 		botonPlegar.setFocusable(false);
 		botonPlegar.setText("\\/");
 		botonPlegar.setVerticalAlignment(SwingConstants.CENTER);
-		botonPlegar.setBounds(0,0,(int)(sizePantalla.getWidth()-sizePantalla.getHeight()), altoBoton);
+		botonPlegar.setBounds(0,0,(int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()), altoBoton);
 			
 		panelDesplegable.add(botonPlegar);
 		add(panelDesplegable);		
@@ -114,16 +113,16 @@ public class VentanaTablero extends JFrame{
 			}
 		};
 		
-		panelDados.setSize((int)sizePantalla.getWidth()-(int)sizePantalla.getHeight(), (int)sizePantalla.getHeight()-altoBoton);
+		panelDados.setSize((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
 		panelDerecha.add(panelDados);
 			//PanelBoton
 		botonDesplegar.setFocusable(false);
 		botonDesplegar.setText("/\\");
 		botonDesplegar.setVerticalAlignment(SwingConstants.CENTER);
-		botonDesplegar.setBounds(0, (int)sizePantalla.getHeight()-altoBoton, (int)(sizePantalla.getWidth()-sizePantalla.getHeight()),altoBoton );
+		botonDesplegar.setBounds(0, (int)Gestion.sizePantalla.getHeight()-altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),altoBoton );
 		panelDerecha.add(botonDesplegar);
 		
-		panelDerecha.setBounds((int)sizePantalla.getHeight(), 0, (int)sizePantalla.getWidth(),(int)sizePantalla.getHeight());
+		panelDerecha.setBounds((int)Gestion.sizePantalla.getHeight(), 0, (int)Gestion.sizePantalla.getWidth(),(int)Gestion.sizePantalla.getHeight());
 		add(panelDerecha);
 		
 		
@@ -138,10 +137,10 @@ public class VentanaTablero extends JFrame{
 				Thread t1 = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						int coordX = (int)(sizePantalla.getHeight());
-						int ancho = (int)(sizePantalla.getWidth()-coordX);
-						int coordY = (int)sizePantalla.getHeight();
-						int alto = (int)(sizePantalla.getHeight()-inicioPanelDesplegable);
+						int coordX = (int)(Gestion.sizePantalla.getHeight());
+						int ancho = (int)(Gestion.sizePantalla.getWidth()-coordX);
+						int coordY = (int)Gestion.sizePantalla.getHeight();
+						int alto = (int)(Gestion.sizePantalla.getHeight()-inicioPanelDesplegable);
 						while((int)coordY>inicioPanelDesplegable) {
 							if(coordY-inicioPanelDesplegable<5) {
 								coordY = coordY-1;
@@ -179,22 +178,22 @@ public class VentanaTablero extends JFrame{
 				Thread t2 = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						int coordX = (int)(sizePantalla.getHeight());
-						int ancho = (int)(sizePantalla.getWidth()-coordX);
+						int coordX = (int)(Gestion.sizePantalla.getHeight());
+						int ancho = (int)(Gestion.sizePantalla.getWidth()-coordX);
 						int coordY = inicioPanelDesplegable;
-						int alto = (int)(sizePantalla.getHeight()-2*altoBoton);
-						while((int)coordY<=sizePantalla.getHeight()-altoBoton) {
-							if(sizePantalla.getHeight()-altoBoton-coordY<5) {
+						int alto = (int)(Gestion.sizePantalla.getHeight()-2*altoBoton);
+						while((int)coordY<=Gestion.sizePantalla.getHeight()-altoBoton) {
+							if(Gestion.sizePantalla.getHeight()-altoBoton-coordY<5) {
 								coordY = coordY+1;
-							}else if (sizePantalla.getHeight()-altoBoton-coordY<alto/28) {
+							}else if (Gestion.sizePantalla.getHeight()-altoBoton-coordY<alto/28) {
 								coordY = coordY+4;
-							}else if (sizePantalla.getHeight()-altoBoton-coordY<alto/14) {
+							}else if (Gestion.sizePantalla.getHeight()-altoBoton-coordY<alto/14) {
 								coordY = coordY+8;
-							}else if(sizePantalla.getHeight()-altoBoton-coordY<alto/8) {
+							}else if(Gestion.sizePantalla.getHeight()-altoBoton-coordY<alto/8) {
 								coordY = coordY+16;
-							}else if(sizePantalla.getHeight()-altoBoton-coordY<alto/4) {
+							}else if(Gestion.sizePantalla.getHeight()-altoBoton-coordY<alto/4) {
 								coordY = coordY+32;
-							}else if(sizePantalla.getHeight()-altoBoton-coordY<alto/2) {
+							}else if(Gestion.sizePantalla.getHeight()-altoBoton-coordY<alto/2) {
 								coordY = coordY+64;
 							}else {
 								coordY = coordY+100;
