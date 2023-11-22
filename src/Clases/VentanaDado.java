@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class VentanaDado extends JFrame{
+public class VentanaDado extends JPanel{
 	
 	private static final Dimension TAMAYO = new Dimension(480, 640);
 	
@@ -41,24 +41,16 @@ public class VentanaDado extends JFrame{
 	private int valorDado1;
 	private int valorDado2;
 	private Gestion g = new Gestion();
-	private JPanel pnlVentana;
+	//private JPanel pnlVentana;
 	
 	public VentanaDado() {
 		
 		setSize(TAMAYO);
-		setTitle("Ventana dados");
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLocationRelativeTo( null ); //La pone respectivo a la ventana
 		
-		pnlVentana = new JPanel(new GridLayout(4,1)) { //4: dos dados y dos botones
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoDados.jpeg"));
-                Image imagenFondo = iconoFondo.getImage();
-                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
+		this.setLayout(null);  //4: dos dados y dos botones
+ 
+		
+        
 		
 //		pnlDado = new JPanel(new GridLayout(2,1));
 //		pnlDado.setBackground(Color.gray);
@@ -78,7 +70,7 @@ public class VentanaDado extends JFrame{
 		
 		pnlVentana.add(btnTirar, BorderLayout.NORTH);
 		
-		setContentPane(pnlVentana);
+		//setContentPane(pnlVentana);
 		//Prueba:
 //		lblD1.setIcon(new ImageIcon("FotosDado/dos.jpg"));
 //		pnlDado.add(lblD1);
@@ -191,9 +183,10 @@ public class VentanaDado extends JFrame{
 						System.out.println("Celdas que puede avanzar este jugador: " + g.getMovimiento());
 					}
 					
-					pnlVentana.add(lblD1, BorderLayout.NORTH);
-					pnlVentana.add(lblD2, BorderLayout.SOUTH);
-					setContentPane(pnlVentana);
+					lblD1.setBounds((int)(this.getWidth()/2-lblD1.getIcon().getIconWidth()/2), 30);
+					pnlVentana.add(lblD1);
+					pnlVentana.add(lblD2);
+					//setContentPane(pnlVentana);
 					
 					try {
 						Thread.sleep(200);
@@ -206,7 +199,7 @@ public class VentanaDado extends JFrame{
 				lblD2.setIcon(lblD2.getIcon());
 				pnlVentana.add(lblD1);
 				pnlVentana.add(lblD2);
-				setContentPane(pnlVentana);
+				//setContentPane(pnlVentana);
 				btnTirar.setEnabled(true);
 			}
 			
