@@ -81,12 +81,13 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 
 	
 	public Jugador(ArrayList<Asesinato> cartas, Personaje personaje, HashMap<Implicados, Asesinato> acusacion,
-			boolean acusacionFinal, HashMap<Asesinato, OpcionesLista> lista, boolean npc) {
+			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, OpcionesLista> lista, boolean npc) {
 		super();
 		this.codigo = contador;
 		contador ++;
 		this.cartas = cartas;
 		this.personaje = personaje;
+		this.posicion = posicion;
 		this.acusacion = acusacion;
 		this.acusacionFinal = acusacionFinal;
 		this.lista = lista;

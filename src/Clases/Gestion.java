@@ -7,12 +7,13 @@ public class Gestion {
 
 	//Atributos
 	private static int numTurno = 0;
-	protected int turno;
-	protected ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
-	protected int movimiento; //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.
-	protected VentanaDado resultadoDado;
-	
-	protected Contenedor datosPartida;
+	protected static ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
+	protected static int movimiento = 0; //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.
+	protected static VentanaDado resultadoDado;
+	protected static int numFilas = 25;
+	protected static int numColumnas = 24;
+	protected static Contenedor datosPartida = new Contenedor();
+	protected static ArrayList<ArrayList<Integer>> tablero = Gestion.crearTablero(numFilas, numColumnas);
 	
 	public static int getNumTurno() {
 		return numTurno;
@@ -22,20 +23,13 @@ public class Gestion {
 		Gestion.numTurno = numTurno;
 	}
 
-	public int getTurno() {
-		return turno;
-	}
-
-	public void setTurno(int turno) {
-		this.turno = turno;
-	}
 
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
 	}
 
 	public void setJugadores(ArrayList<Jugador> jugadores) {
-		this.jugadores = jugadores;
+		Gestion.jugadores = jugadores;
 	}
 
 	public int getMovimiento() {
@@ -43,7 +37,7 @@ public class Gestion {
 	}
 
 	public void setMovimiento(int movimiento) {
-		this.movimiento = movimiento;
+		Gestion.movimiento = movimiento;
 	}
 
 	public Contenedor getDatosPartida() {
@@ -51,24 +45,17 @@ public class Gestion {
 	}
 
 	public void setDatosPartida(Contenedor datosPartida) {
-		this.datosPartida = datosPartida;
+		Gestion.datosPartida = datosPartida;
 	}
 
-	public Gestion() {
-		super();
-		turno = 0;
-		this.jugadores = new ArrayList<Jugador>();
-		this.movimiento = 0;
-		this.datosPartida = new Contenedor();
-	}
 	
-	public void eleccionJugadores(int numJugadores) {
+	public static void eleccionJugadores(int numJugadores) {
 		for (int i = 0; i<numJugadores; i++) {
 			HashMap<Asesinato, OpcionesLista> listaVacia = new HashMap<>();
 			for(Asesinato asesinato: datosPartida.todasLasCartas) {
 				listaVacia.put(asesinato, OpcionesLista.NO);
 			}
-			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(/*El enum */) , new HashMap<Implicados, Asesinato>(), false, listaVacia, false); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
+			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(/*El enum */) , new HashMap<Implicados, Asesinato>(), false,  new int[]{0,0}, listaVacia, false); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
 			jugadores.add(jugador);
 		}
 	}
@@ -78,11 +65,11 @@ public class Gestion {
 			for(Asesinato asesinato: datosPartida.todasLasCartas) {
 				listaVacia.put(asesinato, OpcionesLista.NO);
 			}
-			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje() , new HashMap<Implicados, Asesinato>(), false, listaVacia, true); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
+			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(),  new HashMap<Implicados, Asesinato>(), false, new int[]{0,0}, listaVacia, true); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
 			jugadores.add(jugador);
 		}
 	}
-	public void repartirCartas(ArrayList<Asesinato> cartas) {
+	public static void repartirCartas(ArrayList<Asesinato> cartas) {
 		ArrayList<Asesinato>copiaCartas = new ArrayList<>(cartas);
 		int numCartas = cartas.size();
 		int j = 0;
@@ -95,7 +82,7 @@ public class Gestion {
 			copiaCartas.remove(carta);
 		}
 	}
-	public void eleccionOrdenJugadores(ArrayList<Jugador>jugadores){
+	public static void eleccionOrdenJugadores(ArrayList<Jugador>jugadores){
 		for (Jugador j:jugadores) {
 			//Añadir la ventana de tirar dados
 			//Poner una pantalla para avisar que le toca al siguiente jugador
@@ -108,7 +95,7 @@ public class Gestion {
 	public void tiradaDados(int resultadoDado1, int resultadoDado2) {
 		//VentanaDado ventDado = new VentanaDado();
 		//ventDado.tirarDado();
-		this.movimiento = resultadoDado1 + resultadoDado2;
+		Gestion.movimiento = resultadoDado1 + resultadoDado2;
 	}
 	
 	public ArrayList<ArrayList<Integer>> crearMatriz(int filasMapa, int columnasMapa) {
@@ -166,13 +153,13 @@ public class Gestion {
 	//VENTAJAS: Es mucho más eficiente que el otro método (Comprobar con 12 movimientos)
 	//DESVENTAJAS: Solo calcula los movimientos para la casilla actual (El otro método se puede cargar antes de que empiece 
 	//             la partida y reutilizarlo)
-	public ArrayList<ArrayList<Integer>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
+	public static  ArrayList<ArrayList<Integer>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
 		ArrayList <ArrayList<Integer>> casillasPosibles = new ArrayList<>();
 		movimientoCasillasRecursive(fila, columna, movimiento, 0, casillasPosibles, tablero);
 		return casillasPosibles;
 	}
 	
-	private void movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList<ArrayList<Integer>> tablero) {
+	private static void  movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList<ArrayList<Integer>> tablero) {
 		ArrayList<Integer> pos = new ArrayList<>();
 		pos.add(fila);
 		pos.add(columna);
@@ -194,7 +181,7 @@ public class Gestion {
 			}
 		}
 	}
-	public ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
+	public static ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
 		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
 		for (int i=0; i<filas; i++) {
 			ArrayList<Integer>fila = new ArrayList<>();
@@ -241,15 +228,14 @@ public class Gestion {
 	
 
 	public static void main(String[] args) {
-		Gestion g =new Gestion();
-		g.eleccionJugadores(3);
-		g.repartirCartas(g.datosPartida.todasLasCartas);
+		Gestion.eleccionJugadores(3);
+		Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
 		
 		//MÉTODO 1
 		//System.out.println(g.crearMatriz(23, 23));
 		//System.out.println(g.elevarMatriz(12,g.crearMatriz(23, 23)));
 		//MÉTODO 2
-		ArrayList<ArrayList<Integer>> tablero = g.crearTablero(25, 24);
+		ArrayList<ArrayList<Integer>> tablero = Gestion.crearTablero(numFilas, numColumnas);
 		System.out.println(tablero);
 		for(ArrayList<Integer>a:tablero) {
 			for(Integer i: a) {
@@ -264,7 +250,7 @@ public class Gestion {
 			}
 			System.out.println("");
 		}
-		ArrayList<ArrayList<Integer>> movimientos = g.calcularMovimiento(8, 10, 12, tablero);
+		ArrayList<ArrayList<Integer>> movimientos = Gestion.calcularMovimiento(8, 10, 12, tablero);
 		System.out.println(movimientos);
 		System.out.println(movimientos.size());
 	}

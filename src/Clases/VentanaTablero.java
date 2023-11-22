@@ -1,13 +1,30 @@
 package Clases;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class VentanaTablero extends JFrame{
+	int coorXInicioTablero;
+	int coorXFinalTablero;
+	int coorYInicioTablero;
+	int coorYFinalTablero;
+	double anchoColumnaTablero;
+	double altoFilaTablero;
+	HashMap<Integer, ArrayList<Integer>>coordsFilas = null;
+	HashMap<Integer, ArrayList<Integer>>coordsColumnas = null;
 	JLabel labelTablero = new JLabel();
 	JPanel panelDerecha = new JPanel();
 	JPanel panelDados;
@@ -15,14 +32,53 @@ public class VentanaTablero extends JFrame{
 	JButton botonPlegar = new JButton();
 	JPanel panelDesplegable = new JPanel();
 	JPanel panelLista;
+	JPanel panelTablero;
 	public VentanaTablero() {
 		Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setUndecorated(true);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(sizePantalla);
 		setLayout(null);
 		int altoBoton = 100;
+		coorXInicioTablero =(int) (2*sizePantalla.getHeight())/37;
+		coorXFinalTablero =(int) (sizePantalla.getHeight()-(sizePantalla.getHeight())/19);
+		coorYInicioTablero = (int) (sizePantalla.getHeight())/29;
+		coorYFinalTablero =(int) (sizePantalla.getHeight()-(sizePantalla.getHeight())/29);
+		anchoColumnaTablero = ((double)(-coorXInicioTablero+coorXFinalTablero))/(double)(Gestion.numColumnas);
+		altoFilaTablero = ((double)(-coorYInicioTablero+coorYFinalTablero))/((double)Gestion.numFilas);
 		
+		//PanelIzquierda
+				panelTablero =new JPanel() {//Usar este método paintComponent para probar si las filas y columnas están bien guardadas
+				
+					@Override
+					protected void paintComponent(Graphics g) {
+						Image imagenTablero = (new ImageIcon(getClass().getResource("tablero.jpg"))).getImage();
+						g.drawImage(imagenTablero, 0, 0, getWidth(), getHeight(), this);
+						if (coordsFilas!=null) {
+							System.out.println(coorYInicioTablero+" "+coorYFinalTablero);
+							System.out.println();
+							System.out.println(altoFilaTablero);
+							for (int i = 0; i<coordsFilas.size()||i<coordsColumnas.size();i++) {
+								if(i<coordsFilas.size()) {
+									g.drawLine(0, coordsFilas.get(i).get(0), getWidth(), coordsFilas.get(i).get(0));
+								}
+								if(i<coordsColumnas.size()) {
+									g.drawLine(coordsColumnas.get(i).get(0),0,coordsColumnas.get(i).get(0) ,getHeight() );
+								}
+							}
+
+							g.drawLine(0, coordsFilas.get(coordsFilas.size()-1).get(1), getWidth(), coordsFilas.get(coordsFilas.size()-1).get(1));
+							g.drawLine(coordsColumnas.get(coordsColumnas.size()-1).get(1), 0, coordsColumnas.get(coordsColumnas.size()-1).get(1), getHeight());
+							System.out.println(coordsFilas.get(coordsColumnas.size()-1).get(1));
+						}
+						
+					}
+				};
+				panelTablero.setLayout(null);
+				panelTablero.setBounds(0,0,(int)sizePantalla.getHeight(),(int)sizePantalla.getHeight());
+				add(panelTablero);
+				
 		//PanelDesplegable	
 		int inicioPanelDesplegable = 2*altoBoton;
 		panelLista = new JPanel() {
@@ -44,13 +100,7 @@ public class VentanaTablero extends JFrame{
 		botonPlegar.setBounds(0,0,(int)(sizePantalla.getWidth()-sizePantalla.getHeight()), altoBoton);
 			
 		panelDesplegable.add(botonPlegar);
-		add(panelDesplegable);
-		
-		//PanelIzquierda
-		ImageIcon iconoTablero =new ImageIcon( new ImageIcon(getClass().getResource("tablero.jpg")).getImage().getScaledInstance((int)sizePantalla.getHeight(), (int)sizePantalla.getHeight(), java.awt.Image.SCALE_SMOOTH));
-		labelTablero.setIcon(iconoTablero);
-		labelTablero.setBounds(0,0,(int)sizePantalla.getHeight(),(int)sizePantalla.getHeight());
-		add(labelTablero);
+		add(panelDesplegable);		
 		
 		//Panel Derecha
 			//PanelDados
@@ -168,8 +218,122 @@ public class VentanaTablero extends JFrame{
 		
 		setVisible(true);
 	}
+	public void crearCasillas() {
+		coordsFilas= new HashMap<>();
+		coordsColumnas= new HashMap<>();
+		for (int i=0; i<Gestion.numFilas || i<Gestion.numColumnas;i++) {
+			if(i<Gestion.numFilas) {
+				ArrayList<Integer>filaActual = new ArrayList<>();
+				filaActual.add((int)(coorYInicioTablero+altoFilaTablero*i));
+				filaActual.add((int)(coorYInicioTablero+altoFilaTablero*(i+1)));
+				coordsFilas.put(i, filaActual);
+			}
+			if(i<Gestion.numColumnas) {
+				ArrayList<Integer>columnaActual = new ArrayList<>();
+				columnaActual.add((int)(coorXInicioTablero+anchoColumnaTablero*i));
+				columnaActual.add((int)(coorXInicioTablero+anchoColumnaTablero*(i+1)));
+				coordsColumnas.put(i, columnaActual);
+			}
+		}
+//		System.out.println(coordsFilas.size() + " " + coordsFilas);
+//		System.out.println(coordsColumnas.size() + " " + coordsColumnas);
+	}
+	public ArrayList<ArrayList<Integer>> caminoMasCorto(int filaInicio, int columnaInicio, int filaFinal, int columnaFinal) {
+		ArrayList<Integer> ultimoVertice = new ArrayList<>();
+		ultimoVertice.add(filaFinal);
+		ultimoVertice.add(columnaFinal);
+		HashMap <ArrayList<Integer>,ArrayList<ArrayList<Integer>>> vertices = new HashMap<>();
+		HashMap<ArrayList<Integer>,ArrayList<ArrayList<Integer>>> verticesAdyacentes = new HashMap<>();
+		ArrayList<Integer> verticeActual = new ArrayList<>();
+		verticeActual.add(filaInicio);
+		verticeActual.add(columnaInicio);
+		ArrayList<ArrayList<Integer>> solucion = new ArrayList<>();
+		solucion.add(verticeActual);
+		verticesAdyacentes.put(verticeActual, solucion);
+		while (true) {
+			verticeActual = ((ArrayList<Integer>) verticesAdyacentes.keySet().toArray()[0]);
+			for (ArrayList<Integer> i:verticesAdyacentes.keySet()) {
+				if (verticesAdyacentes.get(i).size() < verticesAdyacentes.get(verticeActual).size()) {
+					verticeActual = i;
+				}
+			}
+			vertices.put(verticeActual, verticesAdyacentes.get(verticeActual));
+			verticesAdyacentes.remove(verticeActual);
+			
+			
+			ArrayList<Integer>nuevoVerticeDerecha = new ArrayList<>();
+			nuevoVerticeDerecha.add(verticeActual.get(0));
+			nuevoVerticeDerecha.add((verticeActual.get(1)+1));
+			if(!vertices.containsKey(nuevoVerticeDerecha)) {
+				if (verticeActual.get(1)!=Gestion.tablero.get(verticeActual.get(0)).size()-1) {
+					if(Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1)+1)!=0) {
+						solucion = new ArrayList<>(vertices.get(verticeActual));
+						solucion.add(nuevoVerticeDerecha);
+						if(!verticesAdyacentes.containsKey(nuevoVerticeDerecha)) {
+							verticesAdyacentes.put(nuevoVerticeDerecha, solucion);
+						}
+					}
+				}
+			}
+			ArrayList<Integer>nuevoVerticeIzquierda = new ArrayList<>();
+			nuevoVerticeIzquierda.add(verticeActual.get(0));
+			nuevoVerticeIzquierda.add(verticeActual.get(1)-1);
+			if(!vertices.containsKey(nuevoVerticeIzquierda)) {
+				if(verticeActual.get(1)!=0) {
+					if(Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1)-1)!=0) {
+						solucion = new ArrayList<>(vertices.get(verticeActual));
+						solucion.add(nuevoVerticeIzquierda);
+						if(!verticesAdyacentes.containsKey(nuevoVerticeIzquierda)) {
+							verticesAdyacentes.put(nuevoVerticeIzquierda, solucion);
+						}
+					}
+				}
+			}
+			ArrayList<Integer>nuevoVerticeArriba = new ArrayList<>();
+			nuevoVerticeArriba.add(verticeActual.get(0)-1);
+			nuevoVerticeArriba.add(verticeActual.get(1));
+			if(!vertices.containsKey(nuevoVerticeArriba)) {
+				if(verticeActual.get(0)!=0) {
+					if(Gestion.tablero.get(verticeActual.get(0)-1).get(verticeActual.get(1))!=0) {
+						solucion = new ArrayList<>(vertices.get(verticeActual));
+						solucion.add(nuevoVerticeArriba);
+						if(!verticesAdyacentes.containsKey(nuevoVerticeArriba)) {
+							verticesAdyacentes.put(nuevoVerticeArriba, solucion);
+						}
+					}
+				}
+			}
+			ArrayList<Integer>nuevoVerticeAbajo = new ArrayList<>();
+			nuevoVerticeAbajo.add(verticeActual.get(0)+1);
+			nuevoVerticeAbajo.add(verticeActual.get(1));
+			if(!vertices.containsKey(nuevoVerticeAbajo)) {
+				if(verticeActual.get(0)!=Gestion.tablero.size()-1) {
+					if(Gestion.tablero.get(verticeActual.get(0)+1).get(verticeActual.get(1))!=0) {
+						solucion = new ArrayList<>(vertices.get(verticeActual));
+						solucion.add(nuevoVerticeAbajo);
+						if(!verticesAdyacentes.containsKey(nuevoVerticeAbajo)) {
+							verticesAdyacentes.put(nuevoVerticeAbajo, solucion);
+						}
+					}
+				}
+			}
+			
+			
+			if((verticeActual.equals(ultimoVertice))) {
+				break;
+			}
+		}
+		
+		return vertices.get(verticeActual);
+	}
 	
 	public static void main(String[] args) {
-		new VentanaTablero();
+		VentanaTablero v = new VentanaTablero();
+		v.crearCasillas();
+		v.revalidate();
+		v.repaint();
+		Gestion.crearTablero(Gestion.numFilas, Gestion.numColumnas);
+		System.out.println(v.caminoMasCorto(0,6, 20,22));
+		
 	}
 }
