@@ -104,14 +104,15 @@ public class VentanaTablero extends JFrame{
 		//Panel Derecha
 			//PanelDados
 		panelDerecha.setLayout(null);
-		JPanel panelDados = new JPanel() {
-			@Override
-			public void paintComponent(Graphics g) {
-				ImageIcon iconoDados = new ImageIcon(getClass().getResource("cinco.jpg"));
-				Image imagenDados = iconoDados.getImage();
-                g.drawImage(imagenDados, 0, 0, getWidth(), getHeight(), this);
-			}
-		};
+//		JPanel panelDados = new JPanel() {
+//			@Override
+//			public void paintComponent(Graphics g) {
+//				ImageIcon iconoDados = new ImageIcon(getClass().getResource("cinco.jpg"));
+//				Image imagenDados = iconoDados.getImage();
+//                g.drawImage(imagenDados, 0, 0, getWidth(), getHeight(), this);
+//			}
+//		};
+		//panelDados= new VentanaDado();
 		
 		panelDados.setSize((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
 		panelDerecha.add(panelDados);
