@@ -22,17 +22,6 @@ import javax.swing.JTextField;
 
 public class VentanaDado extends JPanel{
 	
-	private static final Dimension TAMAYO = new Dimension(480, 640);
-	
-	//Creo este main para hacer las pruebas (luego se creará esta ventana para tirar los datos)
-	public static void main(String[] args) {
-		
-		VentanaDado ventDados = new VentanaDado();
-		ventDados.setVisible(true);
-		//Mirar si funcionan los datos. Ver si se actualiza el movimineto del jugador (las celdas que pede avanzar, el atributo movimiento)
-		
-	}
-	
 	private JButton btnTirar = new JButton("Tirar Dado!");
 	private Random r = new Random();
 	//private JPanel pnlDado;
@@ -41,6 +30,7 @@ public class VentanaDado extends JPanel{
 	private int valorDado1;
 	private int valorDado2;
 	private Gestion g = new Gestion();
+	//private int newHeight;
 	//private JPanel pnlVentana;
 	
 	@Override
@@ -51,27 +41,18 @@ public class VentanaDado extends JPanel{
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 	}
 	
-	public VentanaDado() {
+	public VentanaDado(int ancho, int alto) {
 		
-		setSize(TAMAYO);
+		setSize(ancho, alto);
 		
-		this.setLayout(null);  //4: dos dados y dos botones
- 
-		
-		
-//		pnlDado = new JPanel(new GridLayout(2,1));
-//		pnlDado.setBackground(Color.gray);
+		this.setLayout(null);  //Componentes por coordenadas
 		
 		lblD1 = new JLabel();
-		
-//		lblD1.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
-//		lblD1.setBounds((int)(getWidth()/2-lblD1.getIcon().getIconWidth()/2), 30, getWidth()/2+lblD1.getIcon().getIconWidth()/2, 30+lblD1.getIcon().getIconHeight());
-//		lblD1.setSize(400, 200);
-		ImageIcon originalIcon = new ImageIcon(getClass().getResource("uno.jpg"));
+		ImageIcon originalIcon = new ImageIcon(getClass().getResource("UNO.png"));
 		Image originalImage = originalIcon.getImage();
 
 		// Calcula el nuevo tamaño para la imagen manteniendo la proporción
-		int newHeight = getHeight();
+		int newHeight = getHeight()/5;
 		int newWidth = (int) ((double) originalImage.getWidth(null) / originalImage.getHeight(null) * newHeight);  // Establece el nuevo ancho deseado
 
 		// Escala la imagen al nuevo tamaño
@@ -80,15 +61,18 @@ public class VentanaDado extends JPanel{
 		// Crea un nuevo ImageIcon con la imagen escalada
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 		
-		// Establece el nuevo ImageIcon en tu JLabel
 		lblD1.setIcon(scaledIcon);
 		lblD1.setBounds((int)(getWidth()/2 - newWidth/2), 30, (int)(getWidth()/2 + newWidth/2), 30 + newHeight);
 		lblD1.setSize(newWidth, newHeight);
 		
-		
-		
 		lblD2 = new JLabel();
-		lblD2.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+		int x = lblD1.getX();
+		int y = lblD1.getY() + lblD1.getHeight() + 10;  // 10 es la separación deseada entre los JLabels
+
+		// Crear el segundo JLabel
+		lblD2.setIcon(new ImageIcon(getClass().getResource("UNO.png")));
+		lblD2.setBounds(x, y, x + newWidth, y + newHeight);
+		lblD2.setSize(newWidth, newHeight);
 		
 		//lblD2.setBounds((int)(getWidth()/2-lblD2.getIcon().getIconWidth()/2), 30, getWidth()/2+lblD2.getIcon().getIconWidth()/2, 9*(30+lblD1.getIcon().getIconHeight()));
 		
@@ -101,7 +85,7 @@ public class VentanaDado extends JPanel{
 			}
 		});
 		btnTirar.setBackground(Color.green);
-		btnTirar.setBounds(0 , getHeight() ,getWidth()+100 , 100);
+		btnTirar.setBounds(20 , getHeight()-120 ,getWidth()-40 , 100);
 		
 		this.add(lblD1);
 		this.add(lblD2);
@@ -125,7 +109,7 @@ public class VentanaDado extends JPanel{
 		this.valorDado2 = valorDado2;
 	}
 	
-	protected void escoderBoton() {
+	protected void esconderBoton() {
 		btnTirar.setVisible( false );
 	}
 	protected void verBoton() {
@@ -149,32 +133,32 @@ public class VentanaDado extends JPanel{
 					int num = r.nextInt(6)+1;
 					switch(num) {
 					case (1):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("UNO.png")));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break; 
 					case (2):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("dos.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("DOS.png")));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (3):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("tres.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("TRES.png")));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (4):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("cuatro.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("CUATRO.png")));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (5):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("cinco.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("CINCO.png")));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
 					case (6):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("seis.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("SEIS.png")));
 						setValorDado1(num);
 						System.out.println(valorDado1);
 						break;
@@ -183,27 +167,27 @@ public class VentanaDado extends JPanel{
 					int num2 = r.nextInt(6)+1;
 					switch(num2) {
 					case (1):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+						lblD2.setIcon(new ImageIcon(getClass().getResource("UNO.png")));
 						setValorDado2(num2);
 						break;
 					case (2):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("dos.jpg")));
+						lblD2.setIcon(new ImageIcon(getClass().getResource("DOS.png")));
 						setValorDado2(num2);
 						break;
 					case (3):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("tres.jpg")));
+						lblD2.setIcon(new ImageIcon(getClass().getResource("TRES.png")));
 						setValorDado2(num2);
 						break;
 					case (4):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("cuatro.jpg")));
+						lblD2.setIcon(new ImageIcon(getClass().getResource("CUATRO.png")));
 						setValorDado2(num2);
 						break;
 					case (5):
-						lblD1.setIcon(new ImageIcon(getClass().getResource("cinco.jpg")));
+						lblD1.setIcon(new ImageIcon(getClass().getResource("CINCO.png")));
 						setValorDado2(num2);
 						break;
 					case (6):
-						lblD2.setIcon(new ImageIcon(getClass().getResource("seis.jpg")));
+						lblD2.setIcon(new ImageIcon(getClass().getResource("SEIS.png")));
 						setValorDado2(num2);
 						break;
 					}
@@ -219,7 +203,7 @@ public class VentanaDado extends JPanel{
 						System.out.println("Celdas que puede avanzar este jugador: " + g.getMovimiento());
 					}
 					
-					lblD1.setBounds((int)(getWidth()/2-lblD1.getIcon().getIconWidth()/2), 30, getWidth()/2+lblD1.getIcon().getIconWidth()/2, 30+lblD1.getIcon().getIconHeight());
+					//lblD1.setBounds((int)(getWidth()/2 - newWidth/2), 30, (int)(getWidth()/2 + newWidth/2), 30 + newHeight);
 					add(lblD1);
 					add(lblD2);
 					//setContentPane(pnlVentana);

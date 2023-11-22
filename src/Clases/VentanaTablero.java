@@ -21,13 +21,14 @@ public class VentanaTablero extends JFrame{
 	int coorXFinalTablero;
 	int coorYInicioTablero;
 	int coorYFinalTablero;
+	int altoBoton = 100;
 	double anchoColumnaTablero;
 	double altoFilaTablero;
 	HashMap<Integer, ArrayList<Integer>>coordsFilas = null;
 	HashMap<Integer, ArrayList<Integer>>coordsColumnas = null;
 	JLabel labelTablero = new JLabel();
 	JPanel panelDerecha = new JPanel();
-	VentanaDado panelDados = new VentanaDado();
+	VentanaDado panelDados = new VentanaDado((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
 	JButton botonDesplegar = new JButton();
 	JButton botonPlegar = new JButton();
 	JPanel panelDesplegable = new JPanel();
@@ -42,7 +43,6 @@ public class VentanaTablero extends JFrame{
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
-		int altoBoton = 100;
 		coorXInicioTablero =(int) (2*Gestion.sizePantalla.getHeight())/37;
 		coorXFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/19);
 		coorYInicioTablero = (int) (Gestion.sizePantalla.getHeight())/29;
@@ -117,7 +117,7 @@ public class VentanaTablero extends JFrame{
 //		};
 		//panelDados= new VentanaDado();
 		
-		panelDados.setSize((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
+		//panelDados.setSize((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
 		panelDerecha.add(panelDados);
 			//PanelBoton
 		botonDesplegar.setFocusable(false);
@@ -134,7 +134,7 @@ public class VentanaTablero extends JFrame{
 		botonDesplegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				panelDados.escoderBoton();
+				panelDados.esconderBoton();
 				panelDesplegable.setVisible(true);
 				botonPlegar.setEnabled(false);
 				botonDesplegar.setVisible(false);
