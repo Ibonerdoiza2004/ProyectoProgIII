@@ -33,7 +33,7 @@ public class VentanaDado extends JPanel{
 		
 	}
 	
-	private JButton btnTirar;
+	private JButton btnTirar = new JButton("Tirar Dado!");
 	private Random r = new Random();
 	//private JPanel pnlDado;
 	private JLabel lblD1;
@@ -43,6 +43,14 @@ public class VentanaDado extends JPanel{
 	private Gestion g = new Gestion();
 	//private JPanel pnlVentana;
 	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoDados.jpeg"));
+        Image imagenFondo = iconoFondo.getImage();
+        g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+	}
+	
 	public VentanaDado() {
 		
 		setSize(TAMAYO);
@@ -50,15 +58,40 @@ public class VentanaDado extends JPanel{
 		this.setLayout(null);  //4: dos dados y dos botones
  
 		
-        
 		
 //		pnlDado = new JPanel(new GridLayout(2,1));
 //		pnlDado.setBackground(Color.gray);
 		
 		lblD1 = new JLabel();
-		lblD2 = new JLabel();
 		
-		btnTirar = new JButton("Tirar Dado!");
+//		lblD1.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+//		lblD1.setBounds((int)(getWidth()/2-lblD1.getIcon().getIconWidth()/2), 30, getWidth()/2+lblD1.getIcon().getIconWidth()/2, 30+lblD1.getIcon().getIconHeight());
+//		lblD1.setSize(400, 200);
+		ImageIcon originalIcon = new ImageIcon(getClass().getResource("uno.jpg"));
+		Image originalImage = originalIcon.getImage();
+
+		// Calcula el nuevo tamaño para la imagen manteniendo la proporción
+		int newHeight = getHeight();
+		int newWidth = (int) ((double) originalImage.getWidth(null) / originalImage.getHeight(null) * newHeight);  // Establece el nuevo ancho deseado
+
+		// Escala la imagen al nuevo tamaño
+		Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+		// Crea un nuevo ImageIcon con la imagen escalada
+		ImageIcon scaledIcon = new ImageIcon(scaledImage);
+		
+		// Establece el nuevo ImageIcon en tu JLabel
+		lblD1.setIcon(scaledIcon);
+		lblD1.setBounds((int)(getWidth()/2 - newWidth/2), 30, (int)(getWidth()/2 + newWidth/2), 30 + newHeight);
+		lblD1.setSize(newWidth, newHeight);
+		
+		
+		
+		lblD2 = new JLabel();
+		lblD2.setIcon(new ImageIcon(getClass().getResource("uno.jpg")));
+		
+		//lblD2.setBounds((int)(getWidth()/2-lblD2.getIcon().getIconWidth()/2), 30, getWidth()/2+lblD2.getIcon().getIconWidth()/2, 9*(30+lblD1.getIcon().getIconHeight()));
+		
 		btnTirar.addActionListener(new ActionListener() {
 			
 			@Override
@@ -67,14 +100,12 @@ public class VentanaDado extends JPanel{
 				tirarDado();
 			}
 		});
+		btnTirar.setBackground(Color.green);
+		btnTirar.setBounds(0 , getHeight() ,getWidth()+100 , 100);
 		
-		pnlVentana.add(btnTirar, BorderLayout.NORTH);
-		
-		//setContentPane(pnlVentana);
-		//Prueba:
-//		lblD1.setIcon(new ImageIcon("FotosDado/dos.jpg"));
-//		pnlDado.add(lblD1);
-//		getContentPane().add(pnlDado);
+		this.add(lblD1);
+		this.add(lblD2);
+		this.add(btnTirar);
 	}
 	
 	
@@ -93,8 +124,13 @@ public class VentanaDado extends JPanel{
 	public void setValorDado2(int valorDado2) {
 		this.valorDado2 = valorDado2;
 	}
-
-
+	
+	protected void escoderBoton() {
+		btnTirar.setVisible( false );
+	}
+	protected void verBoton() {
+		btnTirar.setVisible( true );
+	}
 	public void tirarDado() {
 		
 //		JLabel lDado1 = new JLabel();
@@ -183,9 +219,9 @@ public class VentanaDado extends JPanel{
 						System.out.println("Celdas que puede avanzar este jugador: " + g.getMovimiento());
 					}
 					
-					lblD1.setBounds((int)(this.getWidth()/2-lblD1.getIcon().getIconWidth()/2), 30);
-					pnlVentana.add(lblD1);
-					pnlVentana.add(lblD2);
+					lblD1.setBounds((int)(getWidth()/2-lblD1.getIcon().getIconWidth()/2), 30, getWidth()/2+lblD1.getIcon().getIconWidth()/2, 30+lblD1.getIcon().getIconHeight());
+					add(lblD1);
+					add(lblD2);
 					//setContentPane(pnlVentana);
 					
 					try {
@@ -197,8 +233,8 @@ public class VentanaDado extends JPanel{
 				//Esto se hace simplemente para que vaya cargando el mapa
 				lblD1.setIcon(lblD1.getIcon());
 				lblD2.setIcon(lblD2.getIcon());
-				pnlVentana.add(lblD1);
-				pnlVentana.add(lblD2);
+				add(lblD1);
+				add(lblD2);
 				//setContentPane(pnlVentana);
 				btnTirar.setEnabled(true);
 			}

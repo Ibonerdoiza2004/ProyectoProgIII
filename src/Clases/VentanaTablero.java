@@ -27,15 +27,18 @@ public class VentanaTablero extends JFrame{
 	HashMap<Integer, ArrayList<Integer>>coordsColumnas = null;
 	JLabel labelTablero = new JLabel();
 	JPanel panelDerecha = new JPanel();
-	JPanel panelDados;
+	VentanaDado panelDados = new VentanaDado();
 	JButton botonDesplegar = new JButton();
 	JButton botonPlegar = new JButton();
 	JPanel panelDesplegable = new JPanel();
 	JPanel panelLista;
 	JPanel panelTablero;
+	
+	
+	
 	public VentanaTablero() {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setUndecorated(true);
+		//this.setUndecorated(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
@@ -131,6 +134,7 @@ public class VentanaTablero extends JFrame{
 		botonDesplegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				panelDados.escoderBoton();
 				panelDesplegable.setVisible(true);
 				botonPlegar.setEnabled(false);
 				botonDesplegar.setVisible(false);
@@ -175,6 +179,7 @@ public class VentanaTablero extends JFrame{
 		botonPlegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				panelDados.verBoton();
 				botonPlegar.setEnabled(false);
 				Thread t2 = new Thread(new Runnable() {
 					@Override
