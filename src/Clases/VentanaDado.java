@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class VentanaDado extends JPanel{
-	private JButton btnTirar = new JButton("Tirar Dado!");
+	protected JButton btnTirar = new JButton("Tirar Dado!");
 	private Random r = new Random();
 	//private JPanel pnlDado;
 	private JLabel lblD1;
@@ -29,6 +29,7 @@ public class VentanaDado extends JPanel{
 	protected int valorDado1;
 	protected int valorDado2;
 	protected Thread hilo;
+//	protected boolean repintarDado;
 	//private int newHeight;
 	//private JPanel pnlVentana;
 	@Override

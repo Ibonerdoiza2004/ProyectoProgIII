@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-enum TipoSprite{AndarArriba, AndarDerecha, AndarAbajo, AndarIzquierda, AgarrarArriba, AgarrarDerecha, AgarrarAbajo, AgarrarIzquierda};
+enum TipoSprite{AndarArriba, AndarIzquierda, AndarAbajo, AndarDerecha, AgarrarArriba, AgarrarDerecha, AgarrarAbajo, AgarrarIzquierda};
 public class Gestion {
 
 	//Atributos
