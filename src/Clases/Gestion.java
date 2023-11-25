@@ -1,22 +1,28 @@
 package Clases;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+enum TipoSprite{AndarArriba, AndarDerecha, AndarAbajo, AndarIzquierda, AgarrarArriba, AgarrarDerecha, AgarrarAbajo, AgarrarIzquierda};
 public class Gestion {
 
 	//Atributos
 	protected static Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 	private static int numTurno = 0;
 	protected static ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
-	protected static int movimiento = 0; //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.
-	protected static VentanaDado resultadoDado;
+	 //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.s
 	protected static int numFilas = 25;
 	protected static int numColumnas = 24;
 	protected static Contenedor datosPartida = new Contenedor();
 	protected static ArrayList<ArrayList<Integer>> tablero = Gestion.crearTablero(numFilas, numColumnas);
+	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites= crearSprites();
 	
 	public static int getNumTurno() {
 		return numTurno;
@@ -35,13 +41,7 @@ public class Gestion {
 		Gestion.jugadores = jugadores;
 	}
 
-	public int getMovimiento() {
-		return movimiento;
-	}
-
-	public void setMovimiento(int movimiento) {
-		Gestion.movimiento = movimiento;
-	}
+	
 
 	public Contenedor getDatosPartida() {
 		return datosPartida;
@@ -95,11 +95,7 @@ public class Gestion {
 	}
 	
 	//Este método lo llamo desde la clase 'VentanaDado' para pasarle los valores
-	public void tiradaDados(int resultadoDado1, int resultadoDado2) {
-		//VentanaDado ventDado = new VentanaDado();
-		//ventDado.tirarDado();
-		Gestion.movimiento = resultadoDado1 + resultadoDado2;
-	}
+
 	
 	public ArrayList<ArrayList<Integer>> crearMatriz(int filasMapa, int columnasMapa) {
 		ArrayList<ArrayList<Integer>> matrizMapa = new ArrayList<ArrayList<Integer>>();
@@ -156,33 +152,43 @@ public class Gestion {
 	//VENTAJAS: Es mucho más eficiente que el otro método (Comprobar con 12 movimientos)
 	//DESVENTAJAS: Solo calcula los movimientos para la casilla actual (El otro método se puede cargar antes de que empiece 
 	//             la partida y reutilizarlo)
-	public static  ArrayList<ArrayList<Integer>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
+	public static  HashMap<String,ArrayList<ArrayList<Integer>>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
 		ArrayList <ArrayList<Integer>> casillasPosibles = new ArrayList<>();
-		movimientoCasillasRecursive(fila, columna, movimiento, 0, casillasPosibles, tablero);
-		return casillasPosibles;
+		ArrayList <ArrayList<Integer>> puertasPosibles = new ArrayList<>();
+		HashMap<String,ArrayList <ArrayList<Integer>>>movimientosPosibles = new HashMap<>();
+		movimientoCasillasRecursive(fila, columna, movimiento, 0, casillasPosibles, puertasPosibles, tablero);
+		movimientosPosibles.put("casillasPosibles", casillasPosibles);
+		movimientosPosibles.put("puertasPosibles", puertasPosibles);
+		return movimientosPosibles;
 	}
 	
-	private static void  movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList<ArrayList<Integer>> tablero) {
+	private static void  movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList <ArrayList<Integer>> puertasPosibles, ArrayList<ArrayList<Integer>> tablero) {
 		ArrayList<Integer> pos = new ArrayList<>();
 		pos.add(fila);
 		pos.add(columna);
-		if(!casillasPosibles.contains(pos)) {
-			casillasPosibles.add(pos);
-			if(iteracion<movimiento) {
-				if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)==1)) {
-					movimientoCasillasRecursive(fila+1, columna, movimiento, iteracion+1, casillasPosibles, tablero);
-				}
-				if((fila!=0)&&(tablero.get(fila-1).get(columna)==1)) {
-					movimientoCasillasRecursive(fila-1, columna, movimiento, iteracion+1, casillasPosibles, tablero);
-				}
-				if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)==1)) {
-					movimientoCasillasRecursive(fila, columna+1, movimiento, iteracion+1, casillasPosibles, tablero);
-				}
-				if((columna!=0)&&(tablero.get(fila).get(columna-1)==1)) {	
-					movimientoCasillasRecursive(fila, columna-1, movimiento, iteracion+1, casillasPosibles, tablero);
-				}
+		if(!casillasPosibles.contains(pos)&&!puertasPosibles.contains(pos)) {
+			if(tablero.get(fila).get(columna)==1) {
+				casillasPosibles.add(pos);
+			}else {
+				puertasPosibles.add(pos);
 			}
 		}
+		if(iteracion<movimiento) {
+			if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)!=0)) {
+				movimientoCasillasRecursive(fila+1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+			}
+			if((fila!=0)&&(tablero.get(fila-1).get(columna)!=0)) {
+				movimientoCasillasRecursive(fila-1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+			}
+			if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)!=0)) {
+				movimientoCasillasRecursive(fila, columna+1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+			}
+			if((columna!=0)&&(tablero.get(fila).get(columna-1)!=0)) {	
+				movimientoCasillasRecursive(fila, columna-1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+			}
+			
+		}
+		
 	}
 	public static ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
 		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
@@ -223,8 +229,6 @@ public class Gestion {
 		return tablero;
 	}
 
-	
-//pruebaGitHub5
 	public void turnoJugador() {
 		
 	}
@@ -253,9 +257,49 @@ public class Gestion {
 			}
 			System.out.println("");
 		}
-		ArrayList<ArrayList<Integer>> movimientos = Gestion.calcularMovimiento(8, 10, 12, tablero);
+		HashMap<String,ArrayList<ArrayList<Integer>>> movimientos = Gestion.calcularMovimiento(8, 10, 12, tablero);
 		System.out.println(movimientos);
 		System.out.println(movimientos.size());
 	}
-	
+	public static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> crearSprites(){
+		int inicioX = 4;
+		int ancho = 54;
+		int entreImagenesX = 10;
+		int inicioY = 515;
+		int alto = 60;
+		int entreImagenesY = 4;
+		HashMap<NombrePersonaje,HashMap<TipoSprite, ArrayList<Image>>>mapaPorPersonaje= new HashMap<>();
+		for (int i=0; i<NombrePersonaje.values().length;i++) {
+			NombrePersonaje personaje = NombrePersonaje.values()[i];
+			BufferedImage imagenHojaSprites = null;
+			try {
+				imagenHojaSprites = ImageIO.read(new File(("src/sprites/"+personaje+".png")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				crearSprites();
+			}
+			HashMap<TipoSprite,ArrayList<Image>>mapaPorTipo = new HashMap<>();
+			for(int j=0;j<TipoSprite.values().length;j++) {
+				TipoSprite tipoSprite = TipoSprite.values()[j];
+				ArrayList<Image>sprites = new ArrayList<>();
+				int numSprites;
+				if(tipoSprite.toString().startsWith("Agarrar")) {
+					numSprites=6;
+				}else {
+					numSprites=9;
+				}
+				for (int k=0;k<numSprites;k++) {
+					Image sprite =  imagenHojaSprites.getSubimage(inicioX+k*(ancho+entreImagenesX), inicioY+j*(alto+entreImagenesY), ancho, 60);
+					sprites.add(sprite);
+				}
+				mapaPorTipo.put(tipoSprite, sprites);
+			}
+			mapaPorPersonaje.put(personaje, mapaPorTipo);
+		}
+			
+		         
+		   
+		return mapaPorPersonaje;
+	}
 }

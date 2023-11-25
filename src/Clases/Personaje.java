@@ -3,23 +3,22 @@ package Clases;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
-
+enum NombrePersonaje{Miss_Scarlett, Colonel_Mustard, Mrs_White, Mr_Green, Mrs_Peacock, Profesor_Plum};
 public class Personaje { //TODO esta clase sirve para los 6 personajes que el jugador puede elegir
 	
-	enum NombrePersonaje{Miss_Scarlett, Colonel_Mustard, Mr_White, Mr_Green, Mrs_Peacock, Profesora_Plum};
 	protected Random r = new Random();
 	//Atributos
-	protected String nombre;
+	protected NombrePersonaje nombre;
 	protected ImageIcon imgRight;
 	protected ImageIcon imgLeft;
 	protected ImageIcon imgFront;
 	protected ImageIcon imgBack;
 	
 	//Setters y Getters
-	public String getNombre() {
+	public NombrePersonaje getNombre() {
 		return nombre;
 	}
-	public void setNombre(String nombre) {
+	public void setNombre(NombrePersonaje nombre) {
 		this.nombre = nombre;
 	}
 	public ImageIcon getImgRight() {
@@ -49,12 +48,12 @@ public class Personaje { //TODO esta clase sirve para los 6 personajes que el ju
 	
 	public Personaje() {
 		NombrePersonaje personaje = NombrePersonaje.values()[r.nextInt((int)NombrePersonaje.values().length)];
-		this.nombre = personaje.toString();
+		this.nombre = personaje;
 		setImagenes(personaje);
 	}
 	
 	public Personaje(NombrePersonaje nombre) {
-		this.nombre = nombre.toString();
+		this.nombre = nombre;
 		setImagenes(nombre);
 		
 	}
@@ -76,7 +75,7 @@ public class Personaje { //TODO esta clase sirve para los 6 personajes que el ju
 			this.imgLeft = null;
 			this.imgFront = null;
 			this.imgBack = null;
-		case Mr_White:
+		case Mrs_White:
 			this.imgRight = null;
 			this.imgLeft = null;
 			this.imgFront = null;
@@ -86,7 +85,7 @@ public class Personaje { //TODO esta clase sirve para los 6 personajes que el ju
 			this.imgLeft = null;
 			this.imgFront = null;
 			this.imgBack = null;
-		case Profesora_Plum:
+		case Profesor_Plum:
 			this.imgRight = null;
 			this.imgLeft = null;
 			this.imgFront = null;
