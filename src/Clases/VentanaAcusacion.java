@@ -8,9 +8,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
@@ -52,6 +54,8 @@ public class VentanaAcusacion extends JFrame{
 	
 	private JTable tablaLista;
 	private TablaLista modeloTabla;
+	
+	private HashMap<Point, JPanel> mapaCordBotones = new HashMap<Point, JPanel>();
 //	private JList<SospechosoItem> jlSospechoso;
 //	private JList<ArmaItem> jlArma;
 //	private JList<JCheckBox> jlLugar;
@@ -82,6 +86,9 @@ public class VentanaAcusacion extends JFrame{
 		for (Sitio sitio: Sitio.values()) {
 			cbLugar.addItem(sitio);
 		}
+		
+		//Cargo el mapa de JRadioButtons para la JTable:
+		cargarMapaRecursive(1, -1);
 		
 		//Listeners en combos para los labels:
 		cbSospechoso.addActionListener(new ActionListener() {
@@ -132,8 +139,9 @@ public class VentanaAcusacion extends JFrame{
 		
 		modeloTabla = new TablaLista();
 		tablaLista = new JTable(modeloTabla);
+		//tablaLista.setRowHeight(200);
 		
-		tablaLista.setDefaultRenderer(Boolean.class, new DefaultTableCellRenderer() {
+		tablaLista.setDefaultRenderer(JPanel.class, new DefaultTableCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -152,19 +160,73 @@ public class VentanaAcusacion extends JFrame{
 			}
 		});
 		
-		//SEGUIR AQUI------------------------------------------------------------------------------
-//		tablaLista.setDefaultEditor(JPanel.class, new DefaultCellEditor(new JTextField() ) {
-//
-//			@Override
-//			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-//					int column) {
-//				return super.getTableCellEditorComponent(table, value, isSelected, row, column);
-//				
-//			}
-//			
-//		});
+		tablaLista.setDefaultEditor(JPanel.class, new DefaultCellEditor(new JTextField() ) {
+
+			boolean lanzado;
+			JRadioButton seleccion1;
+			JRadioButton seleccion2;
+			JRadioButton seleccion3;
+			@Override
+			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+					int column) {
+				
+				JPanel pnlRadio = new JPanel();
+				JRadioButton seleccion1 = new JRadioButton("100%");
+				JRadioButton seleccion2 = new JRadioButton("Duda");
+				JRadioButton seleccion3 = new JRadioButton("0%");
+				pnlRadio.add(seleccion1);
+				pnlRadio.add(seleccion2);
+				pnlRadio.add(seleccion3);
+				if (column != 1) {
+					lanzado = false;
+					return super.getTableCellEditorComponent(table, value, isSelected, row, column);
+				}
+				lanzado = true;
+				return pnlRadio;
+			}
+			
+			//Para obtener el valor al editar en la tabla
+			@Override
+			public Object getCellEditorValue() {
+				if (lanzado) {
+					if (seleccion1.isSelected()) {
+						return seleccion1.isSelected();
+					}
+				}
+				//return super.getCellEditorValue();
+				return false;
+			}
+			
+			
+			
+		});
 		
 		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
+	}
+	
+	//Cargar mapa recursivamente:
+	public void cargarMapaRecursive(int row, int column) {
+		if (row == 22 && column == 1) { //Caso base
+			return;
+		}
+		if (column == 1) {
+			column = 0;
+			row ++;
+		} else  {
+			column = column + 1;
+		}
+		JPanel pnlRadio = new JPanel();
+		JRadioButton seleccion1 = new JRadioButton("100%");
+		JRadioButton seleccion2 = new JRadioButton("Duda");
+		JRadioButton seleccion3 = new JRadioButton("0%");
+		pnlRadio.add(seleccion1);
+		pnlRadio.add(seleccion2);
+		pnlRadio.add(seleccion3);
+		
+		mapaCordBotones.put(new Point(row,column), pnlRadio);
+		System.out.println(row +", "+ column);
+		cargarMapaRecursive(row, column);
+		return;
 	}
 	
 	
