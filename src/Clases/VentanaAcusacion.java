@@ -11,6 +11,10 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -55,7 +59,7 @@ public class VentanaAcusacion extends JFrame{
 	private JTable tablaLista;
 	private TablaLista modeloTabla;
 	
-	private HashMap<Point, JPanel> mapaCordBotones = new HashMap<Point, JPanel>();
+	private HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>> mapaCordBotones = new HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>>();
 //	private JList<SospechosoItem> jlSospechoso;
 //	private JList<ArmaItem> jlArma;
 //	private JList<JCheckBox> jlLugar;
@@ -147,16 +151,13 @@ public class VentanaAcusacion extends JFrame{
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
 				table.setRowHeight(35);
-				JPanel pnl = new JPanel();
-//				pnl.add(new JRadioButton("100%"));
-//				pnl.add(new JRadioButton("jsijs"));
-				JRadioButton r1 = new JRadioButton("100%");
-				JRadioButton r2 = new JRadioButton("Duda");
-				JRadioButton r3 = new JRadioButton("0%");
-				pnl.add(r1);
-				pnl.add(r2);
-				pnl.add(r3);
-				return pnl;
+
+				for (Point p: mapaCordBotones.keySet()) {
+					for (JPanel key: mapaCordBotones.get(p).keySet()) {
+						return key;
+					}
+				}
+				return null;
 			}
 		});
 		
@@ -181,28 +182,50 @@ public class VentanaAcusacion extends JFrame{
 					lanzado = false;
 					return super.getTableCellEditorComponent(table, value, isSelected, row, column);
 				}
-				lanzado = true;
-				return pnlRadio;
+				for (Point p: mapaCordBotones.keySet()) {
+					if (p.getX() == row && p.getY() == column) {
+						for (JPanel pnl: mapaCordBotones.get(p).keySet()) {
+							return pnl;
+						}
+					}
+					//return null;
+				}
+				return null;
 			}
 			
 			//Para obtener el valor al editar en la tabla
 			@Override
 			public Object getCellEditorValue() {
-				if (lanzado) {
-					if (seleccion1.isSelected()) {
-						return seleccion1.isSelected();
+				for (Point p: mapaCordBotones.keySet()) {
+					for (JPanel pnl: mapaCordBotones.get(p).keySet()) {
+						for (JRadioButton rad: mapaCordBotones.get(p).get(pnl)) {
+							if (rad.isSelected()) {
+								System.out.println("TRUE");
+								rad.setSelected( true );
+								return true;
+							}
+						}
 					}
 				}
-				//return super.getCellEditorValue();
 				return false;
 			}
-			
-			
 			
 		});
 		
 		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
+		
+		//Probar con KeyListener:
+		tablaLista.addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+		});
+		
 	}
+	
+	
 	
 	//Cargar mapa recursivamente:
 	public void cargarMapaRecursive(int row, int column) {
@@ -216,14 +239,20 @@ public class VentanaAcusacion extends JFrame{
 			column = column + 1;
 		}
 		JPanel pnlRadio = new JPanel();
+		ArrayList<JRadioButton> radioButtons = new ArrayList<JRadioButton>();
 		JRadioButton seleccion1 = new JRadioButton("100%");
 		JRadioButton seleccion2 = new JRadioButton("Duda");
 		JRadioButton seleccion3 = new JRadioButton("0%");
 		pnlRadio.add(seleccion1);
 		pnlRadio.add(seleccion2);
 		pnlRadio.add(seleccion3);
+		radioButtons.add(seleccion1);
+		radioButtons.add(seleccion2);
+		radioButtons.add(seleccion3);
+		HashMap<JPanel, ArrayList<JRadioButton>> mapaRadios = new HashMap<JPanel, ArrayList<JRadioButton>>();
+		mapaRadios.put(pnlRadio, radioButtons);
 		
-		mapaCordBotones.put(new Point(row,column), pnlRadio);
+		mapaCordBotones.put(new Point(row,column), mapaRadios);
 		System.out.println(row +", "+ column);
 		cargarMapaRecursive(row, column);
 		return;
