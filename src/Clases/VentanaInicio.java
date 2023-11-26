@@ -97,6 +97,16 @@ public class VentanaInicio extends JFrame{
 		pnlVentana.add(new JLabel(" "));
 		pnlVentana.add(new JLabel(" "));
 		
+		nuevaLocal.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaNJugadores();
+				dispose();
+				
+			}
+		});
+		
 		cerrar.addActionListener(new ActionListener() {
 			
 			@Override
