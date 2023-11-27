@@ -14,10 +14,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -33,6 +37,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 
 
@@ -41,7 +46,7 @@ public class VentanaAcusacion extends JFrame{
 	
 	//Atributos:
 	private JPanel pnlCombo;
-	private JPanel pnlLabel; 
+	private JPanel pnlLabelYFotos;
 	
 	private JComboBox<Sospechosos> cbSospechoso;
 	private JComboBox<Armas> cbArma;
@@ -56,17 +61,22 @@ public class VentanaAcusacion extends JFrame{
 	private JLabel lblArma;
 	private JLabel lblLugar;
 	
+	private JPanel pnlFotoSospechoso;
+	private JPanel pnlFotoArma;
+	private JPanel pnlFotoLugar;
+	
 	private JTable tablaLista;
 	private TablaLista modeloTabla;
 	
-	private HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>> mapaCordBotones = new HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>>();
-//	private JList<SospechosoItem> jlSospechoso;
-//	private JList<ArmaItem> jlArma;
-//	private JList<JCheckBox> jlLugar;
-//	
-//	private JCheckBox chSospechoso;
-//	private JCheckBox chArma;
-//	private JCheckBox chLugar;
+	//private HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>> mapaCordBotones = new HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>>();
+	/**
+	 * Para que solo se pueda seleccinar una opción en la JTable, guardo la fila
+	 * y la columna en un HashMap para así poder controlarlo
+	 * Clave: Fila, Valor: Columna
+	 */
+	int filaEnTabla;
+	int columnaEnTabla;
+	private HashMap<Integer, Integer> rowYcolYaSel = new HashMap<Integer, Integer>();
 	
 	public VentanaAcusacion() {
 		
@@ -74,6 +84,26 @@ public class VentanaAcusacion extends JFrame{
 		setLocationRelativeTo( null );
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("VENTANA ACUSACION");
+		
+		Border border = BorderFactory.createLineBorder(Color.BLUE, 5, true);
+		
+		pnlLabelYFotos = new JPanel(new GridLayout(3,2));
+		
+		lblSospechoso = new JLabel("Sospechoso");
+		pnlLabelYFotos.add(lblSospechoso);
+		pnlFotoSospechoso = new JPanel();
+		pnlFotoSospechoso.setBorder(border);
+		pnlLabelYFotos.add(pnlFotoSospechoso);
+		lblArma = new JLabel("Arma");
+		pnlLabelYFotos.add(lblArma);
+		pnlFotoArma = new JPanel();
+		pnlFotoArma.setBorder(border);
+		pnlLabelYFotos.add(pnlFotoArma);
+		lblLugar = new JLabel("Lugar");
+		pnlLabelYFotos.add(lblLugar);
+		pnlFotoLugar = new JPanel();
+		pnlFotoLugar.setBorder(border);
+		pnlLabelYFotos.add(pnlFotoLugar);
        
 		pnlCombo = new JPanel(new GridLayout(3,1));
 		
@@ -92,7 +122,7 @@ public class VentanaAcusacion extends JFrame{
 		}
 		
 		//Cargo el mapa de JRadioButtons para la JTable:
-		cargarMapaRecursive(1, -1);
+		//cargarMapaRecursive(1, -1);
 		
 		//Listeners en combos para los labels:
 		cbSospechoso.addActionListener(new ActionListener() {
@@ -128,135 +158,158 @@ public class VentanaAcusacion extends JFrame{
 		
 		getContentPane().add(pnlCombo, BorderLayout.WEST);
 		
+		//Listeners a los combos:
+		cbArma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Armas a = (Armas) cbArma.getSelectedItem();
+				String arma = a.toString();
+				JLabel lblSel = new JLabel();
+		        ImageIcon imageIcon = new ImageIcon("src/cartasArmas/"+arma+".png");
+		        Image image = imageIcon.getImage();
+		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+		        lblSel.setIcon(new ImageIcon(newimg));
+		        pnlFotoArma.removeAll();
+		        pnlFotoArma.add(lblSel,BorderLayout.CENTER);
+		        repaint();
+		        revalidate();
+				
+			}
+		});
 		
-		pnlLabel = new JPanel(new GridLayout(3,1));
-		
-		lblSospechoso = new JLabel("Sospechoso");
-		lblArma = new JLabel("Arma");
-		lblLugar = new JLabel("Lugar");
-		pnlLabel.add(lblSospechoso);
-		pnlLabel.add(lblArma);
-		pnlLabel.add(lblLugar);
-		
-		getContentPane().add(pnlLabel, BorderLayout.CENTER);
+		getContentPane().add(pnlLabelYFotos, BorderLayout.CENTER);
 		//getContentPane().add(new JScrollPane(jlSospechoso), BorderLayout.EAST);
+		
 		
 		modeloTabla = new TablaLista();
 		tablaLista = new JTable(modeloTabla);
 		//tablaLista.setRowHeight(200);
 		
-		tablaLista.setDefaultRenderer(JPanel.class, new DefaultTableCellRenderer() {
-
+		/**
+		 * Listener para coger las coordenadas en la tabla
+		 * y poder marcar tu elección
+		 */
+		tablaLista.addMouseListener(new MouseAdapter() {
+			
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				table.setRowHeight(35);
-
-				for (Point p: mapaCordBotones.keySet()) {
-					for (JPanel key: mapaCordBotones.get(p).keySet()) {
-						return key;
-					}
+			public void mouseClicked(MouseEvent e) {
+				
+				filaEnTabla = tablaLista.rowAtPoint(e.getPoint());
+				columnaEnTabla = tablaLista.columnAtPoint(e.getPoint());
+				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
+					//filasYaSeleccionadas.add(filaEnTabla);
+					tablaLista.repaint();
+				} else  {
+					filaEnTabla = 0;
+					columnaEnTabla = 0;
 				}
-				return null;
+				
 			}
 		});
 		
-		tablaLista.setDefaultEditor(JPanel.class, new DefaultCellEditor(new JTextField() ) {
+		tablaLista.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+		    private JLabel lblSel = new JLabel();
 
-			boolean lanzado;
-			JRadioButton seleccion1;
-			JRadioButton seleccion2;
-			JRadioButton seleccion3;
-			@Override
-			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-					int column) {
-				
-				JPanel pnlRadio = new JPanel();
-				JRadioButton seleccion1 = new JRadioButton("100%");
-				JRadioButton seleccion2 = new JRadioButton("Duda");
-				JRadioButton seleccion3 = new JRadioButton("0%");
-				pnlRadio.add(seleccion1);
-				pnlRadio.add(seleccion2);
-				pnlRadio.add(seleccion3);
-				if (column != 1) {
-					lanzado = false;
-					return super.getTableCellEditorComponent(table, value, isSelected, row, column);
-				}
-				for (Point p: mapaCordBotones.keySet()) {
-					if (p.getX() == row && p.getY() == column) {
-						for (JPanel pnl: mapaCordBotones.get(p).keySet()) {
-							return pnl;
-						}
-					}
-					//return null;
-				}
-				return null;
-			}
-			
-			//Para obtener el valor al editar en la tabla
-			@Override
-			public Object getCellEditorValue() {
-				for (Point p: mapaCordBotones.keySet()) {
-					for (JPanel pnl: mapaCordBotones.get(p).keySet()) {
-						for (JRadioButton rad: mapaCordBotones.get(p).get(pnl)) {
-							if (rad.isSelected()) {
-								System.out.println("TRUE");
-								rad.setSelected( true );
-								return true;
-							}
-						}
-					}
-				}
-				return false;
-			}
-			
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+		            boolean hasFocus, int row, int column) {
+		        table.setRowHeight(35);
+		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		        if (column == 0) {
+		            return c;
+		        }
+		        //Mirar si ya había algún sospechoso marcado
+		        for (Integer r: rowYcolYaSel.keySet()) {
+		        	if (r == row && rowYcolYaSel.get(r) == column) {
+		        		lblSel = lblTachado();
+		                return lblSel;
+		        	}
+		        }
+		        
+		        if (filaEnTabla >= 0 && filaEnTabla == row && column == columnaEnTabla) {
+		            try {
+		            	lblSel = lblTachado();
+		                rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		            return lblSel;
+		        }
+		        return c;
+		    }
 		});
+		
+//		tablaLista.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+//
+//			@Override
+//			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+//					boolean hasFocus, int row, int column) {
+//				table.setRowHeight(35);
+//				return super.
+//			}
+//		});
+		
+//		tablaLista.setDefaultEditor(Object.class, new DefaultCellEditor(new JTextField() ) {
+//			@Override
+//			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+//					int column) {
+//			}
+//			
+//			//Para obtener el valor al editar en la tabla
+//			@Override
+//			public Object getCellEditorValue() {
+//				
+//			}
+//			
+//		});
 		
 		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
 		
-		//Probar con KeyListener:
-		tablaLista.addKeyListener(new KeyAdapter() {
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
-			}
-		});
-		
+	}
+	
+	public JLabel lblTachado() {
+		JLabel lblSel = new JLabel();
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance(tablaLista.getColumnModel().getColumn(0).getWidth(), 35,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        lblSel.setIcon(new ImageIcon(newimg));
+        return lblSel;
 	}
 	
 	
 	
 	//Cargar mapa recursivamente:
-	public void cargarMapaRecursive(int row, int column) {
-		if (row == 22 && column == 1) { //Caso base
-			return;
-		}
-		if (column == 1) {
-			column = 0;
-			row ++;
-		} else  {
-			column = column + 1;
-		}
-		JPanel pnlRadio = new JPanel();
-		ArrayList<JRadioButton> radioButtons = new ArrayList<JRadioButton>();
-		JRadioButton seleccion1 = new JRadioButton("100%");
-		JRadioButton seleccion2 = new JRadioButton("Duda");
-		JRadioButton seleccion3 = new JRadioButton("0%");
-		pnlRadio.add(seleccion1);
-		pnlRadio.add(seleccion2);
-		pnlRadio.add(seleccion3);
-		radioButtons.add(seleccion1);
-		radioButtons.add(seleccion2);
-		radioButtons.add(seleccion3);
-		HashMap<JPanel, ArrayList<JRadioButton>> mapaRadios = new HashMap<JPanel, ArrayList<JRadioButton>>();
-		mapaRadios.put(pnlRadio, radioButtons);
-		
-		mapaCordBotones.put(new Point(row,column), mapaRadios);
-		System.out.println(row +", "+ column);
-		cargarMapaRecursive(row, column);
-		return;
-	}
+//	public void cargarMapaRecursive(int row, int column) {
+//		if (row == 22 && column == 1) { //Caso base
+//			return;
+//		}
+//		if (column == 1) {
+//			column = 0;
+//			row ++;
+//		} else  {
+//			column = column + 1;
+//		}
+//		JPanel pnlRadio = new JPanel();
+//		ArrayList<JRadioButton> radioButtons = new ArrayList<JRadioButton>();
+//		JRadioButton seleccion1 = new JRadioButton("100%");
+//		JRadioButton seleccion2 = new JRadioButton("Duda");
+//		JRadioButton seleccion3 = new JRadioButton("0%");
+//		pnlRadio.add(seleccion1);
+//		pnlRadio.add(seleccion2);
+//		pnlRadio.add(seleccion3);
+//		radioButtons.add(seleccion1);
+//		radioButtons.add(seleccion2);
+//		radioButtons.add(seleccion3);
+//		HashMap<JPanel, ArrayList<JRadioButton>> mapaRadios = new HashMap<JPanel, ArrayList<JRadioButton>>();
+//		mapaRadios.put(pnlRadio, radioButtons);
+//		
+//		mapaCordBotones.put(new Point(row,column), mapaRadios);
+//		System.out.println(row +", "+ column);
+//		cargarMapaRecursive(row, column);
+//		return;
+//	}
 	
 	
 	public static void main(String[] args) {

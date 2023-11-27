@@ -29,14 +29,6 @@ public class TablaLista implements TableModel{
 			nombresEnums.add(sitio);
 			seleccionado.add(false);
 		}
-		
-		pnlRadio = new JPanel();
-		seleccion1 = new JRadioButton("100%");
-		seleccion2 = new JRadioButton("Duda");
-		seleccion3 = new JRadioButton("0%");
-		pnlRadio.add(seleccion1);
-		pnlRadio.add(seleccion2);
-		pnlRadio.add(seleccion3);
 	}
 
 	@Override
@@ -46,16 +38,16 @@ public class TablaLista implements TableModel{
 
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return 4;
 	}
 
-	private static final String[] cabeceras = {"Nombre","Selección"};
+	private static final String[] cabeceras = {"Nombre","100%","Duda","0%"};
 	@Override
 	public String getColumnName(int columnIndex) {
 		return cabeceras[columnIndex];
 	}
 
-	private static final Class<?>[] clases = {Object.class, JPanel.class};
+	private static final Class<?>[] clases = {Object.class, Object.class,Object.class,Object.class};
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return clases[columnIndex];
@@ -71,8 +63,8 @@ public class TablaLista implements TableModel{
 		switch (columnIndex) {
 		case 0:
 			return nombresEnums.get(rowIndex);
-		case 1:
-			return seleccionado.get(rowIndex);
+//		case 1:
+//			return seleccionado.get(rowIndex);
 		default:
 			return null;
 		}
@@ -80,9 +72,9 @@ public class TablaLista implements TableModel{
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 1 && aValue instanceof Boolean) {
-        	seleccionado.set(rowIndex, (Boolean) aValue);
-        }
+//        if (columnIndex == 1 && aValue instanceof Boolean) {
+//        	seleccionado.set(rowIndex, (Boolean) aValue);
+//        }
 	}
 
 	@Override
