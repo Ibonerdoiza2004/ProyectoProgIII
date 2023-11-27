@@ -22,24 +22,25 @@ public class VentanaNJugadores extends JFrame {
 		
 		lblTots = new JLabel("Nº Jugadores Totales");
 		Font totFont = lblTots.getFont();
-		lblTots.setFont(new Font(totFont.getName(), totFont.getStyle(), 20));
+		lblTots.setFont(new Font(totFont.getName(), totFont.getStyle(), 30));
 		lblTots.setForeground(Color.WHITE);
 		lblTots.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		lblJugs = new JLabel("Nº Jugadores Reales");
-		lblJugs.setFont(new Font(totFont.getName(), totFont.getStyle(), 20));
+		lblJugs.setFont(new Font(totFont.getName(), totFont.getStyle(), 30));
 		lblJugs.setForeground(Color.WHITE);
 		lblJugs.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		lblBots = new JLabel("Nº de IAs");
-		lblBots.setFont(new Font(totFont.getName(), totFont.getStyle(), 20));
+		lblBots.setFont(new Font(totFont.getName(), totFont.getStyle(), 30));
 		lblBots.setForeground(Color.WHITE);
 		lblBots.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		spnTots = new JSpinner(new SpinnerNumberModel(3, 3, 6, 1));
 		JComponent cmpTots = spnTots.getEditor();
+		
 		JFormattedTextField ftfTots = ((JSpinner.DefaultEditor) cmpTots).getTextField();
-		ftfTots.setFont(new Font(totFont.getName(), totFont.getStyle(), 50));
+		ftfTots.setFont(new Font(totFont.getName(), totFont.getStyle(), 60));
 		ftfTots.setForeground(Color.WHITE);
 		ftfTots.setHorizontalAlignment(SwingConstants.CENTER);
 		ftfTots.setEditable(false);
@@ -54,7 +55,7 @@ public class VentanaNJugadores extends JFrame {
 		spnJugs = new JSpinner(new SpinnerNumberModel(3, 3, 3, 1));
 		JComponent cmpJugs = spnJugs.getEditor();
 		JFormattedTextField ftfJugs = ((JSpinner.DefaultEditor) cmpJugs).getTextField();
-		ftfJugs.setFont(new Font(totFont.getName(), totFont.getStyle(), 50));
+		ftfJugs.setFont(new Font(totFont.getName(), totFont.getStyle(), 60));
 		ftfJugs.setForeground(Color.WHITE);
 		ftfJugs.setHorizontalAlignment(SwingConstants.CENTER);
 		ftfJugs.setEditable(false);
@@ -67,7 +68,7 @@ public class VentanaNJugadores extends JFrame {
 		ftfJugs.setBorder(null);
 		
 		nBots = new JLabel("0");
-		nBots.setFont(new Font(totFont.getName(), totFont.getStyle(), 50));
+		nBots.setFont(new Font(totFont.getName(), totFont.getStyle(), 60));
 		nBots.setForeground(Color.WHITE);
 		nBots.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -104,7 +105,7 @@ public class VentanaNJugadores extends JFrame {
         
         JLabel lblSel = new JLabel("SELECCIONA EL NUMERO DE JUGADORES");
 		Font selFont = lblSel.getFont();
-		lblSel.setFont(new Font(selFont.getName(), selFont.BOLD, 35));
+		lblSel.setFont(new Font(selFont.getName(), selFont.BOLD, 45));
 		lblSel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSel.setForeground(Color.WHITE);
 		pnlVentana.add(lblSel);
