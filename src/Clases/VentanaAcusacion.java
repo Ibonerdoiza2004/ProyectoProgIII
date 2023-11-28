@@ -78,6 +78,14 @@ public class VentanaAcusacion extends JFrame{
 	int columnaEnTabla;
 	private HashMap<Integer, Integer> rowYcolYaSel = new HashMap<Integer, Integer>();
 	
+	public JTable getTablaLista() {
+		return tablaLista;
+	}
+
+	public void setTablaLista(JTable tablaLista) {
+		this.tablaLista = tablaLista;
+	}
+
 	public VentanaAcusacion() {
 		
 		setSize(new Dimension(640,480));

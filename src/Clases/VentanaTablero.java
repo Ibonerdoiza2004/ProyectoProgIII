@@ -109,9 +109,10 @@ public class VentanaTablero extends JFrame{
 //			}
 //		};
 		panelLista = new JPanel();
-		TablaLista modeloTabla = new TablaLista();
-		JTable tablaLista = new JTable(modeloTabla);
-		panelLista.add(tablaLista);
+		VentanaAcusacion vent = new VentanaAcusacion();
+		JTable tbLista = vent.getTablaLista();
+		tbLista.setSize(panelLista.getWidth(), panelLista.getHeight());
+		panelLista.add(tbLista);
 		panelDesplegable.setLayout(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
 		panelDesplegable.add(panelLista);
