@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 public class VentanaTablero extends JFrame{
@@ -49,7 +50,7 @@ public class VentanaTablero extends JFrame{
 	JPanel panelDesplegable = new JPanel();
 	JPanel panelLista;
 	JPanel panelTablero;
-	JPanel panelCasillasPintadas = null;
+	ArrayList<JLabel>casillasDelCamino = new ArrayList<>();
 	
 	
 	
@@ -99,14 +100,18 @@ public class VentanaTablero extends JFrame{
 				
 		//PanelDesplegable	
 		int inicioPanelDesplegable =0;
-		panelLista = new JPanel() {
-			@Override
-			public void paintComponent(Graphics g) {
-				ImageIcon iconoLista = new ImageIcon(getClass().getResource("seis.jpg"));
-				Image imagenLista = iconoLista.getImage();
-				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
-			}
-		};
+//		panelLista = new JPanel() {
+//			@Override
+//			public void paintComponent(Graphics g) {
+//				ImageIcon iconoLista = new ImageIcon(getClass().getResource("seis.jpg"));
+//				Image imagenLista = iconoLista.getImage();
+//				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
+//			}
+//		};
+		panelLista = new JPanel();
+		TablaLista modeloTabla = new TablaLista();
+		JTable tablaLista = new JTable(modeloTabla);
+		panelLista.add(tablaLista);
 		panelDesplegable.setLayout(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
 		panelDesplegable.add(panelLista);
@@ -177,7 +182,7 @@ public class VentanaTablero extends JFrame{
 							}
 							panelDesplegable.setBounds(coordX, coordY,ancho,alto);
 							try {
-								Thread.sleep(16);
+								Thread.sleep(12);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -365,7 +370,25 @@ public class VentanaTablero extends JFrame{
 		labelJugador.setBounds((coordsColumnas.get(jugador.posicion[1]).get(0)+coordsColumnas.get(jugador.posicion[1]).get(1))/2-labelJugador.getIcon().getIconWidth()/2, (coordsFilas.get(jugador.posicion[0]).get(0)+coordsFilas.get(jugador.posicion[0]).get(1))/2-labelJugador.getIcon().getIconHeight()+5 , labelJugador.getIcon().getIconWidth(), labelJugador.getIcon().getIconHeight());
 		panelTablero.add(labelJugador);
 		panelTablero.setComponentZOrder(labelJugador, 0);
-		
+		JLabel casillaInicio= new JLabel() {
+			protected void paintComponent(Graphics g) {
+				
+				g.setColor(Color.WHITE);
+				g.fillRect(1, 1, getWidth()-2, getHeight()-2);
+				Graphics2D g2d = (Graphics2D) g;
+		        g2d.setStroke(new BasicStroke(2));
+				g2d.setColor(Color.black);
+				g2d.drawRect(1, 1, getWidth()-2, getHeight()-2);
+				
+			};
+		};
+		ArrayList<Integer> filaInicio = coordsFilas.get(jugador.posicion[0]);
+		ArrayList<Integer> columnaInicio = coordsColumnas.get(jugador.posicion[1]);
+		casillaInicio.setBounds(columnaInicio.get(0)-1, filaInicio.get(0)-1, columnaInicio.get(1)-columnaInicio.get(0)+2, filaInicio.get(1)-filaInicio.get(0)+2);
+		casillasDelCamino.add(casillaInicio);
+		panelTablero.add(casillaInicio);
+		panelTablero.setComponentZOrder(casillaInicio, 1);
+		panelTablero.repaint();
 	}
 	public void pintarCasillas() {		 
 		Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
@@ -467,6 +490,10 @@ public class VentanaTablero extends JFrame{
 					for (MouseListener listener : panelTablero.getMouseListeners()) {
 					    panelTablero.removeMouseListener(listener);
 					}
+					Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
+					for(JLabel casilla:labelCasillas.values()) {
+						panelTablero.remove(casilla);
+					}
 					labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
 					JLabel labelDestino= new JLabel() {
 						protected void paintComponent(Graphics g) {
@@ -483,9 +510,11 @@ public class VentanaTablero extends JFrame{
 					labelDestino.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
 					panelTablero.add(labelDestino);
 					panelTablero.setComponentZOrder(labelDestino, 1);
-					Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
+					
+					
 					caminoMasCorto = caminoMasCorto(jugador.posicion[0], jugador.posicion[1], filaSeleccionada, columnaSeleccionada);
-					for(int i = 0; i<caminoMasCorto.size()-1;i++) {
+					
+					for(int i = 1; i<caminoMasCorto.size()-1;i++) {
 						JLabel siguienteCasilla= new JLabel() {
 							protected void paintComponent(Graphics g) {
 								
@@ -502,9 +531,11 @@ public class VentanaTablero extends JFrame{
 						ArrayList<Integer> columna = coordsColumnas.get(caminoMasCorto.get(i).get(1));
 						siguienteCasilla.setBounds(columna.get(0)-1, fila.get(0)-1, columna.get(1)-columna.get(0)+2, fila.get(1)-fila.get(0)+2);
 						panelTablero.add(siguienteCasilla);
+						casillasDelCamino.add(siguienteCasilla);
 						panelTablero.setComponentZOrder(siguienteCasilla, 1);
 						panelTablero.repaint();
 					}
+					
 					moverPersonaje();
 				}
 			}
@@ -596,9 +627,17 @@ public class VentanaTablero extends JFrame{
 							e.printStackTrace();
 						}
 					}
+					if(i>0 && i<casillasDelCamino.size()) {
+						panelTablero.remove(casillasDelCamino.get(i));
+						panelTablero.repaint();
+					}else if(i==0) {
+						panelTablero.remove(casillasDelCamino.get(0));
+						panelTablero.repaint();
+					}
 				}
 				sprite = new ImageIcon(Gestion.sprites.get(jugador.getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0));
 				labelJugador.setIcon(sprite);
+				jugador.posicion= new int[] {filaSeleccionada,columnaSeleccionada};
 			}
 		});
 		hiloMoverPersonaje.start();
@@ -620,11 +659,8 @@ public class VentanaTablero extends JFrame{
 			}
 			System.out.println("");
 		}
-		
-		
-//		
 //		Gestion.crearTablero(Gestion.numFilas, Gestion.numColumnas);
-//		//System.out.println(v.caminoMasCorto(0,6, 20,22));
+//		System.out.println(v.caminoMasCorto(0,6, 20,22));
 		
 	}
 	

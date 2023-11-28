@@ -3,7 +3,7 @@ package Clases;
 import javax.swing.ImageIcon;
 
 
-enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CAMPO_DE_FUTBOL, CLAUSTRO}
+enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
 public class Lugar extends Asesinato{
 	
 	protected Sitio nombre;
