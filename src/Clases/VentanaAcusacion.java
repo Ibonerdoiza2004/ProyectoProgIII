@@ -93,7 +93,7 @@ public class VentanaAcusacion extends JFrame{
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("VENTANA ACUSACION");
 		
-		Border border = BorderFactory.createLineBorder(Color.BLUE, 5, true);
+		Border border = BorderFactory.createLineBorder(Color.BLACK, 5, true);
 		
 		pnlLabelYFotos = new JPanel(new GridLayout(3,2));
 		

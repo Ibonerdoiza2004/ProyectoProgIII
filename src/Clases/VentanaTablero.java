@@ -1,7 +1,9 @@
 package Clases;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -19,6 +21,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
@@ -111,8 +115,9 @@ public class VentanaTablero extends JFrame{
 		panelLista = new JPanel();
 		VentanaAcusacion vent = new VentanaAcusacion();
 		JTable tbLista = vent.getTablaLista();
+		//tbLista.setPreferredSize(new Dimension((int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable));
 		tbLista.setSize(panelLista.getWidth(), panelLista.getHeight());
-		panelLista.add(tbLista);
+		panelLista.add(new JScrollPane(tbLista));
 		panelDesplegable.setLayout(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
 		panelDesplegable.add(panelLista);
