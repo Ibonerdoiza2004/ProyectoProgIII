@@ -108,6 +108,7 @@ public class VentanaTablero extends JFrame{
 //				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
 //			}
 //		};
+		
 		panelLista = new JPanel();
 		TablaLista modelo = new TablaLista();
 		JTable tabla = new JTable(modelo);
