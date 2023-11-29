@@ -109,17 +109,20 @@ public class VentanaTablero extends JFrame{
 //			}
 //		};
 		panelLista = new JPanel();
-		TablaLista modeloTabla = new TablaLista();
-		JTable tablaLista = new JTable(modeloTabla);
-		panelLista.add(tablaLista);
+		TablaLista modelo = new TablaLista();
+		JTable tabla = new JTable(modelo);
+		panelLista.add(tabla);
+		
 		panelDesplegable.setLayout(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
 		panelDesplegable.add(panelLista);
 		panelDesplegable.setBounds((int)Gestion.sizePantalla.getHeight()-altoBoton, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
+		
 		botonPlegar.setFocusable(false);
 		botonPlegar.setText("\\/");
 		botonPlegar.setVerticalAlignment(SwingConstants.CENTER);
 		botonPlegar.setBounds(0,0,(int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()), altoBoton);
+			
 		panelDesplegable.add(botonPlegar);
 		add(panelDesplegable);
 		
