@@ -117,7 +117,8 @@ public class VentanaTablero extends JFrame{
 		JTable tbLista = vent.getTablaLista();
 		//tbLista.setPreferredSize(new Dimension((int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable));
 		tbLista.setSize(panelLista.getWidth(), panelLista.getHeight());
-		panelLista.add(new JScrollPane(tbLista));
+		JScrollPane scroll = new JScrollPane(tbLista);
+		panelLista.add(scroll);
 		panelDesplegable.setLayout(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
 		panelDesplegable.add(panelLista);

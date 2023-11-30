@@ -187,6 +187,25 @@ public class VentanaAcusacion extends JFrame{
 			}
 		});
 		
+		cbSospechoso.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Sospechosos sosp = (Sospechosos) cbSospechoso.getSelectedItem();
+				String sospechoso = sosp.toString();
+				JLabel lblSel = new JLabel();
+				ImageIcon imageIcon = new ImageIcon("src/cartasArmas/"+sospechoso+".png");
+		        Image image = imageIcon.getImage();
+		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+		        lblSel.setIcon(new ImageIcon(newimg));
+		        pnlFotoSospechoso.removeAll();
+		        pnlFotoSospechoso.add(lblSel, BorderLayout.CENTER);
+		        repaint();
+		        revalidate();
+				
+			}
+		});
+		
 		getContentPane().add(pnlLabelYFotos, BorderLayout.CENTER);
 		//getContentPane().add(new JScrollPane(jlSospechoso), BorderLayout.EAST);
 		
