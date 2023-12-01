@@ -9,7 +9,7 @@ public class Conexion {
 	private static final String CONTROLADOR = "com.mysql.jdbc.Driver"; //Este String es exclusivo para MySQL
 	private static final String URL = "jdbc:mysql://localhost:3306/bd_proyecto_prog";
 	private static final String USUARIO = "root";
-	private static final String CLAVE = "***********";
+	private static final String CLAVE = "***";
 	
 	static {
 		try {
