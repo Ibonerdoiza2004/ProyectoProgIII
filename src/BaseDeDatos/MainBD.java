@@ -25,6 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+enum Sospechosos{Andoni, Jenny, Carlos, Asier, Nekane, Iñaki}
+enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
+
 public class MainBD {
 	
 	private static Connection conn;
@@ -75,14 +78,19 @@ public class MainBD {
 				
 				//Datos de prueba para tabla partida:
 				int id_partida = r.nextInt(100+1);
-				Date fechaAleatoria = new Date(System.currentTimeMillis());
+				String fechaAleatoria = "2023-11-13";
 		        int duracion_p = r.nextInt(3+1);
 		        String ganador = "ganador";
 		        int jugadores = r.nextInt(6+1);
 		        sent = "insert into partida values (" + id_partida + ", " + fechaAleatoria + ", " + 
 		        duracion_p + ", " + ganador + ", " + jugadores + ")";
+		        System.out.println(java.sql.Date.valueOf(fechaAleatoria));
 		        System.out.println(sent);
 		        statement.executeUpdate(sent);
+		        
+		        //Datos de prueba para tabla Jugador:
+		        int id_jugador = r.nextInt(50+1);
+		        //____________________________________SEGUIR AQUI
 				i ++;
 			}
 			
