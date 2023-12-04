@@ -145,51 +145,7 @@ public class Gestion {
 	
 	
 	
-	//En este método se crea una matriz de 23x23 para representar el tablero. Añade un 1 en las posiciones que son utilizables, 
-	//es decir, que tienen casillas, y añade un 0 en las posiciones que no lo son (habitaciones). 
-	//Una vez creado el tablero, cuando el jugador tira los dados, hay una función recursiva que recibe la posición del jugador
-	//y los movimientos que tiene y calcula a qué casillas puede llegar
-	//VENTAJAS: Es mucho más eficiente que el otro método (Comprobar con 12 movimientos)
-	//DESVENTAJAS: Solo calcula los movimientos para la casilla actual (El otro método se puede cargar antes de que empiece 
-	//             la partida y reutilizarlo)
-	public static  HashMap<String,ArrayList<ArrayList<Integer>>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
-		ArrayList <ArrayList<Integer>> casillasPosibles = new ArrayList<>();
-		ArrayList <ArrayList<Integer>> puertasPosibles = new ArrayList<>();
-		HashMap<String,ArrayList <ArrayList<Integer>>>movimientosPosibles = new HashMap<>();
-		movimientoCasillasRecursive(fila, columna, movimiento, 0, casillasPosibles, puertasPosibles, tablero);
-		movimientosPosibles.put("casillasPosibles", casillasPosibles);
-		movimientosPosibles.put("puertasPosibles", puertasPosibles);
-		return movimientosPosibles;
-	}
 	
-	private static void  movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList <ArrayList<Integer>> puertasPosibles, ArrayList<ArrayList<Integer>> tablero) {
-		ArrayList<Integer> pos = new ArrayList<>();
-		pos.add(fila);
-		pos.add(columna);
-		if(!casillasPosibles.contains(pos)&&!puertasPosibles.contains(pos)) {
-			if(tablero.get(fila).get(columna)==1) {
-				casillasPosibles.add(pos);
-			}else {
-				puertasPosibles.add(pos);
-			}
-		}
-		if(iteracion<movimiento) {
-			if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)!=0)) {
-				movimientoCasillasRecursive(fila+1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
-			}
-			if((fila!=0)&&(tablero.get(fila-1).get(columna)!=0)) {
-				movimientoCasillasRecursive(fila-1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
-			}
-			if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)!=0)) {
-				movimientoCasillasRecursive(fila, columna+1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
-			}
-			if((columna!=0)&&(tablero.get(fila).get(columna-1)!=0)) {	
-				movimientoCasillasRecursive(fila, columna-1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
-			}
-			
-		}
-		
-	}
 	public static ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
 		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
 		for (int i=0; i<filas; i++) {
@@ -257,9 +213,6 @@ public class Gestion {
 			}
 			System.out.println("");
 		}
-		HashMap<String,ArrayList<ArrayList<Integer>>> movimientos = Gestion.calcularMovimiento(8, 10, 12, tablero);
-		System.out.println(movimientos);
-		System.out.println(movimientos.size());
 	}
 	public static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> crearSprites(){
 		int inicioX = 4;

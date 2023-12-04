@@ -112,17 +112,12 @@ public class VentanaTablero extends JFrame{
 //				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
 //			}
 //		};
-		panelLista = new JPanel();
-		VentanaAcusacion vent = new VentanaAcusacion();
-		JTable tbLista = vent.getTablaLista();
-		//tbLista.setPreferredSize(new Dimension((int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable));
-		tbLista.setSize(panelLista.getWidth(), panelLista.getHeight());
-		JScrollPane scroll = new JScrollPane(tbLista);
-		panelLista.add(scroll);
-		panelDesplegable.setLayout(null);
+		panelLista = new JPanel(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
-		panelDesplegable.add(panelLista);
+		panelLista.add(new Lista(panelLista).sPane);
+		panelDesplegable.setLayout(null);
 		panelDesplegable.setBounds((int)Gestion.sizePantalla.getHeight()-altoBoton, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
+		panelDesplegable.add(panelLista);
 		
 		botonPlegar.setFocusable(false);
 		botonPlegar.setText("\\/");
@@ -397,6 +392,51 @@ public class VentanaTablero extends JFrame{
 		panelTablero.setComponentZOrder(casillaInicio, 1);
 		panelTablero.repaint();
 	}
+	//En este método se crea una matriz de 23x23 para representar el tablero. Añade un 1 en las posiciones que son utilizables, 
+		//es decir, que tienen casillas, y añade un 0 en las posiciones que no lo son (habitaciones). 
+		//Una vez creado el tablero, cuando el jugador tira los dados, hay una función recursiva que recibe la posición del jugador
+		//y los movimientos que tiene y calcula a qué casillas puede llegar
+		//VENTAJAS: Es mucho más eficiente que el otro método (Comprobar con 12 movimientos)
+		//DESVENTAJAS: Solo calcula los movimientos para la casilla actual (El otro método se puede cargar antes de que empiece 
+		//             la partida y reutilizarlo)
+		public  HashMap<String,ArrayList<ArrayList<Integer>>>calcularMovimiento(int fila, int columna, int movimiento, ArrayList<ArrayList<Integer>> tablero){
+			ArrayList <ArrayList<Integer>> casillasPosibles = new ArrayList<>();
+			ArrayList <ArrayList<Integer>> puertasPosibles = new ArrayList<>();
+			HashMap<String,ArrayList <ArrayList<Integer>>>movimientosPosibles = new HashMap<>();
+			movimientoCasillasRecursive(fila, columna, movimiento, 0, casillasPosibles, puertasPosibles, tablero);
+			movimientosPosibles.put("casillasPosibles", casillasPosibles);
+			movimientosPosibles.put("puertasPosibles", puertasPosibles);
+			return movimientosPosibles;
+		}
+		
+		private void  movimientoCasillasRecursive(int fila, int columna, int movimiento, int iteracion, ArrayList <ArrayList<Integer>> casillasPosibles, ArrayList <ArrayList<Integer>> puertasPosibles, ArrayList<ArrayList<Integer>> tablero) {
+			ArrayList<Integer> pos = new ArrayList<>();
+			pos.add(fila);
+			pos.add(columna);
+			if(!casillasPosibles.contains(pos)&&!puertasPosibles.contains(pos)) {
+				if(tablero.get(fila).get(columna)==1) {
+					casillasPosibles.add(pos);
+				}else {
+					puertasPosibles.add(pos);
+				}
+			}
+			if(iteracion<movimiento) {
+				if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)!=0)) {
+					movimientoCasillasRecursive(fila+1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+				}
+				if((fila!=0)&&(tablero.get(fila-1).get(columna)!=0)) {
+					movimientoCasillasRecursive(fila-1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+				}
+				if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)!=0)) {
+					movimientoCasillasRecursive(fila, columna+1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+				}
+				if((columna!=0)&&(tablero.get(fila).get(columna-1)!=0)) {	
+					movimientoCasillasRecursive(fila, columna-1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
+				}
+				
+			}
+			
+		}
 	public void pintarCasillas() {		 
 		Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
 		
@@ -409,7 +449,7 @@ public class VentanaTablero extends JFrame{
 	            }
 		}
 		int movimientos = (panelDados.valorDado1+panelDados.valorDado2);
-		HashMap<String,ArrayList<ArrayList<Integer>>>movimientosPosibles = Gestion.calcularMovimiento(jugador.posicion[0], jugador.posicion[1], movimientos, Gestion.tablero);
+		HashMap<String,ArrayList<ArrayList<Integer>>>movimientosPosibles = calcularMovimiento(jugador.posicion[0], jugador.posicion[1], movimientos, Gestion.tablero);
 		 try {
 		    panelDados.hilo.join();
 		} catch (InterruptedException e) {

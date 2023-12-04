@@ -55,7 +55,7 @@ public class TablaLista implements TableModel{
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return columnIndex == 1;
+		return false;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import javax.swing.table.TableModel;
 public class Lista extends JPanel{
 	
 	TablaLista tbLista = null; //Esto es el modelo 
-	
+	JScrollPane sPane;
 	public TablaLista getTbLista() {
 		return tbLista;
 	}
@@ -21,13 +21,20 @@ public class Lista extends JPanel{
 		this.tbLista = tbLista;
 	}
 
-	public Lista() {
+	public Lista(JPanel panel) {
 		tbLista = new TablaLista();
 		JTable tb = new JTable(tbLista);
-		this.add(new JScrollPane(tb));
+		sPane= new JScrollPane(tb);
+		tb.setRowHeight((int)(panel.getHeight()/(double)tb.getRowCount()));
+		for (int i=0;i<tb.getColumnCount();i++) {
+			System.out.println(tb.getColumnCount());
+			tb.getColumnModel().getColumn(i).setPreferredWidth((int)(((double)panel.getWidth()/(double)tb.getColumnCount())));
+		}
+		sPane.setBounds(0,0,panel.getWidth(),panel.getHeight());
+		panel.add(sPane);
 	}
 
-	public class TablaLista implements TableModel{
+	private class TablaLista implements TableModel{
 		
 		private ArrayList<Object> nombresEnums = new ArrayList<Object>();
 		private ArrayList<Boolean> seleccionado = new ArrayList<Boolean>();
@@ -75,7 +82,7 @@ public class Lista extends JPanel{
 
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return columnIndex == 1;
+			return false;
 		}
 
 		@Override

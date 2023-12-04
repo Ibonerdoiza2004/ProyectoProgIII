@@ -132,7 +132,6 @@ public class VentanaDado extends JPanel{
 				}
 				corregirImagen(lblD1, new ImageIcon(getClass().getResource(valorDado1+".png")));
 				corregirImagen(lblD2, new ImageIcon(getClass().getResource(valorDado2+".png")));
-				btnTirar.setEnabled( true );
 			}
 		};
 		hilo.start();
