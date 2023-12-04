@@ -53,6 +53,8 @@ public class Lista extends JPanel{
 				filaEnTabla = tb.rowAtPoint(e.getPoint());
 				columnaEnTabla = tb.columnAtPoint(e.getPoint());
 				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
+			        //Mirar si ya había algún sospechoso marcado
+		            rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
 					//filasYaSeleccionadas.add(filaEnTabla);
 					tb.repaint();
 				} else  {
@@ -69,12 +71,10 @@ public class Lista extends JPanel{
 		    @Override
 		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 		            boolean hasFocus, int row, int column) {
-		        //table.setRowHeight(35);
 		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		        if (column == 0) {
 		            return c;
 		        }
-		        //Mirar si ya había algún sospechoso marcado
 		        for (Integer r: rowYcolYaSel.keySet()) {
 		        	if (r == row && rowYcolYaSel.get(r) == column) {
 		        		lblSel = lblTachado();
@@ -82,15 +82,8 @@ public class Lista extends JPanel{
 		        	}
 		        }
 		        
-		        if (filaEnTabla >= 0 && filaEnTabla == row && column == columnaEnTabla) {
-		            try {
-		            	lblSel = lblTachado();
-		                rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
-		            } catch (Exception e) {
-		                e.printStackTrace();
-		            }
-		            return lblSel;
-		        }
+		        
+		            
 		        return c;
 		    }
 		});
