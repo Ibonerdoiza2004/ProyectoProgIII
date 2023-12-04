@@ -60,17 +60,17 @@ public class MainBD {
 			while (i != 20) {
 				
 				//Datos de prueba para tabla estadísticas:
-				int num_partidas = r.nextInt(500)+30;
-				int num_jugadores_reales = r.nextInt(2500+1500);
+				int num_partidas_mes = r.nextInt(500)+30;
+				int num_jugadores_reales = r.nextInt(2500);
 				int num_npcs = 3000-num_jugadores_reales;
-				int duracion_partida = r.nextInt(3+1);
+				int duracion_partida = r.nextInt(3)+1;
 				int miss_scarlet = r.nextInt(500)+50;
 				int colonel_Mustard = r.nextInt(500)+50;
 				int mrs_white = r.nextInt(500)+50;
 				int mr_green = r.nextInt(500)+50;
 				int mrs_peacock = r.nextInt(500)+50;
 				int profesor_plum = r.nextInt(500)+50;
-				String sent = "insert into estadisticas values (" + num_jugadores_reales + ", " + num_jugadores_reales
+				String sent = "insert into estadisticas values (" + num_partidas_mes + ", " + num_jugadores_reales
 						+ ", " + num_npcs + ", " + duracion_partida + ", " + miss_scarlet + ", " + colonel_Mustard
 						+ ", " + mrs_white + ", " + mr_green + ", " + mrs_peacock + ", " + profesor_plum + ")";
 				System.out.println(sent);

@@ -48,12 +48,12 @@ public class VentanaAcusacion extends JFrame{
 	private JPanel pnlCombo;
 	private JPanel pnlLabelYFotos;
 	
-	private JComboBox<Sospechosos> cbSospechoso;
+	private JComboBox<NombrePersonaje> cbSospechoso;
 	private JComboBox<Armas> cbArma;
 	private JComboBox<Sitio> cbLugar;
 	
 	//Para los listeners:
-	private Sospechosos sospechosoSel;
+	private NombrePersonaje sospechosoSel;
 	private Armas armaSel;
 	private Sitio sitioSel;
 	
@@ -115,10 +115,10 @@ public class VentanaAcusacion extends JFrame{
        
 		pnlCombo = new JPanel(new GridLayout(3,1));
 		
-		cbSospechoso = new JComboBox<Sospechosos>();
-		for (Sospechosos sospechoso: Sospechosos.values()) {
+		cbSospechoso = new JComboBox<NombrePersonaje>();
+		for (NombrePersonaje personaje: NombrePersonaje.values()) {
 			//System.out.println(sospechoso);
-			cbSospechoso.addItem(sospechoso);
+			cbSospechoso.addItem(personaje);
 		}
 		cbArma = new JComboBox<Armas>();
 		for (Armas arma: Armas.values()) {
@@ -129,15 +129,12 @@ public class VentanaAcusacion extends JFrame{
 			cbLugar.addItem(sitio);
 		}
 		
-		//Cargo el mapa de JRadioButtons para la JTable:
-		//cargarMapaRecursive(1, -1);
-		
 		//Listeners en combos para los labels:
 		cbSospechoso.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sospechosoSel = (Sospechosos) cbSospechoso.getSelectedItem();
+				sospechosoSel = (NombrePersonaje) cbSospechoso.getSelectedItem();
 				//System.out.println(sospechosoSel);
 			}
 		});
@@ -191,10 +188,10 @@ public class VentanaAcusacion extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Sospechosos sosp = (Sospechosos) cbSospechoso.getSelectedItem();
-				String sospechoso = sosp.toString();
+				NombrePersonaje nom = (NombrePersonaje) cbSospechoso.getSelectedItem();
+				String sospechoso = nom.toString();
 				JLabel lblSel = new JLabel();
-				ImageIcon imageIcon = new ImageIcon("src/cartasArmas/"+sospechoso+".png");
+				ImageIcon imageIcon = new ImageIcon("src/cartasSospechosos/"+sospechoso+".png");
 		        Image image = imageIcon.getImage();
 		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
 		        lblSel.setIcon(new ImageIcon(newimg));
@@ -267,30 +264,6 @@ public class VentanaAcusacion extends JFrame{
 		        return c;
 		    }
 		});
-		
-//		tablaLista.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-//
-//			@Override
-//			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-//					boolean hasFocus, int row, int column) {
-//				table.setRowHeight(35);
-//				return super.
-//			}
-//		});
-		
-//		tablaLista.setDefaultEditor(Object.class, new DefaultCellEditor(new JTextField() ) {
-//			@Override
-//			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-//					int column) {
-//			}
-//			
-//			//Para obtener el valor al editar en la tabla
-//			@Override
-//			public Object getCellEditorValue() {
-//				
-//			}
-//			
-//		});
 		
 		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
 		

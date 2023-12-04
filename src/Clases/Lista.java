@@ -1,18 +1,30 @@
 package Clases;
 
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
 public class Lista extends JPanel{
+	int filaEnTabla;
+	int columnaEnTabla;
+	private HashMap<Integer, Integer> rowYcolYaSel = new HashMap<Integer, Integer>();
 	
 	TablaLista tbLista = null; //Esto es el modelo 
 	JScrollPane sPane;
+	JTable tb = new JTable();
 	public TablaLista getTbLista() {
 		return tbLista;
 	}
@@ -23,7 +35,7 @@ public class Lista extends JPanel{
 
 	public Lista(JPanel panel) {
 		tbLista = new TablaLista();
-		JTable tb = new JTable(tbLista);
+		tb = new JTable(tbLista);
 		sPane= new JScrollPane(tb);
 		tb.setRowHeight((int)(panel.getHeight()/(double)tb.getRowCount()));
 		for (int i=0;i<tb.getColumnCount();i++) {
@@ -32,6 +44,65 @@ public class Lista extends JPanel{
 		}
 		sPane.setBounds(0,0,panel.getWidth(),panel.getHeight());
 		panel.add(sPane);
+		
+		tb.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				filaEnTabla = tb.rowAtPoint(e.getPoint());
+				columnaEnTabla = tb.columnAtPoint(e.getPoint());
+				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
+					//filasYaSeleccionadas.add(filaEnTabla);
+					tb.repaint();
+				} else  {
+					filaEnTabla = 0;
+					columnaEnTabla = 0;
+				}
+				
+			}
+		});
+		
+		tb.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+		    private JLabel lblSel = new JLabel();
+
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+		            boolean hasFocus, int row, int column) {
+		        //table.setRowHeight(35);
+		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		        if (column == 0) {
+		            return c;
+		        }
+		        //Mirar si ya había algún sospechoso marcado
+		        for (Integer r: rowYcolYaSel.keySet()) {
+		        	if (r == row && rowYcolYaSel.get(r) == column) {
+		        		lblSel = lblTachado();
+		                return lblSel;
+		        	}
+		        }
+		        
+		        if (filaEnTabla >= 0 && filaEnTabla == row && column == columnaEnTabla) {
+		            try {
+		            	lblSel = lblTachado();
+		                rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		            return lblSel;
+		        }
+		        return c;
+		    }
+		});
+	}
+	
+	public JLabel lblTachado() {
+		JLabel lblSel = new JLabel();
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance(tb.getColumnModel().getColumn(0).getWidth(), 35,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        lblSel.setIcon(new ImageIcon(newimg));
+        return lblSel;
 	}
 
 	private class TablaLista implements TableModel{
@@ -44,8 +115,8 @@ public class Lista extends JPanel{
 		private JRadioButton seleccion3;
 		
 		public TablaLista() {
-			for (Sospechosos sospechoso: Sospechosos.values()) {
-				nombresEnums.add(sospechoso);
+			for (NombrePersonaje personaje: NombrePersonaje.values()) {
+				nombresEnums.add(personaje);
 				seleccionado.add(false);
 			}
 			for (Armas arma: Armas.values()) {

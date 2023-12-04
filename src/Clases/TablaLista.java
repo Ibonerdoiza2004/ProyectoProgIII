@@ -17,8 +17,8 @@ public class TablaLista implements TableModel{
 	private JRadioButton seleccion3;
 	
 	public TablaLista() {
-		for (Sospechosos sospechoso: Sospechosos.values()) {
-			nombresEnums.add(sospechoso);
+		for (NombrePersonaje persoanje: NombrePersonaje.values()) {
+			nombresEnums.add(persoanje);
 			seleccionado.add(false);
 		}
 		for (Armas arma: Armas.values()) {
