@@ -100,7 +100,7 @@ public class Lista extends JPanel{
 		JLabel lblSel = new JLabel();
         ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
         Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(tb.getColumnModel().getColumn(0).getWidth(), 35,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        Image newimg = image.getScaledInstance(tb.getColumnModel().getColumn(0).getWidth(), tb.getRowHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
         lblSel.setIcon(new ImageIcon(newimg));
         return lblSel;
 	}
