@@ -55,7 +55,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		
 		
 		posicion = 1;
-
+		
 		this.addKeyListener(new KeyAdapter() {
 		    public void keyPressed(KeyEvent e) {
 		        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -77,6 +77,15 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		        }
 		        
 		    }
+		});
+		
+		continuar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		
 		
