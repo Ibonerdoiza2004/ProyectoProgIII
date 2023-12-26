@@ -14,6 +14,12 @@ public class VentanaSeleccionPersonaje extends JFrame{
 	protected JLabel j4;
 	protected JLabel j5;
 	protected JLabel j6;
+	protected boolean p1ocp;
+	protected boolean p2ocp;
+	protected boolean p3ocp;
+	protected boolean p4ocp;
+	protected boolean p5ocp;
+	protected boolean p6ocp;
 	protected JButton continuar;
 	protected JButton atras;
 	protected ArrayList<Personaje> personajes;
@@ -41,14 +47,14 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		lblElige.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblElige);
 		
-		
-		
 		continuar = new JButton("Continuar");
+		continuar.setFocusable(false);
 		continuar.setBounds((int) Math.round(7*ancho/34), (int) Math.round(15*altura/19), 
 				(int) Math.round(7*ancho/34), (int) Math.round(2*altura/19));
 		this.add(continuar);
 		
 		atras = new JButton ("Atras");
+		atras.setFocusable(false);
 		atras.setBounds((int) Math.round(21*ancho/34), (int) Math.round(15*altura/19), 
 				(int) Math.round(7*ancho/34), (int) Math.round(2*altura/19));
 		this.add(atras);
@@ -81,6 +87,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		j1 = new JLabel ("J1");
 		j1.setBounds(posicion1.get(0), posicion1.get(1), 
 				(int) Math.round(2*ancho/34), (int) Math.round(2*altura/19));
+		p1ocp = true;
 		j1.setFont(new Font(eliFont.getName(), eliFont.BOLD, 25));
 		j1.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(j1);
@@ -131,162 +138,515 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		    	if (cont == 1) {
 		    		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 		    			if (j1.getX() == posicion1.get(0)) {
+		    				p1ocp = false;
 		    				j1.setLocation(posicion2.get(0), posicion1.get(1));
+		    				p2ocp = true;
 		    			} else if (j1.getX() == posicion2.get(0)) {
+		    				p2ocp = false;
 		    				j1.setLocation(posicion3.get(0), posicion1.get(1));
+		    				p3ocp = true;
 		    			} else if (j1.getX() == posicion3.get(0)) {
+		    				p3ocp = false;
 		    				j1.setLocation(posicion4.get(0), posicion1.get(1));
+		    				p4ocp = true;
 		    			} else if (j1.getX() == posicion4.get(0)) {
+		    				p4ocp = false;
 		    				j1.setLocation(posicion5.get(0), posicion1.get(1));
+		    				p5ocp = true;
 		    			} else if (j1.getX() == posicion5.get(0)) {
+		    				p5ocp = false;
 		    				j1.setLocation(posicion6.get(0), posicion1.get(1));
+		    				p6ocp = true;
 		    			}
 		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) { 
 		    			if (j1.getX() == posicion6.get(0)) {
+		    				p6ocp = false;
 		    				j1.setLocation(posicion5.get(0), posicion1.get(1));
+		    				p5ocp = true;
 		    			} else if (j1.getX() == posicion5.get(0)) {
+		    				p5ocp = false;
 		    				j1.setLocation(posicion4.get(0), posicion1.get(1));
+		    				p4ocp = true;
 		    			} else if (j1.getX() == posicion4.get(0)) {
+		    				p4ocp = false;
 		    				j1.setLocation(posicion3.get(0), posicion1.get(1));
+		    				p3ocp = true;
 		    			} else if (j1.getX() == posicion3.get(0)) {
+		    				p3ocp = false;
 		    				j1.setLocation(posicion2.get(0), posicion1.get(1));
+		    				p2ocp = true;
 		    			} else if (j1.getX() == posicion2.get(0)) {
+		    				p2ocp = false;
 		    				j1.setLocation(posicion1.get(0), posicion1.get(1));
+		    				p1ocp = true;
 		    			}
 		    		}
 		    	} else if (cont == 2) {
 		    		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		    		    if (j2.getX() == posicion1.get(0)) {
+		    		    if ((j2.getX() == posicion1.get(0)) & !p2ocp) {
+		    		    	p1ocp = false;
 		    		        j2.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		    } else if ((j2.getX() == posicion1.get(0)) & p2ocp) {
+		    		    	p1ocp = false;
+		    		    	j2.setLocation(posicion3.get(0), posicion1.get(1));
+		    		    	p3ocp = true;
+		    		    } 
+		    		    
+		    		    else if ((j2.getX() == posicion2.get(0)) & !p3ocp) {
+		    		    	p2ocp = false;
 		    		        j2.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion3.get(0)) {
-		    		        j2.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion4.get(0)) {
-		    		        j2.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion5.get(0)) {
-		    		        j2.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j2.getX() == posicion2.get(0)) & p3ocp) {
+		    		    	p2ocp = false;
+		    		    	j2.setLocation(posicion4.get(0), posicion1.get(1));
+		    		    	p4ocp = true;
 		    		    }
-		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) { 
-		    		    if (j2.getX() == posicion6.get(0)) {
-		    		        j2.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion5.get(0)) {
+		    		    
+		    		    else if ((j2.getX() == posicion3.get(0)) & !p4ocp) {
+		    		    	p3ocp = false;
 		    		        j2.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion4.get(0)) {
-		    		        j2.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion3.get(0)) {
-		    		        j2.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j2.getX() == posicion2.get(0)) {
+		    		        p4ocp = true;
+		    		    } else if ((j2.getX() == posicion3.get(0)) & p4ocp) {
+		    		    	p3ocp = false;
+		    		    	j2.setLocation(posicion5.get(0), posicion1.get(1));
+		    		    	p5ocp = true;
+		    		    }
+		    		    
+		    		    else if ((j2.getX() == posicion4.get(0)) & !p5ocp) {
+		    		    	p4ocp = false;
+		    		        j2.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j2.getX() == posicion4.get(0)) & p5ocp) {
+		    		    	p4ocp = false;
+		    		    	j2.setLocation(posicion6.get(0), posicion1.get(1));
+		    		    	p6ocp = true;
+		    		    }
+		    		    
+		    		    else if ((j2.getX() == posicion5.get(0)) & !p6ocp) {
+		    		    	p5ocp = false;
+		    		        j2.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		    }
+		    		    
+		    		    
+		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		    			
+		    			 if ((j2.getX() == posicion6.get(0)) & !p5ocp) {
+		    				 p6ocp = false;
+			    		     j2.setLocation(posicion5.get(0), posicion1.get(1));
+			    		     p5ocp = true;
+			    		 } else if ((j2.getX() == posicion6.get(0)) & p5ocp) {
+			    			 p6ocp = false;
+			    			 j2.setLocation(posicion4.get(0), posicion1.get(1));
+			    			 p4ocp = true;
+			    		 }
+		    			 
+			    		 else if ((j2.getX() == posicion5.get(0)) & !p4ocp) {
+			    			 p5ocp = false;
+			    			 j2.setLocation(posicion4.get(0), posicion1.get(1));
+			    			 p4ocp = true;
+			    		} else if ((j2.getX() == posicion5.get(0)) & p4ocp) {
+			    			 p5ocp = false;
+			    			 j2.setLocation(posicion3.get(0), posicion1.get(1));
+			    			 p3ocp = true;
+			    			    
+			    		} else if ((j2.getX() == posicion4.get(0)) & !p3ocp) {
+			    			 p4ocp = false;
+			    			 j2.setLocation(posicion3.get(0), posicion1.get(1));
+			    			 p3ocp = true;
+			    		} else if ((j2.getX() == posicion4.get(0)) & p3ocp) {
+			    			 p4ocp = false;
+			    			 j2.setLocation(posicion2.get(0), posicion1.get(1));
+			    			 p2ocp = true;
+			    			 
+			    		} else if ((j2.getX() == posicion3.get(0)) & !p2ocp) {
+			    		    p3ocp = false;
+			    		    j2.setLocation(posicion2.get(0), posicion1.get(1));
+			    		    p2ocp = true;
+			    		} else if ((j2.getX() == posicion3.get(0)) & p2ocp) {
+			    		    p3ocp = false;
+			    		    j2.setLocation(posicion1.get(0), posicion1.get(1));
+			    		    p1ocp = true;
+		    		    } else if (j2.getX() == posicion2.get(0) & !p1ocp) {
+		    		    	p2ocp = false;
 		    		        j2.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
 		    		    }
 		    		}
 		    	} else if (cont == 3) {
 		    		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		    		    if (j3.getX() == posicion1.get(0)) {
+		    		    if ((j3.getX() == posicion1.get(0)) & !p2ocp) {
+		    		        p1ocp = false;
 		    		        j3.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		    } else if ((j3.getX() == posicion1.get(0)) & p2ocp & !p3ocp) {
+		    		        p1ocp = false;
 		    		        j3.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion3.get(0)) {
+		    		        p3ocp = true;
+		    		    } else if ((j3.getX() == posicion1.get(0)) & p2ocp & p3ocp) {
+		    		        p1ocp = false;
 		    		        j3.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion4.get(0)) {
+		    		        p4ocp = true;
+		    		        
+		    			} else if ((j3.getX() == posicion2.get(0)) & !p3ocp) {
+		    		        p2ocp = false;
+		    		        j3.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j3.getX() == posicion2.get(0)) & p3ocp & !p4ocp) {
+		    		        p2ocp = false;
+		    		        j3.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j3.getX() == posicion2.get(0)) & p3ocp & p4ocp) {
+		    		        p1ocp = false;
 		    		        j3.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion5.get(0)) {
+		    		        p5ocp = true;
+		    		        
+		    			} else if ((j3.getX() == posicion3.get(0)) & !p4ocp) {
+		    		        p3ocp = false;
+		    		        j3.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j3.getX() == posicion3.get(0)) & p4ocp & !p5ocp) {
+		    		        p3ocp = false;
+		    		        j3.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j3.getX() == posicion3.get(0)) & p4ocp & p5ocp) {
+		    		        p1ocp = false;
 		    		        j3.setLocation(posicion6.get(0), posicion1.get(1));
-		    		    }
-		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) { 
-		    		    if (j3.getX() == posicion6.get(0)) {
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j3.getX() == posicion4.get(0)) & !p5ocp) {
+		    		        p4ocp = false;
 		    		        j3.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion5.get(0)) {
+		    		        p5ocp = true;
+		    		    } else if ((j3.getX() == posicion4.get(0)) & p5ocp & !p6ocp) {
+		    		        p4ocp = false;
+		    		        j3.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true; 
+		    		        
+		    		    } else if ((j3.getX() == posicion5.get(0)) & !p6ocp) {
+		    		        p5ocp = false;
+		    		        j3.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		    }
+		    		    
+		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		    		    if ((j3.getX() == posicion6.get(0)) & !p5ocp) {
+		    		        p6ocp = false;
+		    		        j3.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j3.getX() == posicion6.get(0)) & p5ocp & !p4ocp) {
+		    		        p6ocp = false;
 		    		        j3.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion4.get(0)) {
+		    		        p4ocp = true;
+		    		    } else if ((j3.getX() == posicion6.get(0)) & p5ocp & p4ocp) {
+		    		        p6ocp = false;
 		    		        j3.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion3.get(0)) {
+		    		        p3ocp = true;
+		    		    
+		    		    } else if ((j3.getX() == posicion5.get(0)) & !p4ocp) {
+		    		        p5ocp = false;
+		    		        j3.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j3.getX() == posicion5.get(0)) & p4ocp & !p3ocp) {
+		    		        p5ocp = false;
+		    		        j3.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j3.getX() == posicion5.get(0)) & p4ocp & p3ocp) {
+		    		        p6ocp = false;
 		    		        j3.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j3.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		        
+		    		    } else if ((j3.getX() == posicion4.get(0)) & !p3ocp) {
+		    		        p4ocp = false;
+		    		        j3.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j3.getX() == posicion4.get(0)) & p3ocp & !p2ocp) {
+		    		        p4ocp = false;
+		    		        j3.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j3.getX() == posicion4.get(0)) & p3ocp & p2ocp) {
+		    		        p6ocp = false;
 		    		        j3.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j3.getX() == posicion3.get(0)) & !p2ocp) {
+		    		        p3ocp = false;
+		    		        j3.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j3.getX() == posicion3.get(0)) & p2ocp & !p1ocp) {
+		    		        p3ocp = false;
+		    		        j3.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if (j3.getX() == posicion2.get(0) & !p1ocp) {
+		    		        p2ocp = false;
+		    		        j3.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
 		    		    }
 		    		}	
+		    		
 		    	} else if (cont == 4) {
 		    		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		    		    if (j4.getX() == posicion1.get(0)) {
+		    		    if ((j4.getX() == posicion1.get(0)) & !p2ocp) {
+		    		        p1ocp = false;
 		    		        j4.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		    } else if ((j4.getX() == posicion1.get(0)) & p2ocp & !p3ocp) {
+		    		        p1ocp = false;
 		    		        j4.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion3.get(0)) {
+		    		        p3ocp = true;
+		    		    } else if ((j4.getX() == posicion1.get(0)) & p2ocp & p3ocp & !p4ocp) {
+		    		        p1ocp = false;
 		    		        j4.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion4.get(0)) {
+		    		        p4ocp = true;
+		    		    } else if ((j4.getX() == posicion1.get(0)) & p2ocp & p3ocp & p4ocp) {
+		    		        p1ocp = false;
 		    		        j4.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion5.get(0)) {
+		    		        p5ocp = true;
+		    		        
+		    		    } else if ((j4.getX() == posicion2.get(0)) & !p3ocp) {
+		    		        p2ocp = false;
+		    		        j4.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j4.getX() == posicion2.get(0)) & p3ocp & !p4ocp) {
+		    		        p2ocp = false;
+		    		        j4.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j4.getX() == posicion2.get(0)) & p3ocp & p4ocp & !p5ocp) {
+		    		        p2ocp = false;
+		    		        j4.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j4.getX() == posicion2.get(0)) & p3ocp & p4ocp & p5ocp) {
+		    		        p2ocp = false;
 		    		        j4.setLocation(posicion6.get(0), posicion1.get(1));
-		    		    }
-		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) { 
-		    		    if (j4.getX() == posicion6.get(0)) {
-		    		        j4.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion5.get(0)) {
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j4.getX() == posicion3.get(0)) & !p4ocp) {
+		    		        p3ocp = false;
 		    		        j4.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion4.get(0)) {
+		    		        p4ocp = true;
+		    		    } else if ((j4.getX() == posicion3.get(0)) & p4ocp & !p5ocp) {
+		    		        p3ocp = false;
+		    		        j4.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j4.getX() == posicion3.get(0)) & p4ocp & p5ocp) {
+		    		        p3ocp = false;
+		    		        j4.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		    } else if ((j4.getX() == posicion3.get(0)) & p4ocp & p5ocp & !p6ocp) {
+		    		        p3ocp = false;
+		    		        j4.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		    
+		    			} else if ((j4.getX() == posicion4.get(0)) & !p5ocp) {
+		    		        p4ocp = false;
+		    		        j4.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j4.getX() == posicion4.get(0)) & p5ocp & !p6ocp) {
+		    		        p4ocp = false;
+		    		        j4.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j4.getX() == posicion5.get(0)) & !p6ocp) {
+		    		        p5ocp = false;
+		    		        j4.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		    }
+		    		    
+		    		} if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		    		    if ((j4.getX() == posicion6.get(0)) & !p5ocp) {
+		    		        p6ocp = false;
+		    		        j4.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j4.getX() == posicion6.get(0)) & p5ocp & !p4ocp) {
+		    		        p6ocp = false;
+		    		        j4.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j4.getX() == posicion6.get(0)) & p5ocp & p4ocp & !p3ocp) {
+		    		        p6ocp = false;
 		    		        j4.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion3.get(0)) {
+		    		        p3ocp = true;
+		    		    } else if ((j4.getX() == posicion6.get(0)) & p5ocp & p4ocp & p3ocp) {
+		    		        p6ocp = false;
 		    		        j4.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j4.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		        
+		    		    } else if ((j4.getX() == posicion5.get(0)) & !p4ocp) {
+		    		        p5ocp = false;
+		    		        j4.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j4.getX() == posicion5.get(0)) & p4ocp & !p3ocp) {
+		    		        p5ocp = false;
+		    		        j4.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j4.getX() == posicion5.get(0)) & p4ocp & p3ocp & !p2ocp) {
+		    		        p5ocp = false;
+		    		        j4.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j4.getX() == posicion5.get(0)) & p4ocp & p3ocp & p2ocp) {
+		    		        p6ocp = false;
 		    		        j4.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j4.getX() == posicion4.get(0)) & !p3ocp) {
+		    		        p4ocp = false;
+		    		        j4.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j4.getX() == posicion4.get(0)) & p3ocp & !p2ocp) {
+		    		        p4ocp = false;
+		    		        j4.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j4.getX() == posicion4.get(0)) & p3ocp & p2ocp & !p1ocp) {
+		    		        p4ocp = false;
+		    		        j4.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j4.getX() == posicion3.get(0)) & !p2ocp) {
+		    		        p3ocp = false;
+		    		        j4.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j4.getX() == posicion3.get(0)) & p2ocp & !p1ocp) {
+		    		        p3ocp = false;
+		    		        j4.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
 		    		    }
 		    		}
 		    	} else if (cont == 5) {
 		    		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		    		    if (j5.getX() == posicion1.get(0)) {
+		    		    if ((j5.getX() == posicion1.get(0)) & !p2ocp) {
+		    		        p1ocp = false;
 		    		        j5.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		    } else if ((j5.getX() == posicion1.get(0)) & p2ocp & !p3ocp) {
+		    		        p1ocp = false;
 		    		        j5.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion3.get(0)) {
+		    		        p3ocp = true;
+		    		    } else if ((j5.getX() == posicion1.get(0)) & p2ocp & p3ocp & !p4ocp) {
+		    		        p1ocp = false;
 		    		        j5.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion4.get(0)) {
+		    		        p4ocp = true;
+		    		    } else if ((j5.getX() == posicion1.get(0)) & p2ocp & p3ocp & p4ocp & !p5ocp) {
+		    		        p1ocp = false;
 		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion5.get(0)) {
+		    		        p5ocp = true;
+		    		    } else if ((j5.getX() == posicion1.get(0)) & p2ocp & p3ocp & p4ocp & p5ocp) {
+		    		        p1ocp = false;
 		    		        j5.setLocation(posicion6.get(0), posicion1.get(1));
-		    		    }
-		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) { 
-		    		    if (j5.getX() == posicion6.get(0)) {
-		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion5.get(0)) {
-		    		        j5.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion4.get(0)) {
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion2.get(0)) & !p3ocp) {
+		    		        p2ocp = false;
 		    		        j5.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion3.get(0)) {
+		    		        p3ocp = true;
+		    		    } else if ((j5.getX() == posicion2.get(0)) & p3ocp & !p4ocp) {
+		    		        p2ocp = false;
+		    		        j5.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j5.getX() == posicion2.get(0)) & p3ocp & p4ocp & !p5ocp) {
+		    		        p2ocp = false;
+		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j5.getX() == posicion2.get(0)) & p3ocp & p4ocp & p5ocp & !p6ocp) {
+		    		        p1ocp = false;
+		    		        j5.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion3.get(0)) & !p4ocp) {
+		    		        p3ocp = false;
+		    		        j5.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j5.getX() == posicion3.get(0)) & p4ocp & !p5ocp) {
+		    		        p3ocp = false;
+		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j5.getX() == posicion3.get(0)) & p4ocp & p5ocp & !p6ocp) {
+		    		        p3ocp = false;
+		    		        j5.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion4.get(0)) & !p5ocp) {
+		    		        p4ocp = false;
+		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j5.getX() == posicion4.get(0)) & p5ocp & !p6ocp) {
+		    		        p4ocp = false;
+		    		        j5.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion5.get(0)) & !p6ocp) {
+		    		        p5ocp = false;
+		    		        j5.setLocation(posicion6.get(0), posicion1.get(1));
+		    		        p6ocp = true;
+		    		    }
+		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		    		    if ((j5.getX() == posicion6.get(0)) & !p5ocp) {
+		    		        p6ocp = false;
+		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
+		    		        p5ocp = true;
+		    		    } else if ((j5.getX() == posicion6.get(0)) & p5ocp & !p4ocp) {
+		    		        p6ocp = false;
+		    		        j5.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j5.getX() == posicion6.get(0)) & p5ocp & p4ocp & !p3ocp) {
+		    		        p6ocp = false;
+		    		        j5.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j5.getX() == posicion6.get(0)) & p5ocp & p4ocp & p3ocp & !p2ocp) {
+		    		        p6ocp = false;
 		    		        j5.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j5.getX() == posicion2.get(0)) {
+		    		        p2ocp = true;
+		    		    } else if ((j5.getX() == posicion6.get(0)) & p5ocp & p4ocp & p3ocp & p2ocp) {
+		    		        p6ocp = false;
 		    		        j5.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion5.get(0)) & !p4ocp) {
+		    		        p5ocp = false;
+		    		        j5.setLocation(posicion4.get(0), posicion1.get(1));
+		    		        p4ocp = true;
+		    		    } else if ((j5.getX() == posicion5.get(0)) & p4ocp & !p3ocp) {
+		    		        p5ocp = false;
+		    		        j5.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j5.getX() == posicion5.get(0)) & p4ocp & p3ocp & !p2ocp) {
+		    		        p5ocp = false;
+		    		        j5.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j5.getX() == posicion5.get(0)) & p4ocp & p3ocp & p2ocp & !p1ocp) {
+		    		        p5ocp = false;
+		    		        j5.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion4.get(0)) & !p3ocp) {
+		    		        p4ocp = false;
+		    		        j5.setLocation(posicion3.get(0), posicion1.get(1));
+		    		        p3ocp = true;
+		    		    } else if ((j5.getX() == posicion4.get(0)) & p3ocp & !p2ocp) {
+		    		        p4ocp = false;
+		    		        j5.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j5.getX() == posicion4.get(0)) & p3ocp & p2ocp & !p1ocp) {
+		    		        p4ocp = false;
+		    		        j5.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion3.get(0)) & !p2ocp) {
+		    		        p3ocp = false;
+		    		        j5.setLocation(posicion2.get(0), posicion1.get(1));
+		    		        p2ocp = true;
+		    		    } else if ((j5.getX() == posicion3.get(0)) & p2ocp & !p1ocp) {
+		    		        p3ocp = false;
+		    		        j5.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
+		    		        
+		    		    } else if ((j5.getX() == posicion2.get(0)) & !p1ocp) {
+		    		        p5ocp = false;
+		    		        j5.setLocation(posicion1.get(0), posicion1.get(1));
+		    		        p1ocp = true;
 		    		    }
 		    		}
-		    	} else {
-		    		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		    		    if (j6.getX() == posicion1.get(0)) {
-		    		        j6.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion2.get(0)) {
-		    		        j6.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion3.get(0)) {
-		    		        j6.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion4.get(0)) {
-		    		        j6.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion5.get(0)) {
-		    		        j6.setLocation(posicion6.get(0), posicion1.get(1));
-		    		    }
-		    		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) { 
-		    		    if (j6.getX() == posicion6.get(0)) {
-		    		        j6.setLocation(posicion5.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion5.get(0)) {
-		    		        j6.setLocation(posicion4.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion4.get(0)) {
-		    		        j6.setLocation(posicion3.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion3.get(0)) {
-		    		        j6.setLocation(posicion2.get(0), posicion1.get(1));
-		    		    } else if (j6.getX() == posicion2.get(0)) {
-		    		        j6.setLocation(posicion1.get(0), posicion1.get(1));
-		    		    }
-		    		}
-		    		
-		    	}
-		        
+		    	}     
 		    }
 		});
 		
@@ -297,83 +657,85 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				cont++;
 				lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				if (cont == 2) {
-					if (j1.getX() == posicion1.get(0)) {
+					if (p1ocp) {
 						j2.setLocation(posicion2.get(0), posicion1.get(1));
+						p2ocp = true;
 					} else {
 						j2.setLocation(posicion1.get(0), posicion1.get(1));
+						p1ocp = true;
 					}
 					j2.setVisible(true);
 				} else if (cont == 3) {
-					if (j1.getX() != posicion1.get(0) & j2.getX() != posicion1.get(0)) {
+					if (!p1ocp) {
 						j3.setLocation(posicion1.get(0), posicion1.get(1));
-					} else if (j1.getX() != posicion2.get(0) & j2.getX() != posicion2.get(0)) {
+						p1ocp = true;
+					} else if (!p2ocp) {
 						j3.setLocation(posicion2.get(0), posicion1.get(1));
+						p2ocp = true;
 					} else {
 						j3.setLocation(posicion3.get(0), posicion1.get(1));
+						p3ocp = true;
 					}
 					j3.setVisible(true);
 				} else if (cont == 4) {
-					if (j1.getX() != posicion1.get(0) & j2.getX() != posicion1.get(0)
-						& j3.getX() != posicion1.get(0)){
+					if (!p1ocp){
 						j4.setLocation(posicion1.get(0), posicion1.get(1));
-					} else if (j1.getX() != posicion2.get(0) & j2.getX() != posicion2.get(0)
-							& j3.getX() != posicion2.get(0)) {
+						p1ocp = true;
+					} else if (!p2ocp) {
 						j4.setLocation(posicion2.get(0), posicion1.get(1));
-					} else if (j1.getX() != posicion3.get(0) & j2.getX() != posicion3.get(0)
-							& j3.getX() != posicion3.get(0)) {
+						p2ocp = true;
+					} else if (!p3ocp) {
 						j4.setLocation(posicion3.get(0), posicion1.get(1));
+						p3ocp = true;
 					}else {
 						j4.setLocation(posicion4.get(0), posicion1.get(1));
+						p4ocp = true;
 					}
 					j4.setVisible(true);
 				} else if (cont == 5) {
-					if (j1.getX() != posicion1.get(0) & j2.getX() != posicion1.get(0)
-						& j3.getX() != posicion1.get(0) & j4.getX() != posicion1.get(0)){
-							j5.setLocation(posicion1.get(0), posicion1.get(1));
-						} else if (j1.getX() != posicion2.get(0) & j2.getX() != posicion2.get(0)
-						  & j3.getX() != posicion2.get(0) & j4.getX() != posicion2.get(0)) {
-							j5.setLocation(posicion2.get(0), posicion1.get(1));
-						} else if (j1.getX() != posicion3.get(0) & j2.getX() != posicion3.get(0)
-						  & j3.getX() != posicion3.get(0) & j4.getX() != posicion3.get(0)) {
-							j5.setLocation(posicion3.get(0), posicion1.get(1));
-						} else if (j1.getX() != posicion4.get(0) & j2.getX() != posicion4.get(0)
-								  & j3.getX() != posicion4.get(0) & j4.getX() != posicion4.get(0)) {
-									j5.setLocation(posicion4.get(0), posicion1.get(1));
-						} else {
-							j5.setLocation(posicion5.get(0), posicion1.get(1));
-						}
-						j5.setVisible(true);
+					if (!p1ocp){
+						j5.setLocation(posicion1.get(0), posicion1.get(1));
+						p1ocp = true;
+					} else if (!p2ocp) {
+						j5.setLocation(posicion2.get(0), posicion1.get(1));
+						p2ocp = true;
+					} else if (!p3ocp) {
+						j5.setLocation(posicion3.get(0), posicion1.get(1));
+						p3ocp = true;
+					} else if (!p4ocp) {
+						j5.setLocation(posicion4.get(0), posicion1.get(1));
+						p4ocp = true;
+					} else {
+						j5.setLocation(posicion5.get(0), posicion1.get(1));
+						p5ocp = true;
+					}
+					j5.setVisible(true);
 				} else if (cont == 6) {
-					if (j1.getX() != posicion1.get(0) & j2.getX() != posicion1.get(0)
-						& j3.getX() != posicion1.get(0) & j4.getX() != posicion1.get(0)
-						& j5.getX() != posicion1.get(0)){
-								j6.setLocation(posicion1.get(0), posicion1.get(1));
-							} else if (j1.getX() != posicion2.get(0) & j2.getX() != posicion2.get(0)
-							  & j3.getX() != posicion2.get(0) & j4.getX() != posicion2.get(0) 
-							  & j5.getX() != posicion2.get(0)) {
-								j6.setLocation(posicion2.get(0), posicion1.get(1));
-							} else if (j1.getX() != posicion3.get(0) & j2.getX() != posicion3.get(0)
-							  & j3.getX() != posicion3.get(0) & j4.getX() != posicion2.get(0) 
-							  & j5.getX() != posicion3.get(0)) {
-								j6.setLocation(posicion3.get(0), posicion1.get(1));
-							} else if (j1.getX() != posicion4.get(0) & j2.getX() != posicion4.get(0)
-									  & j3.getX() != posicion4.get(0) & j4.getX() != posicion4.get(0)
-									  & j5.getX() != posicion4.get(0)) {
-										j6.setLocation(posicion4.get(0), posicion1.get(1));
-							} else if (j1.getX() != posicion5.get(0) & j2.getX() != posicion5.get(0)
-									  & j3.getX() != posicion5.get(0) & j4.getX() != posicion5.get(0)
-									  & j5.getX() != posicion5.get(0)) {
-										j6.setLocation(posicion5.get(0), posicion1.get(1));
-							
-							} else {
-								j6.setLocation(posicion6.get(0), posicion1.get(1));
-							}
-							j6.setVisible(true);
+					if (!p1ocp){
+						j6.setLocation(posicion1.get(0), posicion1.get(1));
+						p1ocp = true;
+					} else if (!p2ocp) {
+						j6.setLocation(posicion2.get(0), posicion1.get(1));
+						p2ocp = true;
+					} else if (!p3ocp) {
+						j6.setLocation(posicion3.get(0), posicion1.get(1));
+						p3ocp = true;
+					} else if (!p4ocp) {
+						j6.setLocation(posicion4.get(0), posicion1.get(1));
+						p4ocp = true;
+					} else if (!p5ocp) {
+						j6.setLocation(posicion5.get(0), posicion1.get(1));
+						p5ocp = true;
+					} else {
+						j6.setLocation(posicion6.get(0), posicion1.get(1));
+						p6ocp = true;
+					}
+					j6.setVisible(true);
 				}
-				}
-				
 			}
-		});
+				
+		}
+	});
 		
 		atras.addActionListener(new ActionListener() {
 
