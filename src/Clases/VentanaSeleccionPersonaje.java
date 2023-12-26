@@ -548,7 +548,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		    		        j5.setLocation(posicion5.get(0), posicion1.get(1));
 		    		        p5ocp = true;
 		    		    } else if ((j5.getX() == posicion2.get(0)) & p3ocp & p4ocp & p5ocp & !p6ocp) {
-		    		        p1ocp = false;
+		    		        p2ocp = false;
 		    		        j5.setLocation(posicion6.get(0), posicion1.get(1));
 		    		        p6ocp = true;
 		    		        
