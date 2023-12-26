@@ -743,6 +743,87 @@ public class VentanaSeleccionPersonaje extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (cont != 1) {
+					if (cont == 2) {
+						int lgr2 = j2.getX();
+						if (lgr2 == posicion1.get(0)) {
+							p1ocp = false;
+						} else if (lgr2 == posicion2.get(0)) {
+							p2ocp = false;
+						} else if (lgr2 == posicion3.get(0)) {
+							p3ocp = false;
+						} else if (lgr2 == posicion4.get(0)) {
+							p4ocp = false;
+						} else if (lgr2 == posicion5.get(0)) {
+							p5ocp = false;
+						} else if (lgr2 == posicion6.get(0)) {
+							p6ocp = false;
+						}
+						j2.setVisible(false);
+					} else if (cont == 3) {
+						int lgr3 = j3.getX();
+						if (lgr3 == posicion1.get(0)) {
+							p1ocp = false;
+						} else if (lgr3 == posicion2.get(0)) {
+							p2ocp = false;
+						} else if (lgr3 == posicion3.get(0)) {
+							p3ocp = false;
+						} else if (lgr3 == posicion4.get(0)) {
+							p4ocp = false;
+						} else if (lgr3 == posicion5.get(0)) {
+							p5ocp = false;
+						} else if (lgr3 == posicion6.get(0)) {
+							p6ocp = false;
+						}
+						j3.setVisible(false);
+					} else if (cont == 4) {
+						int lgr4 = j4.getX();
+						if (lgr4 == posicion1.get(0)) {
+							p1ocp = false;
+						} else if (lgr4 == posicion2.get(0)) {
+							p2ocp = false;
+						} else if (lgr4 == posicion3.get(0)) {
+							p3ocp = false;
+						} else if (lgr4 == posicion4.get(0)) {
+							p4ocp = false;
+						} else if (lgr4 == posicion5.get(0)) {
+							p5ocp = false;
+						} else if (lgr4 == posicion6.get(0)) {
+							p6ocp = false;
+						}
+						j4.setVisible(false);
+					} else if (cont == 5) {
+						int lgr5 = j5.getX();
+						if (lgr5 == posicion1.get(0)) {
+							p1ocp = false;
+						} else if (lgr5 == posicion2.get(0)) {
+							p2ocp = false;
+						} else if (lgr5 == posicion3.get(0)) {
+							p3ocp = false;
+						} else if (lgr5 == posicion4.get(0)) {
+							p4ocp = false;
+						} else if (lgr5 == posicion5.get(0)) {
+							p5ocp = false;
+						} else if (lgr5 == posicion6.get(0)) {
+							p6ocp = false;
+						}
+						j5.setVisible(false);
+					} else if (cont == 6) {
+						int lgr6 = j6.getX();
+						if (lgr6 == posicion1.get(0)) {
+							p1ocp = false;
+						} else if (lgr6 == posicion2.get(0)) {
+							p2ocp = false;
+						} else if (lgr6 == posicion3.get(0)) {
+							p3ocp = false;
+						} else if (lgr6 == posicion4.get(0)) {
+							p4ocp = false;
+						} else if (lgr6 == posicion5.get(0)) {
+							p5ocp = false;
+						} else if (lgr6 == posicion6.get(0)) {
+							p6ocp = false;
+						}
+						j6.setVisible(false);
+					}
 					cont--;
 					lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				} else if (cont == 1){
