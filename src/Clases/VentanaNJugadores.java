@@ -164,6 +164,70 @@ public class VentanaNJugadores extends JFrame {
 				nBots.setText(resta+"");
 			}
 		});
+		
+		continuar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Number valor1 = (Number) spnTots.getValue();
+				int valorInt1 = valor1.intValue();
+				Number valor2 = (Number) spnJugs.getValue();
+				int valorInt2 = valor2.intValue();
+				int resta = valorInt1 - valorInt2;
+				
+				int i=1;
+				while (i<valorInt2 & valorInt1>0) {
+					if (i==1) {
+						i++;
+						Jugador j1 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					} else if (i==2) {
+						i++;
+						Jugador j2 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					} else if (i==3) {
+						i++;
+						Jugador j3 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					} else if (i==4) {
+						i++;
+						Jugador j4 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					} else if (i==5) {
+						i++;
+						Jugador j5 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					} else if (i==6) {
+						i++;
+						Jugador j6 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					}
+				}
+				
+				int n= 1;
+				while (valorInt1>0) {
+					if (n==1) {
+						n++;
+						Jugador j4 = new Jugador(new Personaje(), false);
+						valorInt1--;
+					} else if (n==2) {
+						n++;
+						Jugador j5 = new Jugador(new Personaje(), false);
+						valorInt1--;
+						
+					} else if (n==3) {
+						Jugador j6 = new Jugador(new Personaje(), false);
+						valorInt1--;
+						
+						
+					}
+				}
+				new VentanaSeleccionPersonaje();
+				dispose();
+				
+			}
+			
+		});;
 	}
 	
 

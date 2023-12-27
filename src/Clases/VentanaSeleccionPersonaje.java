@@ -47,6 +47,9 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		lblElige.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblElige);
 		
+		personajes = new ArrayList<Personaje>();
+		elegidos = new ArrayList<Personaje>();
+		
 		continuar = new JButton("Continuar");
 		continuar.setFocusable(false);
 		continuar.setBounds((int) Math.round(7*ancho/34), (int) Math.round(15*altura/19), 
