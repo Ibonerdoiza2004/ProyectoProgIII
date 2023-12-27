@@ -1,7 +1,11 @@
 package Clases;
 
+import java.awt.Image;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.*;
+
+import javax.swing.ImageIcon;
 enum Implicados{ARMA, PERSONA, LUGAR}
 public class Contenedor implements Serializable{
 	protected ArrayList<Arma>armas = new ArrayList<>();
@@ -25,19 +29,25 @@ public class Contenedor implements Serializable{
 		this.armas = new ArrayList<Arma>();
 		for(Armas arma: Armas.values()) {
 			//Añadir la foto
-			armas.add(new Arma(arma, false, null));
+			URL armaURL = getClass().getResource("../cartasArmas/"+arma+".png");
+			ImageIcon iArma = new ImageIcon(armaURL);
+			armas.add(new Arma(arma, false, iArma));
 		}
 		
 		
 		this.sospechosos = new ArrayList<Sospechoso>();
 		for(Sospechosos sospechoso: Sospechosos.values()) {
 			//Añadir la foto
-			sospechosos.add(new Sospechoso(sospechoso, false, null));
+			URL sospechosoURL = getClass().getResource("../cartasSospechosos/"+sospechoso+".png");
+			ImageIcon isospechoso = new ImageIcon(sospechosoURL);
+			sospechosos.add(new Sospechoso(sospechoso, false, isospechoso));
 		}
 		
 		this.lugares = new ArrayList<Lugar>();
 		for(Sitio sitio:Sitio.values()) {
 			//Añadir la foto
+//			URL sitioURL = getClass().getResource("../cartasLugares/"+sitio+".png");
+//			ImageIcon isitio = new ImageIcon(sitioURL);
 			lugares.add(new Lugar(sitio, false, null));
 		}
 		

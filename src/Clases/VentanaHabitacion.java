@@ -33,7 +33,7 @@ public class VentanaHabitacion extends JFrame {
 		this.setUndecorated(true);
 		setLayout(null);
 		getContentPane().setBackground(Color.black);
-		this.nombreHabitacion= "Sala_Rafaela_Ybarra.png";
+		this.nombreHabitacion= "Aseo.png";
 		Image imagenTablero = (new ImageIcon(getClass().getResource(nombreHabitacion))).getImage();
 		int altoPanel = getHeight();
 		int anchoPanel = (int) ((double) imagenTablero.getWidth(null) / imagenTablero.getHeight(null) * altoPanel);

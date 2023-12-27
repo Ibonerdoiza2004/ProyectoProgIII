@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-enum Sospechosos{Andoni, Jenny, Carlos, Asier, Nekane, Iñaki}
+enum Sospechosos{Miss_Scarlett, Colonel_Mustard, Mrs_White, Mr_Green, Mrs_Peacock, Profesor_Plum}
 
 public class Sospechoso extends Asesinato {
 	protected Random r;

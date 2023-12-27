@@ -22,8 +22,8 @@ public class Gestion {
 	protected static int numColumnas = 24;
 	protected static Contenedor datosPartida = new Contenedor();
 	protected static ArrayList<ArrayList<Integer>> tablero = Gestion.crearTablero(numFilas, numColumnas);
-	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites= crearSprites();
-	
+	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites = crearSprites();
+	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();
 	public static int getNumTurno() {
 		return numTurno;
 	}
@@ -77,7 +77,7 @@ public class Gestion {
 		int numCartas = cartas.size();
 		int j = 0;
 		for(int i = 0; i<numCartas; i++) {
-			Asesinato carta = cartas.get((int)(Math.random()*copiaCartas.size()));
+			Asesinato carta = copiaCartas.get((int)(Math.random()*copiaCartas.size()));
 			if(carta.implicado == false) {
 				(jugadores.get(j%jugadores.size())).cartas.add(carta);
 				j++;
