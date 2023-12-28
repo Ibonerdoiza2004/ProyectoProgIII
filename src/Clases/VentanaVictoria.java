@@ -1,5 +1,6 @@
 package Clases;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -14,15 +15,15 @@ import javax.swing.JPanel;
 
 public class VentanaVictoria extends JFrame{
 
-	protected JButton btnCerrar;
-	protected JButton btnVolverAJugar;
+	protected JButton btnVolver;
 	
 	public VentanaVictoria() {
 		
-		btnCerrar = new JButton("Cerrar");
-		btnVolverAJugar = new JButton("Volver a jugar");
+		btnVolver = new JButton("Volver al menú");
+		btnVolver.setPreferredSize(new Dimension(220,80));
+		btnVolver.setSize(new Dimension(220,80));
 		
-		JPanel pnlVentana = new JPanel(new GridLayout(4,1)) {
+		JPanel pnlVentana = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -31,20 +32,11 @@ public class VentanaVictoria extends JFrame{
                 g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
             }
         };
-        pnlVentana.add(new JLabel(""));
-        pnlVentana.add(new JLabel(""));
-        pnlVentana.add(btnVolverAJugar);
-        pnlVentana.add(btnCerrar);
-       
-		
-        btnCerrar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();	
-			}
-		});
-        
+      
+        pnlVentana.add(btnVolver);
+        pnlVentana.setLayout(null);
+        btnVolver.setLocation(670,780);
+	  
 		setContentPane(pnlVentana);
 		
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

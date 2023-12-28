@@ -22,10 +22,10 @@ public class VentanaDerrota extends JFrame{
 	public VentanaDerrota() {
 		
 		btnContinuar = new JButton("Continuar");
-		btnContinuar.setPreferredSize(new Dimension(200,100));
-		btnContinuar.setSize(new Dimension(200,100));
+		btnContinuar.setPreferredSize(new Dimension(220,80));
+		btnContinuar.setSize(new Dimension(220,80));
 		
-		JPanel pnlVentana = new JPanel(new FlowLayout(FlowLayout.CENTER)){
+		JPanel pnlVentana = new JPanel(){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -35,7 +35,10 @@ public class VentanaDerrota extends JFrame{
             }
         };
 
+        
         pnlVentana.add(btnContinuar);
+        pnlVentana.setLayout(null);
+        btnContinuar.setLocation(670,780);
         
 		setContentPane(pnlVentana);
 		
