@@ -15,13 +15,13 @@ import javax.swing.JPanel;
 
 public class VentanaVictoria extends JFrame{
 
-	protected JButton btnVolver;
+	protected JButton btnVolverAlMenu;
 	
 	public VentanaVictoria() {
 		
-		btnVolver = new JButton("Volver al menú");
-		btnVolver.setPreferredSize(new Dimension(220,80));
-		btnVolver.setSize(new Dimension(220,80));
+		btnVolverAlMenu = new JButton("Volver al menú");
+		btnVolverAlMenu.setPreferredSize(new Dimension(220,80));
+		btnVolverAlMenu.setSize(new Dimension(220,80));
 		
 		JPanel pnlVentana = new JPanel() {
             @Override
@@ -33,9 +33,9 @@ public class VentanaVictoria extends JFrame{
             }
         };
       
-        pnlVentana.add(btnVolver);
+        pnlVentana.add(btnVolverAlMenu);
         pnlVentana.setLayout(null);
-        btnVolver.setLocation(670,780);
+        btnVolverAlMenu.setLocation(670,780);
 	  
 		setContentPane(pnlVentana);
 		
