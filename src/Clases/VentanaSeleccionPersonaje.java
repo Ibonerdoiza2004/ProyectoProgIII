@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
+
 public class VentanaSeleccionPersonaje extends JFrame{
 	
 	protected JLabel lblElige;
@@ -26,6 +27,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 	protected ArrayList<Personaje> elegidos;
 	private int cont;
 	private int posicion;
+	protected JLabel lblScarlett;
 	
 	public VentanaSeleccionPersonaje() {
 		
@@ -48,7 +50,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		this.add(lblElige);
 		
 		personajes = new ArrayList<Personaje>();
-		elegidos = new ArrayList<Personaje>();
+		elegidos = new ArrayList<Personaje>();	
 		
 		continuar = new JButton("Continuar");
 		continuar.setFocusable(false);
@@ -653,13 +655,44 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		    }
 		});
 		
+		int p = 1;
+		for (int i=0; i<6; i++) {
+			ImageIcon sprite = new ImageIcon(Gestion.sprites.get(NombrePersonaje.values()[i]).get(TipoSprite.AndarAbajo).get(3));
+			Image image = sprite.getImage();
+			Image newImage = image.getScaledInstance(180, 190, Image.SCALE_SMOOTH);
+			ImageIcon newIcon = new ImageIcon(newImage);
+			JLabel lblFoto = new JLabel();
+			lblFoto.setIcon(newIcon);
+			lblFoto.setBounds((int) Math.round(p*ancho/34), (int) Math.round(-10*altura/19), 
+				(int) Math.round(50*ancho/34), (int) Math.round(40*altura/19));
+			this.add(lblFoto);
+			this.repaint();
+			if (i == 0 || i == 4) {
+				p = p +5;
+			} else {
+				p = p+6;
+			}
+		}
+		
 		continuar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (cont != 6) {
+				if (cont < 6) {
 				cont++;
 				lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				if (cont == 2) {
+					if (j1.getX() == posicion1.get(0)) {
+						j1.setForeground(Color.RED);
+					} else if (j1.getX() == posicion2.get(0)) {
+						j1.setForeground(Color.YELLOW);
+					} else if (j1.getX() == posicion4.get(0)) {
+						j1.setForeground(Color.GREEN);
+					} else if (j1.getX() == posicion5.get(0)) {
+						j1.setForeground(Color.BLUE);
+					} else if (j1.getX() == posicion6.get(0)) {
+						j1.setForeground(Color.MAGENTA);
+					}
+					
 					if (p1ocp) {
 						j2.setLocation(posicion2.get(0), posicion1.get(1));
 						p2ocp = true;
@@ -669,6 +702,18 @@ public class VentanaSeleccionPersonaje extends JFrame{
 					}
 					j2.setVisible(true);
 				} else if (cont == 3) {
+					if (j2.getX() == posicion1.get(0)) {
+						j2.setForeground(Color.RED);
+					} else if (j2.getX() == posicion2.get(0)) {
+						j2.setForeground(Color.YELLOW);
+					} else if (j2.getX() == posicion4.get(0)) {
+						j2.setForeground(Color.GREEN);
+					} else if (j2.getX() == posicion5.get(0)) {
+						j2.setForeground(Color.BLUE);
+					} else if (j2.getX() == posicion6.get(0)) {
+						j2.setForeground(Color.MAGENTA);
+					}
+					
 					if (!p1ocp) {
 						j3.setLocation(posicion1.get(0), posicion1.get(1));
 						p1ocp = true;
@@ -681,6 +726,17 @@ public class VentanaSeleccionPersonaje extends JFrame{
 					}
 					j3.setVisible(true);
 				} else if (cont == 4) {
+					if (j3.getX() == posicion1.get(0)) {
+						j3.setForeground(Color.RED);
+					} else if (j3.getX() == posicion2.get(0)) {
+						j3.setForeground(Color.YELLOW);
+					} else if (j3.getX() == posicion4.get(0)) {
+						j3.setForeground(Color.GREEN);
+					} else if (j3.getX() == posicion5.get(0)) {
+						j3.setForeground(Color.BLUE);
+					} else if (j3.getX() == posicion6.get(0)) {
+						j3.setForeground(Color.MAGENTA);
+					}
 					if (!p1ocp){
 						j4.setLocation(posicion1.get(0), posicion1.get(1));
 						p1ocp = true;
@@ -696,6 +752,17 @@ public class VentanaSeleccionPersonaje extends JFrame{
 					}
 					j4.setVisible(true);
 				} else if (cont == 5) {
+					if (j4.getX() == posicion1.get(0)) {
+						j4.setForeground(Color.RED);
+					} else if (j4.getX() == posicion2.get(0)) {
+						j4.setForeground(Color.YELLOW);
+					} else if (j4.getX() == posicion4.get(0)) {
+						j4.setForeground(Color.GREEN);
+					} else if (j4.getX() == posicion5.get(0)) {
+						j4.setForeground(Color.BLUE);
+					} else if (j4.getX() == posicion6.get(0)) {
+						j4.setForeground(Color.MAGENTA);
+					}
 					if (!p1ocp){
 						j5.setLocation(posicion1.get(0), posicion1.get(1));
 						p1ocp = true;
@@ -714,6 +781,17 @@ public class VentanaSeleccionPersonaje extends JFrame{
 					}
 					j5.setVisible(true);
 				} else if (cont == 6) {
+					if (j5.getX() == posicion1.get(0)) {
+						j5.setForeground(Color.RED);
+					} else if (j5.getX() == posicion2.get(0)) {
+						j5.setForeground(Color.YELLOW);
+					} else if (j5.getX() == posicion4.get(0)) {
+						j5.setForeground(Color.GREEN);
+					} else if (j5.getX() == posicion5.get(0)) {
+						j5.setForeground(Color.BLUE);
+					} else if (j5.getX() == posicion6.get(0)) {
+						j5.setForeground(Color.MAGENTA);
+					}
 					if (!p1ocp){
 						j6.setLocation(posicion1.get(0), posicion1.get(1));
 						p1ocp = true;
@@ -734,6 +812,17 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						p6ocp = true;
 					}
 					j6.setVisible(true);
+					if (j6.getX() == posicion1.get(0)) {
+						j6.setForeground(Color.RED);
+					} else if (j6.getX() == posicion2.get(0)) {
+						j6.setForeground(Color.YELLOW);
+					} else if (j6.getX() == posicion4.get(0)) {
+						j6.setForeground(Color.GREEN);
+					} else if (j6.getX() == posicion5.get(0)) {
+						j6.setForeground(Color.BLUE);
+					} else if (j6.getX() == posicion6.get(0)) {
+						j6.setForeground(Color.MAGENTA);
+					}
 				}
 			}
 				
@@ -747,6 +836,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				// TODO Auto-generated method stub
 				if (cont != 1) {
 					if (cont == 2) {
+						j1.setForeground(Color.BLACK);
 						int lgr2 = j2.getX();
 						if (lgr2 == posicion1.get(0)) {
 							p1ocp = false;
@@ -763,6 +853,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						}
 						j2.setVisible(false);
 					} else if (cont == 3) {
+						j2.setForeground(Color.BLACK);
 						int lgr3 = j3.getX();
 						if (lgr3 == posicion1.get(0)) {
 							p1ocp = false;
@@ -779,6 +870,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						}
 						j3.setVisible(false);
 					} else if (cont == 4) {
+						j3.setForeground(Color.BLACK);
 						int lgr4 = j4.getX();
 						if (lgr4 == posicion1.get(0)) {
 							p1ocp = false;
@@ -795,6 +887,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						}
 						j4.setVisible(false);
 					} else if (cont == 5) {
+						j4.setForeground(Color.BLACK);
 						int lgr5 = j5.getX();
 						if (lgr5 == posicion1.get(0)) {
 							p1ocp = false;
@@ -811,6 +904,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						}
 						j5.setVisible(false);
 					} else if (cont == 6) {
+						j5.setForeground(Color.BLACK);
 						int lgr6 = j6.getX();
 						if (lgr6 == posicion1.get(0)) {
 							p1ocp = false;
@@ -845,8 +939,6 @@ public class VentanaSeleccionPersonaje extends JFrame{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		VentanaSeleccionPersonaje v = new VentanaSeleccionPersonaje();
-		
-
 	}
 	
 
