@@ -52,25 +52,16 @@ public class Gestion {
 	}
 
 	
-	public static void eleccionJugadores(int numJugadores) {
-		for (int i = 0; i<numJugadores; i++) {
-			HashMap<Asesinato, OpcionesLista> listaVacia = new HashMap<>();
-			for(Asesinato asesinato: datosPartida.todasLasCartas) {
-				listaVacia.put(asesinato, OpcionesLista.NO);
+	public static HashMap<Asesinato,ArrayList<Boolean>> creacionLista() {
+		HashMap<Asesinato,ArrayList<Boolean>> listaVacia = new HashMap<>();
+		for(Asesinato asesinato: datosPartida.todasLasCartas) {
+			ArrayList <Boolean>cadaCarta = new ArrayList<>();
+			for(int j=0;j<5;j++) {
+				cadaCarta.add(false);
 			}
-			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(/*El enum */) , new HashMap<Implicados, Asesinato>(), false,  new int[]{0,0}, listaVacia, false); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
-			jugadores.add(jugador);
+			listaVacia.put(asesinato, cadaCarta);
 		}
-	}
-	public void creacionJugadoresIA(int numJugadoresIA) {
-		for (int i = 0; i<numJugadoresIA; i++) {
-			HashMap<Asesinato, OpcionesLista> listaVacia = new HashMap<>();
-			for(Asesinato asesinato: datosPartida.todasLasCartas) {
-				listaVacia.put(asesinato, OpcionesLista.NO);
-			}
-			Jugador jugador = new Jugador(new ArrayList<Asesinato>(), new Personaje(),  new HashMap<Implicados, Asesinato>(), false, new int[]{0,0}, listaVacia, true); //En la clase personaje hay que crear un constructor que reciba solamente un enum con el nombre del personaje
-			jugadores.add(jugador);
-		}
+		return listaVacia;
 	}
 	public static void repartirCartas(ArrayList<Asesinato> cartas) {
 		ArrayList<Asesinato>copiaCartas = new ArrayList<>(cartas);
@@ -85,66 +76,6 @@ public class Gestion {
 			copiaCartas.remove(carta);
 		}
 	}
-	public static void eleccionOrdenJugadores(ArrayList<Jugador>jugadores){
-		for (Jugador j:jugadores) {
-			//Añadir la ventana de tirar dados
-			//Poner una pantalla para avisar que le toca al siguiente jugador
-			//Guardar el mayor valor y quien lo ha conseguido
-		}
-		//Establecer turno con el codigo del jugador que ha conseguido el mayor valor
-	}
-	
-	//Este método lo llamo desde la clase 'VentanaDado' para pasarle los valores
-
-	
-	public ArrayList<ArrayList<Integer>> crearMatriz(int filasMapa, int columnasMapa) {
-		ArrayList<ArrayList<Integer>> matrizMapa = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer>unos= new ArrayList<Integer>();
-		int verticesMatriz = filasMapa * columnasMapa;
-		for (int i=0; i<verticesMatriz; i++) {
-			ArrayList<Integer> fila = new ArrayList<Integer>();
-			for (int j=0; j<verticesMatriz; j++) {
-				if (i==j){
-					fila.add(1);
-					unos.add(j);
-				} else if (((i+1==j)&&(j%columnasMapa!=0)) || ((i-1==j) && (i%columnasMapa!=0))){
-					fila.add(1);
-					unos.add(j);
-				} else if ((j-columnasMapa==i)||(j+columnasMapa==i)){
-					fila.add(1);
-					unos.add(j);
-				} else {
-					fila.add(0);
-				}
-			
-			}
-			matrizMapa.add(fila);
-		}
-		return matrizMapa;
-	}
-	
-	public ArrayList<ArrayList<Integer>> elevarMatriz(int potencia, ArrayList<ArrayList<Integer>>matriz) {
-		ArrayList<ArrayList<Integer>>resultado= new ArrayList<>(matriz);
-		for (int p = 1; p<potencia;p++) {
-			ArrayList<ArrayList<Integer>>temp= new ArrayList<>();
-			for(int i = 0; i<matriz.size();i++) {
-				ArrayList<Integer>fila= new ArrayList<>();
-				for(int j = 0;j<matriz.get(0).size();j++) {
-					int pos = 0;
-					for(int k = 0;k<matriz.get(0).size();k++) {
-						pos = pos + matriz.get(i).get(k)*resultado.get(k).get(j);
-					}
-					fila.add(pos);
-				}
-				temp.add(fila);
-			}
-			resultado = new ArrayList<>(temp);
-		}
-		return resultado;
-	}
-	
-	
-	
 	
 	public static ArrayList<ArrayList<Integer>> crearTablero(int filas, int columnas) {
 		ArrayList<ArrayList<Integer>>tablero = new ArrayList<>();
@@ -191,8 +122,6 @@ public class Gestion {
 	
 
 	public static void main(String[] args) {
-		Gestion.eleccionJugadores(3);
-		Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
 		
 		//MÉTODO 1
 		//System.out.println(g.crearMatriz(23, 23));

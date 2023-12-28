@@ -36,7 +36,7 @@ public class Sospechoso extends Asesinato {
 
 	@Override
 	public String toString() {
-		return "Sospechoso [nombre=" + nombre + ", implicado=" + implicado + "]";
+		return "Sospechoso [nombre=" + nombre + ", implicado=" + implicado + ", foto="+foto+"]";
 	}
 
 	

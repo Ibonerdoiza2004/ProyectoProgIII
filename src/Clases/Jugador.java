@@ -15,7 +15,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	protected Personaje personaje = null; //El personaje elegido
 	protected HashMap<Implicados, Asesinato> acusacion = new HashMap<>(); //Para al acusar que salga un HashMap con las tres acusaciones
 	protected boolean acusacionFinal = false; // Para cuando quieras hacer tu acusación final
-	protected HashMap<Asesinato, OpcionesLista> lista = new HashMap<>(); //Lista que se rellena con la información
+	protected HashMap<Asesinato, ArrayList<Boolean>> lista = new HashMap<>(); //Lista que se rellena con la información
 	protected int[] posicion = new int[2];
 	protected boolean npc;
 	
@@ -59,12 +59,12 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacionFinal = acusacionFinal;
 	}
 	
-	public HashMap<Asesinato, OpcionesLista> getLista() {
+	public HashMap<Asesinato, ArrayList<Boolean>> getLista() {
 		return lista;
 	}
 
 
-	public void setLista(HashMap<Asesinato, OpcionesLista> lista) {
+	public void setLista(HashMap<Asesinato, ArrayList<Boolean>> lista) {
 		this.lista = lista;
 	}
 
@@ -75,13 +75,13 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.cartas = new ArrayList<Asesinato>();
 		this.acusacionFinal = false;
 		this.acusacion = new HashMap<Implicados, Asesinato>();
-		this.lista = new HashMap<Asesinato, OpcionesLista>();
+		this.lista = Gestion.creacionLista();
 		this.npc = npc;
 	}
 
 	
 	public Jugador(ArrayList<Asesinato> cartas, Personaje personaje, HashMap<Implicados, Asesinato> acusacion,
-			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, OpcionesLista> lista, boolean npc) {
+			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, ArrayList<Boolean>> listaVacia, boolean npc) {
 		super();
 		this.codigo = contador;
 		contador ++;
@@ -90,7 +90,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.posicion = posicion;
 		this.acusacion = acusacion;
 		this.acusacionFinal = acusacionFinal;
-		this.lista = lista;
+		this.lista = listaVacia;
 		this.npc = npc;
 	}
 	@Override
