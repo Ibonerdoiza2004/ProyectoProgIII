@@ -1,5 +1,8 @@
 package Clases;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -14,15 +17,15 @@ import javax.swing.JPanel;
 
 public class VentanaDerrota extends JFrame{
 	
-	protected JButton btnCerrar;
-	protected JButton btnVolverAJugar;
+	protected JButton btnContinuar;
 	
 	public VentanaDerrota() {
 		
-		btnCerrar = new JButton("Cerrar");
-		btnVolverAJugar = new JButton("Volver a jugar");
+		btnContinuar = new JButton("Continuar");
+		btnContinuar.setPreferredSize(new Dimension(200,100));
+		btnContinuar.setSize(new Dimension(200,100));
 		
-		JPanel pnlVentana = new JPanel(new GridLayout(4,1)) {
+		JPanel pnlVentana = new JPanel(new FlowLayout(FlowLayout.CENTER)){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -31,19 +34,8 @@ public class VentanaDerrota extends JFrame{
                 g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
             }
         };
-        pnlVentana.add(new JLabel(""));
-        pnlVentana.add(new JLabel(""));
-        pnlVentana.add(btnVolverAJugar);
-        pnlVentana.add(btnCerrar);
-        
-        
-        btnCerrar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();	
-			}
-		});
+
+        pnlVentana.add(btnContinuar);
         
 		setContentPane(pnlVentana);
 		
