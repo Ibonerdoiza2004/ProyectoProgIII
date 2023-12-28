@@ -41,7 +41,7 @@ public class VentanaDerrota extends JFrame{
         btnContinuar.setLocation(670,780);
         
 		setContentPane(pnlVentana);
-		
+		dispose();
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setUndecorated(true);
