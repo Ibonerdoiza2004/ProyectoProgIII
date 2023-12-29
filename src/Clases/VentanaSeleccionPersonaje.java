@@ -27,6 +27,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 	protected ArrayList<Personaje> elegidos;
 	private int cont;
 	private int posicion;
+	protected int jugadores;
 	protected JLabel lblScarlett;
 	
 	public VentanaSeleccionPersonaje() {
@@ -656,8 +657,8 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		});
 		
 		int p = 1;
-		for (int i=0; i<6; i++) {
-			ImageIcon sprite = new ImageIcon(Gestion.sprites.get(NombrePersonaje.values()[i]).get(TipoSprite.AndarAbajo).get(3));
+		for (int i=0; i<NombrePersonaje.values().length;i++) {
+			ImageIcon sprite = new ImageIcon(Gestion.sprites.get(NombrePersonaje.values()[i]).get(TipoSprite.AndarAbajo).get(0));
 			Image image = sprite.getImage();
 			Image newImage = image.getScaledInstance(180, 190, Image.SCALE_SMOOTH);
 			ImageIcon newIcon = new ImageIcon(newImage);
@@ -674,23 +675,32 @@ public class VentanaSeleccionPersonaje extends JFrame{
 			}
 		}
 		
+		jugadores = Gestion.jugadores.size();
+		
 		continuar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (cont < 6) {
 				cont++;
+				if (cont <= jugadores) {
 				lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				if (cont == 2) {
 					if (j1.getX() == posicion1.get(0)) {
 						j1.setForeground(Color.RED);
+						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j1.getX() == posicion2.get(0)) {
 						j1.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
+					} else if (j1.getX() == posicion3.get(0)) {
+						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					} else if (j1.getX() == posicion4.get(0)) {
 						j1.setForeground(Color.GREEN);
+						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j1.getX() == posicion5.get(0)) {
 						j1.setForeground(Color.BLUE);
+						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j1.getX() == posicion6.get(0)) {
 						j1.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 					
 					if (p1ocp) {
@@ -704,14 +714,21 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				} else if (cont == 3) {
 					if (j2.getX() == posicion1.get(0)) {
 						j2.setForeground(Color.RED);
+						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j2.getX() == posicion2.get(0)) {
 						j2.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
+					} else if (j2.getX() == posicion3.get(0)) {
+						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					} else if (j2.getX() == posicion4.get(0)) {
 						j2.setForeground(Color.GREEN);
+						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j2.getX() == posicion5.get(0)) {
 						j2.setForeground(Color.BLUE);
+						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j2.getX() == posicion6.get(0)) {
 						j2.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 					
 					if (!p1ocp) {
@@ -728,14 +745,21 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				} else if (cont == 4) {
 					if (j3.getX() == posicion1.get(0)) {
 						j3.setForeground(Color.RED);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j3.getX() == posicion2.get(0)) {
 						j3.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
+					} else if (j3.getX() == posicion3.get(0)) {
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					} else if (j3.getX() == posicion4.get(0)) {
 						j3.setForeground(Color.GREEN);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j3.getX() == posicion5.get(0)) {
 						j3.setForeground(Color.BLUE);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j3.getX() == posicion6.get(0)) {
 						j3.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 					if (!p1ocp){
 						j4.setLocation(posicion1.get(0), posicion1.get(1));
@@ -754,14 +778,21 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				} else if (cont == 5) {
 					if (j4.getX() == posicion1.get(0)) {
 						j4.setForeground(Color.RED);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j4.getX() == posicion2.get(0)) {
 						j4.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
+					} else if (j4.getX() == posicion3.get(0)) {
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					} else if (j4.getX() == posicion4.get(0)) {
 						j4.setForeground(Color.GREEN);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j4.getX() == posicion5.get(0)) {
 						j4.setForeground(Color.BLUE);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j4.getX() == posicion6.get(0)) {
 						j4.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 					if (!p1ocp){
 						j5.setLocation(posicion1.get(0), posicion1.get(1));
@@ -783,14 +814,21 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				} else if (cont == 6) {
 					if (j5.getX() == posicion1.get(0)) {
 						j5.setForeground(Color.RED);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j5.getX() == posicion2.get(0)) {
 						j5.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
+					} else if (j5.getX() == posicion3.get(0)) {
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					} else if (j5.getX() == posicion4.get(0)) {
 						j5.setForeground(Color.GREEN);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j5.getX() == posicion5.get(0)) {
 						j5.setForeground(Color.BLUE);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j5.getX() == posicion6.get(0)) {
 						j5.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 					if (!p1ocp){
 						j6.setLocation(posicion1.get(0), posicion1.get(1));
@@ -814,6 +852,64 @@ public class VentanaSeleccionPersonaje extends JFrame{
 					j6.setVisible(true);
 					if (j6.getX() == posicion1.get(0)) {
 						j6.setForeground(Color.RED);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
+					} else if (j6.getX() == posicion2.get(0)) {
+						j6.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
+					} else if (j6.getX() == posicion3.get(0)) {
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
+					} else if (j6.getX() == posicion4.get(0)) {
+						j6.setForeground(Color.GREEN);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
+					} else if (j6.getX() == posicion5.get(0)) {
+						j6.setForeground(Color.BLUE);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
+					} else if (j6.getX() == posicion6.get(0)) {
+						j6.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
+					}
+				} 
+				
+			} else if (cont == jugadores + 1) {
+				if (cont == 4) {
+					if (j3.getX() == posicion1.get(0)) {
+						j3.setForeground(Color.RED);
+					} else if (j3.getX() == posicion2.get(0)) {
+						j3.setForeground(Color.YELLOW);
+					} else if (j3.getX() == posicion4.get(0)) {
+						j3.setForeground(Color.GREEN);
+					} else if (j3.getX() == posicion5.get(0)) {
+						j3.setForeground(Color.BLUE);
+					} else if (j3.getX() == posicion6.get(0)) {
+						j3.setForeground(Color.MAGENTA);
+					}
+				} if (cont == 5) {
+					if (j4.getX() == posicion1.get(0)) {
+						j4.setForeground(Color.RED);
+					} else if (j4.getX() == posicion2.get(0)) {
+						j4.setForeground(Color.YELLOW);
+					} else if (j4.getX() == posicion4.get(0)) {
+						j4.setForeground(Color.GREEN);
+					} else if (j4.getX() == posicion5.get(0)) {
+						j4.setForeground(Color.BLUE);
+					} else if (j4.getX() == posicion6.get(0)) {
+						j4.setForeground(Color.MAGENTA);
+					}
+				} if (cont == 6) {
+					if (j5.getX() == posicion1.get(0)) {
+						j5.setForeground(Color.RED);
+					} else if (j5.getX() == posicion2.get(0)) {
+						j5.setForeground(Color.YELLOW);
+					} else if (j5.getX() == posicion4.get(0)) {
+						j5.setForeground(Color.GREEN);
+					} else if (j5.getX() == posicion5.get(0)) {
+						j5.setForeground(Color.BLUE);
+					} else if (j5.getX() == posicion6.get(0)) {
+						j5.setForeground(Color.MAGENTA);
+					}
+				} if (cont == 7) {
+					if (j6.getX() == posicion1.get(0)) {
+						j6.setForeground(Color.RED);
 					} else if (j6.getX() == posicion2.get(0)) {
 						j6.setForeground(Color.YELLOW);
 					} else if (j6.getX() == posicion4.get(0)) {
@@ -824,8 +920,9 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						j6.setForeground(Color.MAGENTA);
 					}
 				}
+			} else if (cont > jugadores + 1) {
+				dispose();
 			}
-				
 		}
 	});
 		
@@ -837,6 +934,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 				if (cont != 1) {
 					if (cont == 2) {
 						j1.setForeground(Color.BLACK);
+						Gestion.jugadores.get(0).setPersonaje(null);
 						int lgr2 = j2.getX();
 						if (lgr2 == posicion1.get(0)) {
 							p1ocp = false;
@@ -854,6 +952,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						j2.setVisible(false);
 					} else if (cont == 3) {
 						j2.setForeground(Color.BLACK);
+						Gestion.jugadores.get(1).setPersonaje(null);
 						int lgr3 = j3.getX();
 						if (lgr3 == posicion1.get(0)) {
 							p1ocp = false;
@@ -871,6 +970,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						j3.setVisible(false);
 					} else if (cont == 4) {
 						j3.setForeground(Color.BLACK);
+						Gestion.jugadores.get(2).setPersonaje(null);
 						int lgr4 = j4.getX();
 						if (lgr4 == posicion1.get(0)) {
 							p1ocp = false;
@@ -888,6 +988,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						j4.setVisible(false);
 					} else if (cont == 5) {
 						j4.setForeground(Color.BLACK);
+						Gestion.jugadores.get(3).setPersonaje(null);
 						int lgr5 = j5.getX();
 						if (lgr5 == posicion1.get(0)) {
 							p1ocp = false;
@@ -905,6 +1006,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 						j5.setVisible(false);
 					} else if (cont == 6) {
 						j5.setForeground(Color.BLACK);
+						Gestion.jugadores.get(4).setPersonaje(null);
 						int lgr6 = j6.getX();
 						if (lgr6 == posicion1.get(0)) {
 							p1ocp = false;
@@ -920,12 +1022,16 @@ public class VentanaSeleccionPersonaje extends JFrame{
 							p6ocp = false;
 						}
 						j6.setVisible(false);
+					} else if (cont ==7) {
+						j6.setForeground(Color.BLACK);
+						Gestion.jugadores.get(5).setPersonaje(null);
 					}
 					cont--;
 					lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				} else if (cont == 1){
 					dispose();
 					new VentanaNJugadores();
+					Gestion.jugadores.clear();
 				} 
 				
 			}	
@@ -938,7 +1044,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		VentanaSeleccionPersonaje v = new VentanaSeleccionPersonaje();
+		VentanaNJugadores v = new VentanaNJugadores();
 	}
 	
 

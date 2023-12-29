@@ -175,64 +175,63 @@ public class VentanaNJugadores extends JFrame {
 				int valorInt2 = valor2.intValue();
 				int resta = valorInt1 - valorInt2;
 				
-				int i=1;
-				while (i<valorInt2 & valorInt1>0) {
-					if (i==1) {
+				int i=0;
+				while (i<valorInt2 & valorInt1!=0) {
+					if (i==0) {
 						i++;
 						Jugador j1 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j1);
 						valorInt1--;
-					} else if (i==2) {
+					} else if (i==1) {
 						i++;
 						Jugador j2 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j2);
 						valorInt1--;
-					} else if (i==3) {
+					} else if (i==2) {
 						i++;
 						Jugador j3 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j3);
 						valorInt1--;
-					} else if (i==4) {
+					} else if (i==3) {
 						i++;
 						Jugador j4 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j4);
+						valorInt1--;
+					} else if (i==4) {
+						i++;
+						Jugador j5 = new Jugador(new Personaje(), false);
+						Gestion.jugadores.add(j5);
 						valorInt1--;
 					} else if (i==5) {
 						i++;
-						Jugador j5 = new Jugador(new Personaje(), false);
-						Gestion.jugadores.add(j5);
-						valorInt1--;
-					} else if (i==6) {
-						i++;
 						Jugador j6 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j6);
 						valorInt1--;
 					}
+				
 				}
 				
-				int n= 1;
-				while (valorInt1>0) {
-					if (n==1) {
-						n++;
+				while (valorInt1!=0) {
+					if (resta==3) {
+						resta--;
 						Jugador j4 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j4);
 						valorInt1--;
-					} else if (n==2) {
-						n++;
+					} else if (resta==2) {
+						resta--;
 						Jugador j5 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j5);
-						valorInt1--;
-						
-					} else if (n==3) {
+						valorInt1--;	
+					} else if (resta==1) {
 						Jugador j6 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j6);
 						valorInt1--;
-						
-						
 					}
 				}
-				new VentanaSeleccionPersonaje();
-				dispose();
+				if (valorInt1 == 0) {
+					new VentanaSeleccionPersonaje();
+					dispose();
+				}
 				
 			}
 			
