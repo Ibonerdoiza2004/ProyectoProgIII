@@ -82,12 +82,11 @@ public class VentanaInicio extends JPanel{
 		this.add(new JLabel(" "));
 		this.add(new JLabel(" "));
 		this.add(new JLabel(" "));
-		
 		nuevaLocal.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 		        new VentanaNJugadores();
-		       	Gestion.ventanaJuego.remove();
+		        eliminarPanel();
 			}
 		});
 		
@@ -105,7 +104,7 @@ public class VentanaInicio extends JPanel{
 			}
 		});
 		
-		
+		Gestion.ventanaJuego= new JFrame();
 		this.setSize(Gestion.sizePantalla);
 		Gestion.ventanaJuego.add(this);
 		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -126,6 +125,10 @@ public class VentanaInicio extends JPanel{
 	public static void main(String[] args) {
 		
 		VentanaInicio ventana = new VentanaInicio();
+	}
+	public void eliminarPanel() {
+		Gestion.ventanaJuego.remove(this);
+        Gestion.ventanaJuego.repaint();
 	}
 
 }
