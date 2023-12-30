@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class VentanaNJugadores extends JTable {
+public class VentanaNJugadores extends JPanel {
 	
 	protected JLabel lblTots;
 	protected JLabel lblJugs;
@@ -120,8 +120,9 @@ public class VentanaNJugadores extends JTable {
 		
 		
 	
-		this.setSize(Gestion.sizePantalla);
+		setSize(Gestion.sizePantalla);
 		Gestion.ventanaJuego.add(this);
+		revalidate();
 		
 		spnTots.addChangeListener(new ChangeListener() {
 			@Override
@@ -242,6 +243,13 @@ public class VentanaNJugadores extends JTable {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Gestion.ventanaJuego= new JFrame();
+		Gestion.ventanaJuego.setLayout(null);
+		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
+		Gestion.ventanaJuego.setUndecorated(true);
+		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		Gestion.ventanaJuego.setVisible(true);
 		VentanaNJugadores v = new VentanaNJugadores();
 
 	}

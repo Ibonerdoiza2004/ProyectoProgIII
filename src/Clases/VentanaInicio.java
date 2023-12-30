@@ -105,11 +105,15 @@ public class VentanaInicio extends JPanel{
 		});
 		
 		Gestion.ventanaJuego= new JFrame();
+		Gestion.ventanaJuego.setLayout(null);
+		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
 		this.setSize(Gestion.sizePantalla);
 		Gestion.ventanaJuego.add(this);
 		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		Gestion.ventanaJuego.setUndecorated(true);
 		Gestion.ventanaJuego.setVisible(true);
+		
 		
 		Font defaultFont = nuevaOnline.getFont();
 		System.out.println(defaultFont);
