@@ -37,6 +37,7 @@ public class VentanaSeleccionPersonaje extends JFrame{
 		this.setFocusable(true);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
 		Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		double ancho = sizePantalla.getWidth();
 		double altura = sizePantalla.getHeight();

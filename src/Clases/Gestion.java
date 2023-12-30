@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 enum TipoSprite{AndarArriba, AndarIzquierda, AndarAbajo, AndarDerecha, AgarrarArriba, AgarrarDerecha, AgarrarAbajo, AgarrarIzquierda};
 public class Gestion {
 
@@ -24,6 +25,7 @@ public class Gestion {
 	protected static ArrayList<ArrayList<Integer>> tablero = Gestion.crearTablero(numFilas, numColumnas);
 	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites = crearSprites();
 	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();
+	protected static JFrame ventanaJuego;
 	public static int getNumTurno() {
 		return numTurno;
 	}

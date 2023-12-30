@@ -21,7 +21,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
 
-public class VentanaInicio extends JFrame{
+public class VentanaInicio extends JPanel{
 	
 	protected JPanel pnlCentral;
 	protected JPanel pnlLocal;
@@ -35,9 +35,6 @@ public class VentanaInicio extends JFrame{
 		
 		
 		pnlCentral = new JPanel(new GridLayout(4,1));
-		
-		
-		
 		
 		pnlLocal = new JPanel(new GridLayout(1,2));
 		
@@ -70,76 +67,61 @@ public class VentanaInicio extends JFrame{
 		Image tamanoLogo = imagenLogo.getScaledInstance(400, 150, java.awt.Image.SCALE_SMOOTH);
 		iconoLogo = new ImageIcon(tamanoLogo);
 		lblLogo.setIcon(iconoLogo);
-		
-
 	
-		
-		JPanel pnlVentana = new JPanel(new GridLayout(3,3)) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoInicio.jpg"));
-                Image imagenFondo = iconoFondo.getImage();
-                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
+		setLayout(new GridLayout(3,3));
         
         
 		
-		pnlVentana.add(new JLabel(" "));
+		this.add(new JLabel(" "));
 		lblLogo.setHorizontalAlignment(JLabel.CENTER);
-		pnlVentana.add(lblLogo);
-		pnlVentana.add(new JLabel(" "));
-		pnlVentana.add(new JLabel(" "));
-		pnlVentana.add(pnlCentral);
-		pnlVentana.add(new JLabel(" "));
-		pnlVentana.add(new JLabel(" "));
-		pnlVentana.add(new JLabel(" "));
-		pnlVentana.add(new JLabel(" "));
+		this.add(lblLogo);
+		this.add(new JLabel(" "));
+		this.add(new JLabel(" "));
+		this.add(pnlCentral);
+		this.add(new JLabel(" "));
+		this.add(new JLabel(" "));
+		this.add(new JLabel(" "));
+		this.add(new JLabel(" "));
 		
 		nuevaLocal.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new VentanaNJugadores();
-				dispose();
-				
+		        new VentanaNJugadores();
+		       	Gestion.ventanaJuego.remove();
 			}
 		});
 		
 		cerrar.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();	
+				Gestion.ventanaJuego.dispose();	
 			}
 		});
 		
 		opciones.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new VentanaAjustes();
-				
 			}
-			
 		});
 		
-		setContentPane(pnlVentana);
 		
-		
-		
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setUndecorated(true);
-		
-		this.setTitle("CLUEDO");
-		this.setVisible(true);
+		this.setSize(Gestion.sizePantalla);
+		Gestion.ventanaJuego.add(this);
+		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		Gestion.ventanaJuego.setUndecorated(true);
+		Gestion.ventanaJuego.setVisible(true);
 		
 		Font defaultFont = nuevaOnline.getFont();
 		System.out.println(defaultFont);
 	}
 	
+	protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoInicio.jpg"));
+        Image imagenFondo = iconoFondo.getImage();
+        g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+    }
 	
 	public static void main(String[] args) {
 		
