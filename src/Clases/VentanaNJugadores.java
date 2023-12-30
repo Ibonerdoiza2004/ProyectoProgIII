@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class VentanaNJugadores extends JFrame {
+public class VentanaNJugadores extends JTable {
 	
 	protected JLabel lblTots;
 	protected JLabel lblJugs;
@@ -93,23 +93,15 @@ public class VentanaNJugadores extends JFrame {
 		pnlPaneles.add(pnlJugs);
 		pnlPaneles.add(pnlBots);
 		
-		JPanel pnlVentana = new JPanel(new GridLayout(3,1)) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoInicioDifuminado.jpg"));
-                Image imagenFondo = iconoFondo.getImage();
-                g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
+		this.setLayout(new GridLayout(3,1));
         
         JLabel lblSel = new JLabel("SELECCIONA EL NUMERO DE JUGADORES");
 		Font selFont = lblSel.getFont();
 		lblSel.setFont(new Font(selFont.getName(), selFont.BOLD, 45));
 		lblSel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSel.setForeground(Color.WHITE);
-		pnlVentana.add(lblSel);
-		pnlVentana.add(pnlPaneles);
+		this.add(lblSel);
+		this.add(pnlPaneles);
         
         JPanel pnlSur = new JPanel(new GridLayout(1,3));
         pnlSur.setOpaque(false);
@@ -124,15 +116,12 @@ public class VentanaNJugadores extends JFrame {
 		
 		pnlSur.add(pnlCentroSur);
 		pnlSur.add(new JLabel(" "));
-		pnlVentana.add(pnlSur);
+		this.add(pnlSur);
 		
-		this.add(pnlVentana);
+		
 	
-		this.setSize(400,400);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);	
-		this.setUndecorated(true);
-		this.setVisible(true);
+		this.setSize(Gestion.sizePantalla);
+		Gestion.ventanaJuego.add(this);
 		
 		spnTots.addChangeListener(new ChangeListener() {
 			@Override
@@ -230,7 +219,7 @@ public class VentanaNJugadores extends JFrame {
 				}
 				if (valorInt1 == 0) {
 					new VentanaSeleccionPersonaje();
-					dispose();
+					eliminarPanel();
 				}
 				
 			}
@@ -238,6 +227,18 @@ public class VentanaNJugadores extends JFrame {
 		});;
 	}
 	
+	public void eliminarPanel() {
+		Gestion.ventanaJuego.remove(this);
+        Gestion.ventanaJuego.repaint();
+	}
+	
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("FondoInicioDifuminado.jpg"));
+        Image imagenFondo = iconoFondo.getImage();
+        g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+    }
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
