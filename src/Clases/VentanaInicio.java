@@ -114,7 +114,6 @@ public class VentanaInicio extends JPanel{
 		Gestion.ventanaJuego.setUndecorated(true);
 		Gestion.ventanaJuego.setVisible(true);
 		
-		
 		Font defaultFont = nuevaOnline.getFont();
 		System.out.println(defaultFont);
 	}

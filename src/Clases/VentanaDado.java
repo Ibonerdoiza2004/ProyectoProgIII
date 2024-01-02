@@ -1,24 +1,17 @@
 package Clases;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class VentanaDado extends JPanel{
 	protected JButton btnTirar = new JButton("Tirar Dado!");
@@ -29,6 +22,8 @@ public class VentanaDado extends JPanel{
 	protected int valorDado1;
 	protected int valorDado2;
 	protected Thread hilo;
+	AtomicBoolean enEjecucion = new AtomicBoolean(true);
+	public boolean reutilizar;
 //	protected boolean repintarDado;
 	//private int newHeight;
 	//private JPanel pnlVentana;
@@ -39,16 +34,16 @@ public class VentanaDado extends JPanel{
         Image imagenFondo = iconoFondo.getImage();
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 	}
-	public VentanaDado(int ancho, int alto) {
+	public VentanaDado(int ancho, int alto, int margen, boolean reutilizar) {
 		setSize(ancho, alto);
 		this.setLayout(null);  //Componentes por coordenadas
 		lblD1 = new JLabel();
 		ImageIcon originalIcon = new ImageIcon(getClass().getResource("1.png"));
 		Image originalImage = originalIcon.getImage();
-
+		this.reutilizar = reutilizar;
 		// Calcula el nuevo tamaño para la imagen manteniendo la proporción
-		int tamanyoHastaBoton = getHeight()-120;
-		int newHeight = 2*getHeight()/5;
+		int tamanyoHastaBoton = getHeight()-120-margen;
+		int newHeight = 2*(getHeight()-margen)/5;
 		int newWidth = (int) ((double) originalImage.getWidth(null) / originalImage.getHeight(null) * newHeight);  // Establece el nuevo ancho deseado
 
 		// Escala la imagen al nuevo tamaño
@@ -57,7 +52,7 @@ public class VentanaDado extends JPanel{
 		// Crea un nuevo ImageIcon con la imagen escalada
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 		lblD1.setIcon(scaledIcon);
-		lblD1.setBounds((int)(getWidth()/2 - newWidth/2), (tamanyoHastaBoton-2*newHeight)/3, newWidth, newHeight);
+		lblD1.setBounds((int)(getWidth()/2 - newWidth/2), (tamanyoHastaBoton-2*newHeight)/3+margen, newWidth, newHeight);
 		lblD2 = new JLabel();
 		int x = lblD1.getX();
 		int y = lblD1.getY() + lblD1.getHeight() + (tamanyoHastaBoton-2*newHeight)/3;  // 10 es la separación deseada entre los JLabels
@@ -74,7 +69,7 @@ public class VentanaDado extends JPanel{
 			}
 		});
 		btnTirar.setBackground(Color.green);
-		btnTirar.setBounds(20 , tamanyoHastaBoton ,getWidth()-40 , 100);
+		btnTirar.setBounds(20 , tamanyoHastaBoton+margen ,getWidth()-40 , 100);
 		this.add(lblD1);
 		this.add(lblD2);
 		this.add(btnTirar);
@@ -116,7 +111,7 @@ public class VentanaDado extends JPanel{
 					}
 				//System.out.println(valorDado1 +" "+valorDado2);
 				//System.out.println(valorDado1 +" "+valorDado2);
-				while(System.currentTimeMillis() - tiemploInicial < 5000) { //La aimación de tirar dados durará 5 segundos aproximadamente
+				while(System.currentTimeMillis() - tiemploInicial < 3000) { //La aimación de tirar dados durará 5 segundos aproximadamente
 					int num = r.nextInt(6)+1;
 					
 					corregirImagen(lblD1, new ImageIcon(getClass().getResource(num+".png")));
@@ -132,6 +127,10 @@ public class VentanaDado extends JPanel{
 				}
 				corregirImagen(lblD1, new ImageIcon(getClass().getResource(valorDado1+".png")));
 				corregirImagen(lblD2, new ImageIcon(getClass().getResource(valorDado2+".png")));
+				enEjecucion.set(false);
+				if(reutilizar) {
+					btnTirar.setEnabled(true);
+				}
 			}
 		};
 		hilo.start();

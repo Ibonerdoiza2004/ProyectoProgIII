@@ -48,12 +48,12 @@ public class VentanaAcusacion extends JFrame{
 	private JPanel pnlCombo;
 	private JPanel pnlLabelYFotos;
 	
-	private JComboBox<NombrePersonaje> cbSospechoso;
+	private JComboBox<Sospechosos> cbSospechoso;
 	private JComboBox<Armas> cbArma;
 	private JComboBox<Sitio> cbLugar;
 	
 	//Para los listeners:
-	private NombrePersonaje sospechosoSel;
+	private Sospechosos sospechosoSel;
 	private Armas armaSel;
 	private Sitio sitioSel;
 	
@@ -115,8 +115,8 @@ public class VentanaAcusacion extends JFrame{
        
 		pnlCombo = new JPanel(new GridLayout(3,1));
 		
-		cbSospechoso = new JComboBox<NombrePersonaje>();
-		for (NombrePersonaje personaje: NombrePersonaje.values()) {
+		cbSospechoso = new JComboBox<Sospechosos>();
+		for (Sospechosos personaje: Sospechosos.values()) {
 			//System.out.println(sospechoso);
 			cbSospechoso.addItem(personaje);
 		}
@@ -134,7 +134,7 @@ public class VentanaAcusacion extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sospechosoSel = (NombrePersonaje) cbSospechoso.getSelectedItem();
+				sospechosoSel = (Sospechosos) cbSospechoso.getSelectedItem();
 				//System.out.println(sospechosoSel);
 			}
 		});
@@ -188,7 +188,7 @@ public class VentanaAcusacion extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NombrePersonaje nom = (NombrePersonaje) cbSospechoso.getSelectedItem();
+				Sospechosos nom = (Sospechosos) cbSospechoso.getSelectedItem();
 				String sospechoso = nom.toString();
 				JLabel lblSel = new JLabel();
 				ImageIcon imageIcon = new ImageIcon("src/cartasSospechosos/"+sospechoso+".png");

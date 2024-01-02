@@ -48,7 +48,7 @@ public class VentanaTablero extends JFrame{
 	JLabel labelTablero = new JLabel();
 	JPanel panelDerecha = new JPanel();
 	HashMap<ArrayList<Integer>,JLabel>labelCasillas;
-	VentanaDado panelDados = new VentanaDado((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
+	VentanaDado panelDados = new VentanaDado((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton, 0, false);
 	JButton botonDesplegar = new JButton();
 	JButton botonPlegar = new JButton();
 	JPanel panelDesplegable = new JPanel();
@@ -112,24 +112,24 @@ public class VentanaTablero extends JFrame{
 //				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
 //			}
 //		};
+		panelDerecha.setLayout(null);
 		panelLista = new JPanel(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
 		panelLista.add(new Lista(panelLista).sPane);
 		panelDesplegable.setLayout(null);
-		panelDesplegable.setBounds((int)Gestion.sizePantalla.getHeight()-altoBoton, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
+		panelDesplegable.setBounds(0, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
 		panelDesplegable.add(panelLista);
-		
 		botonPlegar.setFocusable(false);
 		botonPlegar.setText("\\/");
 		botonPlegar.setVerticalAlignment(SwingConstants.CENTER);
 		botonPlegar.setBounds(0,0,(int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()), altoBoton);
 			
 		panelDesplegable.add(botonPlegar);
-		add(panelDesplegable);
+		panelDerecha.add(panelDesplegable);
 		
 		//Panel Derecha
 			//PanelDados
-		panelDerecha.setLayout(null);
+		
 //		JPanel panelDados = new JPanel() {
 //			@Override
 //			public void paintComponent(Graphics g) {
@@ -141,7 +141,9 @@ public class VentanaTablero extends JFrame{
 		//panelDados= new VentanaDado();
 		
 		//panelDados.setSize((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
+		panelDados.setOpaque(false);
 		panelDerecha.add(panelDados);
+		
 			//PanelBoton
 		botonDesplegar.setFocusable(false);
 		botonDesplegar.setText("/\\");
@@ -162,7 +164,7 @@ public class VentanaTablero extends JFrame{
 				Thread t1 = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						int coordX = (int)(Gestion.sizePantalla.getHeight());
+						int coordX = 0;
 						int ancho = (int)(Gestion.sizePantalla.getWidth()-coordX);
 						int coordY = (int)Gestion.sizePantalla.getHeight();
 						int alto = (int)(Gestion.sizePantalla.getHeight()-inicioPanelDesplegable);
@@ -191,7 +193,6 @@ public class VentanaTablero extends JFrame{
 							}
 						}
 						botonPlegar.setEnabled(true);
-						panelDerecha.remove(panelDados);
 						
 					}
 				});
@@ -201,12 +202,11 @@ public class VentanaTablero extends JFrame{
 		botonPlegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				panelDerecha.add(panelDados);
 				botonPlegar.setEnabled(false);
 				Thread t2 = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						int coordX = (int)(Gestion.sizePantalla.getHeight());
+						int coordX = 0;
 						int ancho = (int)(Gestion.sizePantalla.getWidth()-coordX);
 						int coordY = inicioPanelDesplegable;
 						int alto = (int)(Gestion.sizePantalla.getHeight()-2*altoBoton);

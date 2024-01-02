@@ -884,62 +884,88 @@ public class VentanaSeleccionPersonaje extends JPanel{
 				if (cont == 4) {
 					if (j3.getX() == posicion1.get(0)) {
 						j3.setForeground(Color.RED);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j3.getX() == posicion2.get(0)) {
 						j3.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
 					} else if (j3.getX() == posicion3.get(0)) {
 						j3.setForeground(Color.BLACK);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					}else if (j3.getX() == posicion4.get(0)) {
 						j3.setForeground(Color.GREEN);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j3.getX() == posicion5.get(0)) {
 						j3.setForeground(Color.BLUE);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j3.getX() == posicion6.get(0)) {
 						j3.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 				} if (cont == 5) {
 					if (j4.getX() == posicion1.get(0)) {
 						j4.setForeground(Color.RED);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j4.getX() == posicion2.get(0)) {
 						j4.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
 					} else if (j4.getX() == posicion3.get(0)) {
 						j4.setForeground(Color.BLACK);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					}else if (j4.getX() == posicion4.get(0)) {
 						j4.setForeground(Color.GREEN);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j4.getX() == posicion5.get(0)) {
 						j4.setForeground(Color.BLUE);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j4.getX() == posicion6.get(0)) {
 						j4.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(3).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 				} if (cont == 6) {
 					if (j5.getX() == posicion1.get(0)) {
 						j5.setForeground(Color.RED);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j5.getX() == posicion2.get(0)) {
 						j5.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
 					} else if (j5.getX() == posicion3.get(0)) {
 						j5.setForeground(Color.BLACK);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					}else if (j5.getX() == posicion4.get(0)) {
 						j5.setForeground(Color.GREEN);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j5.getX() == posicion5.get(0)) {
 						j5.setForeground(Color.BLUE);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j5.getX() == posicion6.get(0)) {
 						j5.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(4).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 				} if (cont == 7) {
 					if (j6.getX() == posicion1.get(0)) {
 						j6.setForeground(Color.RED);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 					} else if (j6.getX() == posicion2.get(0)) {
 						j6.setForeground(Color.YELLOW);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
 					} else if (j6.getX() == posicion3.get(0)) {
 						j6.setForeground(Color.BLACK);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 					} else if (j6.getX() == posicion4.get(0)) {
 						j6.setForeground(Color.GREEN);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[3]));
 					} else if (j6.getX() == posicion5.get(0)) {
 						j6.setForeground(Color.BLUE);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[4]));
 					} else if (j6.getX() == posicion6.get(0)) {
 						j6.setForeground(Color.MAGENTA);
+						Gestion.jugadores.get(5).setPersonaje(new Personaje(NombrePersonaje.values()[5]));
 					}
 				}
 			} else if (cont > jugadores + 1) {
 				//Empezar partida
+				eliminarPanel();
+				new VentanaAsignarTurnos();
 			}
 		}
 	});
