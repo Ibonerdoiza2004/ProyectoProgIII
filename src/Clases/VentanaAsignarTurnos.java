@@ -38,7 +38,6 @@ public class VentanaAsignarTurnos extends JPanel{
 		add(panelDerecha);
 		
 		for(Jugador jugador:Gestion.jugadores) {
-			System.out.println(jugador.personaje.getNombre());
 		}
 		Image spritePersonaje = Gestion.sprites.get(Gestion.jugadores.get(0).getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0);
 	    
@@ -64,6 +63,7 @@ public class VentanaAsignarTurnos extends JPanel{
 			panelDerecha.add(lSprite);
 		}
 		lComienza = new JLabel("COMIENZA");
+		lComienza.setVerticalAlignment(JLabel.NORTH);
 		lComienza.setFont(new Font("Serif", Font.BOLD, 33));
 		lComienza.setOpaque(false);
 		panelDerecha.add(lComienza);
@@ -73,7 +73,7 @@ public class VentanaAsignarTurnos extends JPanel{
 			
 			@Override
 			public void run() {
-				panelDados = new VentanaDado((int) Gestion.sizePantalla.getWidth()/2, (int) Gestion.sizePantalla.getHeight(), 50, true);
+				panelDados = new VentanaDado((int) Gestion.sizePantalla.getWidth()/2, (int) Gestion.sizePantalla.getHeight(), 50);
 				panelDados.setBounds(0,0,(int) Gestion.sizePantalla.getWidth()/2,(int) Gestion.sizePantalla.getHeight());
 				panelIzquierda.add(panelDados);
 				panelIzquierda.repaint();
@@ -91,6 +91,7 @@ public class VentanaAsignarTurnos extends JPanel{
 		
 	}
 	public void comienza(ArrayList<Integer>jugadores) {
+		panelDados.btnTirar.setEnabled(true);
 		mayorValor=0;
 		ArrayList<Integer>nuevosJugadores = new ArrayList<>();
 		ArrayList<JLabel>empatados = new ArrayList<>();
@@ -106,10 +107,7 @@ public class VentanaAsignarTurnos extends JPanel{
 		                e.printStackTrace();
 		            }
 			}
-			System.out.println(panelDados.valorDado1+panelDados.valorDado2);
-			if(nuevosJugadores.size()==1&&jugadores.get(jugadores.size()-1)==i&&i!=mayorValor) {
-				panelDados.reutilizar=false;
-			}
+			
 			while(panelDados.enEjecucion.get()) {
 				try {
 					Thread.sleep(5);
@@ -127,20 +125,22 @@ public class VentanaAsignarTurnos extends JPanel{
 				empatados.clear();
 				mayorValor = panelDados.valorDado1+panelDados.valorDado2;
 				jugadorMayor = i+1;
-				lComienza.setBounds(coordsPosTurno.get(i).get("x"),coordsPosTurno.get(i).get("y")+altoSprite/2-33, 200,200);
+				lComienza.setBounds(coordsPosTurno.get(i).get("x"),coordsPosTurno.get(i).get("y")+altoSprite/2-16, 200, 50);
 			}else if (panelDados.valorDado1+panelDados.valorDado2==mayorValor) {
 				nuevosJugadores.add(i);
 				jugadorMayor = -1;
 				if(nuevosJugadores.size()==2) {
 					JLabel mayor1 = new JLabel("EMPATE");
 					mayor1.setFont(new Font("Serif", Font.BOLD, 33));
+					mayor1.setVerticalAlignment(JLabel.NORTH);
 					mayor1.setOpaque(false);
-					mayor1.setBounds(coordsPosTurno.get(nuevosJugadores.get(0)).get("x"),coordsPosTurno.get(nuevosJugadores.get(0)).get("y")+altoSprite/2-33, 200,200);
+					mayor1.setBounds(coordsPosTurno.get(nuevosJugadores.get(0)).get("x"),coordsPosTurno.get(nuevosJugadores.get(0)).get("y")+altoSprite/2-16, 200, 50);
 					panelDerecha.add(mayor1);
 					JLabel mayor2 = new JLabel("EMPATE");
 					mayor2.setFont(new Font("Serif", Font.BOLD, 33));
 					mayor2.setOpaque(false);
-					mayor2.setBounds(coordsPosTurno.get(nuevosJugadores.get(1)).get("x"),coordsPosTurno.get(nuevosJugadores.get(1)).get("y")+altoSprite/2-33, 200,200);
+					mayor2.setVerticalAlignment(JLabel.NORTH);
+					mayor2.setBounds(coordsPosTurno.get(nuevosJugadores.get(1)).get("x"),coordsPosTurno.get(nuevosJugadores.get(1)).get("y")+altoSprite/2-16, 200, 50);
 					panelDerecha.add(mayor2);
 					panelDerecha.repaint();
 					empatados.add(mayor1);
@@ -148,8 +148,9 @@ public class VentanaAsignarTurnos extends JPanel{
 				}else {
 					JLabel mayor = new JLabel("EMPATE");
 					mayor.setFont(new Font("Serif", Font.BOLD, 33));
+					mayor.setVerticalAlignment(JLabel.NORTH);
 					mayor.setOpaque(false);
-					mayor.setBounds(coordsPosTurno.get(i).get("x"),coordsPosTurno.get(i).get("y")+altoSprite/2-33, 200,200);
+					mayor.setBounds(coordsPosTurno.get(i).get("x"),coordsPosTurno.get(i).get("y")+altoSprite/2-16, 200,50);
 					panelDerecha.add(mayor);
 					empatados.add(mayor);
 					panelDerecha.repaint();
@@ -159,26 +160,17 @@ public class VentanaAsignarTurnos extends JPanel{
 			JLabel resultado = new JLabel((panelDados.valorDado1+panelDados.valorDado2)+"");
 			resultado.setFont(new Font("Serif", Font.BOLD, 33));
 			resultado.setOpaque(false);
-			resultado.setBounds((int)Gestion.sizePantalla.getWidth()/5-anchoSprite/2-50, coordsPosTurno.get(i).get("y")+altoSprite/2-33,200 , 200);
+			resultado.setBounds((int)Gestion.sizePantalla.getWidth()/5-anchoSprite/2-50, coordsPosTurno.get(i).get("y")+altoSprite/2-16,200 , 50);
 			panelDerecha.add(resultado);
 			resultados.put(i, resultado);
 			panelDerecha.repaint();
+			panelDados.btnTirar.setEnabled(true);
 			panelIzquierda.repaint();
 		}
-		if(!panelDados.reutilizar) {
-			Gestion.setNumTurno(nuevosJugadores.get(0));
-			System.out.println(Gestion.getNumTurno());
-			try {
-				Thread.sleep(1500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			eliminarPanel();
-		}
+		panelDados.btnTirar.setEnabled(false);
 		if(nuevosJugadores.size()>1) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -192,6 +184,20 @@ public class VentanaAsignarTurnos extends JPanel{
 			empatados.clear();
 			repaint();
 			comienza(nuevosJugadores);
+		}else {
+			Gestion.setNumTurno(nuevosJugadores.get(0));
+			for(int i = 0;i<Gestion.jugadores.size();i++) {
+				Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {0,9
+						};
+			}
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			eliminarPanel();
+			new VentanaTablero();
 		}
 	}
 	public void eliminarPanel() {

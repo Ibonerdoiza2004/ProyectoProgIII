@@ -126,7 +126,6 @@ public class VentanaInicio extends JPanel{
     }
 	
 	public static void main(String[] args) {
-		
 		VentanaInicio ventana = new VentanaInicio();
 	}
 	public void eliminarPanel() {

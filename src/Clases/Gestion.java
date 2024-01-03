@@ -33,7 +33,9 @@ public class Gestion {
 	public static void setNumTurno(int numTurno) {
 		Gestion.numTurno = numTurno;
 	}
-
+	public static void aumentarTurno() {
+		Gestion.numTurno = (Gestion.numTurno+1)%jugadores.size();
+	}
 
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
@@ -86,7 +88,6 @@ public class Gestion {
 			for (int j=0; j<columnas; j++) {
 				if (i==5&&j==5) {
 					fila.add(2);
-					
 				}else if(i==13&&j==7) {
 					fila.add(3);
 				}else if(i==22&&j==6) {

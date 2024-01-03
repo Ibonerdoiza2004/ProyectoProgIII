@@ -23,7 +23,6 @@ public class VentanaDado extends JPanel{
 	protected int valorDado2;
 	protected Thread hilo;
 	AtomicBoolean enEjecucion = new AtomicBoolean(true);
-	public boolean reutilizar;
 //	protected boolean repintarDado;
 	//private int newHeight;
 	//private JPanel pnlVentana;
@@ -34,13 +33,12 @@ public class VentanaDado extends JPanel{
         Image imagenFondo = iconoFondo.getImage();
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 	}
-	public VentanaDado(int ancho, int alto, int margen, boolean reutilizar) {
+	public VentanaDado(int ancho, int alto, int margen) {
 		setSize(ancho, alto);
 		this.setLayout(null);  //Componentes por coordenadas
 		lblD1 = new JLabel();
 		ImageIcon originalIcon = new ImageIcon(getClass().getResource("1.png"));
 		Image originalImage = originalIcon.getImage();
-		this.reutilizar = reutilizar;
 		// Calcula el nuevo tamaño para la imagen manteniendo la proporción
 		int tamanyoHastaBoton = getHeight()-120-margen;
 		int newHeight = 2*(getHeight()-margen)/5;
@@ -128,9 +126,6 @@ public class VentanaDado extends JPanel{
 				corregirImagen(lblD1, new ImageIcon(getClass().getResource(valorDado1+".png")));
 				corregirImagen(lblD2, new ImageIcon(getClass().getResource(valorDado2+".png")));
 				enEjecucion.set(false);
-				if(reutilizar) {
-					btnTirar.setEnabled(true);
-				}
 			}
 		};
 		hilo.start();

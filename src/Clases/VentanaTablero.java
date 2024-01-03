@@ -26,7 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-public class VentanaTablero extends JFrame{
+public class VentanaTablero extends JPanel{
 	int coorXInicioTablero;
 	int coorXFinalTablero;
 	int columnaSeleccionada = -1;
@@ -44,11 +44,11 @@ public class VentanaTablero extends JFrame{
 	ArrayList<Integer>destino = null;
 	ArrayList<ArrayList<Integer>>caminoMasCorto=null;
 	JLabel labelJugador;
-//	Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
+	Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
 	JLabel labelTablero = new JLabel();
 	JPanel panelDerecha = new JPanel();
 	HashMap<ArrayList<Integer>,JLabel>labelCasillas;
-	VentanaDado panelDados = new VentanaDado((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton, 0, false);
+	VentanaDado panelDados = new VentanaDado((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton, 0);
 	JButton botonDesplegar = new JButton();
 	JButton botonPlegar = new JButton();
 	JPanel panelDesplegable = new JPanel();
@@ -59,9 +59,6 @@ public class VentanaTablero extends JFrame{
 	
 	
 	public VentanaTablero() {
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setUndecorated(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
 		coorXInicioTablero =(int) (2*Gestion.sizePantalla.getHeight())/36;
@@ -104,14 +101,7 @@ public class VentanaTablero extends JFrame{
 				
 		//PanelDesplegable	
 		int inicioPanelDesplegable =0;
-//		panelLista = new JPanel() {
-//			@Override
-//			public void paintComponent(Graphics g) {
-//				ImageIcon iconoLista = new ImageIcon(getClass().getResource("seis.jpg"));
-//				Image imagenLista = iconoLista.getImage();
-//				g.drawImage(imagenLista, 0, 0, getWidth(), getHeight(), this);
-//			}
-//		};
+
 		panelDerecha.setLayout(null);
 		panelLista = new JPanel(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
@@ -130,17 +120,6 @@ public class VentanaTablero extends JFrame{
 		//Panel Derecha
 			//PanelDados
 		
-//		JPanel panelDados = new JPanel() {
-//			@Override
-//			public void paintComponent(Graphics g) {
-//				ImageIcon iconoDados = new ImageIcon(getClass().getResource("cinco.jpg"));
-//				Image imagenDados = iconoDados.getImage();
-//                g.drawImage(imagenDados, 0, 0, getWidth(), getHeight(), this);
-//			}
-//		};
-		//panelDados= new VentanaDado();
-		
-		//panelDados.setSize((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton);
 		panelDados.setOpaque(false);
 		panelDerecha.add(panelDados);
 		
@@ -188,7 +167,6 @@ public class VentanaTablero extends JFrame{
 							try {
 								Thread.sleep(12);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -230,7 +208,6 @@ public class VentanaTablero extends JFrame{
 							try {
 								Thread.sleep(16);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -244,7 +221,8 @@ public class VentanaTablero extends JFrame{
 		});
 		crearCasillas();
 		dibujarSprites();
-		setVisible(true);		       
+		Gestion.ventanaJuego.add(this);
+		Gestion.ventanaJuego.repaint();
 		pintarCasillas();
 		    
 		
@@ -358,14 +336,6 @@ public class VentanaTablero extends JFrame{
 		return vertices.get(verticeActual);
 	}
 	public void dibujarSprites() {
-		for(int i=0; i<5;i++) {
-			Jugador jugador = new Jugador(new Personaje(), false);
-			do {
-			jugador.posicion=new int[] {(int)(Math.random()*24),(int)(Math.random()*24)};
-			}while(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])!=1);
-			Gestion.jugadores.add(jugador);//Borrar cuando ya esté añadida la funcionalidad final
-		}
-		Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
 		ImageIcon sprite = new ImageIcon(Gestion.sprites.get(jugador.getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0));
 		labelJugador =new JLabel();
 		labelJugador.setIcon(sprite);
@@ -438,7 +408,6 @@ public class VentanaTablero extends JFrame{
 			
 		}
 	public void pintarCasillas() {		 
-		Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
 		
 		String lock = "lock";
 		synchronized (lock) {
@@ -488,7 +457,6 @@ public class VentanaTablero extends JFrame{
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 				int tempY = filaSeleccionada;
 				int tempX = columnaSeleccionada;
 				for (int i = 0; i<coordsFilas.size();i++) {
@@ -670,7 +638,6 @@ public class VentanaTablero extends JFrame{
 						try {
 							Thread.sleep(8);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -685,10 +652,27 @@ public class VentanaTablero extends JFrame{
 				sprite = new ImageIcon(Gestion.sprites.get(jugador.getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0));
 				labelJugador.setIcon(sprite);
 				jugador.posicion= new int[] {filaSeleccionada,columnaSeleccionada};
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
+					eliminarPanel();
+					//Aquí habría que poner una ventana que ponga de quien es el turno, que reciba la siguiente ventana y que la cree cuando ya haya enseñado el mensaje
+					Gestion.aumentarTurno();
+					new VentanaTablero();
+				}else {
+					//Aquí se puede poner un switch que dependiendo de en qué habitación esté el personaje, le pase una habitación diferente a la ventana acusación
+				}
 			}
 		});
 		hiloMoverPersonaje.start();
 		
+	}
+	public void eliminarPanel() {
+		Gestion.ventanaJuego.remove(this);
+        Gestion.ventanaJuego.repaint();
 	}
 	
 	public static void main(String[] args) {
