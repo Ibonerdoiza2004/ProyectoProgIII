@@ -47,7 +47,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 		lblElige.setHorizontalAlignment(SwingConstants.CENTER);
 		lblElige.setForeground(Color.WHITE);
 		this.add(lblElige);
-		
+
 		personajes = new ArrayList<Personaje>();
 		elegidos = new ArrayList<Personaje>();	
 		
@@ -974,7 +974,6 @@ public class VentanaSeleccionPersonaje extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if (cont != 1) {
 					if (cont == 2) {
 						j1.setForeground(Color.WHITE);

@@ -62,12 +62,12 @@ public class Contenedor implements Serializable{
 		Lugar lugar = lugares.get((int)(Math.random()*lugares.size()));
 		lugar.setImplicado(true);
 		implicados.put(Implicados.LUGAR, lugar);
-		
-		for (Arma arma1:armas) {
-			todasLasCartas.add(arma1);
-		}
+
 		for (Sospechoso sospechoso1:sospechosos) {
 			todasLasCartas.add(sospechoso1);
+		}
+		for (Arma arma1:armas) {
+			todasLasCartas.add(arma1);
 		}
 		for (Lugar lugar1:lugares) {
 			todasLasCartas.add(lugar1);

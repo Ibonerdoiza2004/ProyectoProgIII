@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 public class VentanaTexto extends JPanel{
 	float alpha = 1;
-	public VentanaTexto() {
+	public VentanaTexto(String sTexto) {
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
 		setBackground(Color.BLACK);
@@ -30,7 +30,7 @@ public class VentanaTexto extends JPanel{
 		lFondo.setIcon(fondo);
 		lFondo.setBounds(0, 0, getWidth(), getHeight());
 		
-		JLabel texto = new JLabel("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase());
+		JLabel texto = new JLabel(sTexto);
 		texto.setFont(new Font("Serif", Font.BOLD, 80));
 	    texto.setForeground(Color.WHITE);
 		texto.setVerticalAlignment(JLabel.CENTER);
@@ -79,7 +79,6 @@ public class VentanaTexto extends JPanel{
 				    try {
 						Thread.sleep(40);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -91,8 +90,12 @@ public class VentanaTexto extends JPanel{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				String lockAnyadirALaVentana = "AnyadirALaVentana";
+				synchronized (lockAnyadirALaVentana) {
+					lockAnyadirALaVentana.notifyAll();
+				}
 				eliminarPanel();
-					
+
 			}
 		});
 		addKeyListener(new KeyListener() {
@@ -108,13 +111,11 @@ public class VentanaTexto extends JPanel{
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -122,8 +123,5 @@ public class VentanaTexto extends JPanel{
 	public void eliminarPanel() {
 		Gestion.ventanaJuego.remove(this);
         Gestion.ventanaJuego.repaint();
-	}
-	public static void main(String[] args) {
-		new VentanaTexto();
 	}
 }

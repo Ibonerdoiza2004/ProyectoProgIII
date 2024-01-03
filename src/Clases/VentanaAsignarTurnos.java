@@ -91,6 +91,23 @@ public class VentanaAsignarTurnos extends JPanel{
 		
 	}
 	public void comienza(ArrayList<Integer>jugadores) {
+		ArrayList<JLabel>flechas = new ArrayList<>();
+		ImageIcon iconFlechaDerecha = new ImageIcon(getClass().getResource("flechaDerecha.png"));
+		int ancho = 150;
+		int margen = ((int)Gestion.sizePantalla.getWidth()/5-anchoSprite/2-ancho-20)/3;
+		int alto = iconFlechaDerecha.getIconHeight()*ancho/iconFlechaDerecha.getIconWidth();
+        Image flechaDerecha = iconFlechaDerecha.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_SMOOTH);
+        iconFlechaDerecha = new ImageIcon(flechaDerecha);
+        
+		for(Integer j: jugadores) {
+			JLabel lflecha = new JLabel();
+//			lflecha.setOpaque(false);
+			lflecha.setIcon(iconFlechaDerecha);
+			lflecha.setBounds(margen, coordsPosTurno.get(j).get("y")+altoSprite/2-alto/2+15, ancho, alto);
+			flechas.add(lflecha);
+			panelDerecha.add(lflecha);
+		}
+		panelDerecha.repaint();
 		panelDados.btnTirar.setEnabled(true);
 		mayorValor=0;
 		ArrayList<Integer>nuevosJugadores = new ArrayList<>();
@@ -160,7 +177,7 @@ public class VentanaAsignarTurnos extends JPanel{
 			JLabel resultado = new JLabel((panelDados.valorDado1+panelDados.valorDado2)+"");
 			resultado.setFont(new Font("Serif", Font.BOLD, 33));
 			resultado.setOpaque(false);
-			resultado.setBounds((int)Gestion.sizePantalla.getWidth()/5-anchoSprite/2-50, coordsPosTurno.get(i).get("y")+altoSprite/2-16,200 , 50);
+			resultado.setBounds(2*margen+ancho+20, coordsPosTurno.get(i).get("y")+altoSprite/2-16,200 , 50);
 			panelDerecha.add(resultado);
 			resultados.put(i, resultado);
 			panelDerecha.repaint();
@@ -172,7 +189,6 @@ public class VentanaAsignarTurnos extends JPanel{
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			for(JLabel empatado:empatados) {
@@ -181,7 +197,12 @@ public class VentanaAsignarTurnos extends JPanel{
 			for(JLabel resultado:resultados.values()) {
 				panelDerecha.remove(resultado);
 			}
+			for(JLabel flecha:flechas) {
+				panelDerecha.remove(flecha);
+			}
 			empatados.clear();
+			resultados.clear();
+			flechas.clear();
 			repaint();
 			comienza(nuevosJugadores);
 		}else {
@@ -193,10 +214,9 @@ public class VentanaAsignarTurnos extends JPanel{
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			new VentanaTexto();
+			new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase());
 			eliminarPanel();
 			String lockSiguienteVentana = "siguienteVentana";
 			synchronized (lockSiguienteVentana) {
@@ -213,14 +233,5 @@ public class VentanaAsignarTurnos extends JPanel{
 		Gestion.ventanaJuego.remove(this);
         Gestion.ventanaJuego.repaint();
 	}
-	public static void main(String[] args) {
-		Gestion.ventanaJuego= new JFrame();
-		Gestion.ventanaJuego.setLayout(null);
-		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
-		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		Gestion.ventanaJuego.setUndecorated(true);
-		Gestion.ventanaJuego.setVisible(true);
-		VentanaAsignarTurnos v = new VentanaAsignarTurnos();
-	}
+	
 }

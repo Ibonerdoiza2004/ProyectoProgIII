@@ -20,11 +20,12 @@ import javax.swing.table.TableModel;
 public class Lista extends JPanel{
 	int filaEnTabla;
 	int columnaEnTabla;
-	private HashMap<Integer, Integer> rowYcolYaSel = new HashMap<Integer, Integer>();
+	private HashMap<Integer, Integer> rowYcolYaSel;
 	
 	TablaLista tbLista = null; //Esto es el modelo 
 	JScrollPane sPane;
 	JTable tb = new JTable();
+	Image newimg;
 	public TablaLista getTbLista() {
 		return tbLista;
 	}
@@ -34,17 +35,27 @@ public class Lista extends JPanel{
 	}
 
 	public Lista(JPanel panel) {
+		rowYcolYaSel = new HashMap<Integer, Integer>();
+		for (Asesinato carta:Gestion.jugadores.get(Gestion.getNumTurno()).lista.keySet()) {
+			for(Boolean bool : Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(carta)) {
+				if(bool) {
+					rowYcolYaSel.put(Gestion.datosPartida.todasLasCartas.indexOf(carta),  Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(carta).indexOf(bool));
+					break;
+				}
+			}
+		}
 		tbLista = new TablaLista();
 		tb = new JTable(tbLista);
 		sPane= new JScrollPane(tb);
 		tb.setRowHeight((int)(panel.getHeight()/(double)tb.getRowCount()));
 		for (int i=0;i<tb.getColumnCount();i++) {
-			System.out.println(tb.getColumnCount());
 			tb.getColumnModel().getColumn(i).setPreferredWidth((int)(((double)panel.getWidth()/(double)tb.getColumnCount())));
 		}
 		sPane.setBounds(0,0,panel.getWidth(),panel.getHeight());
 		panel.add(sPane);
-		
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
+        Image image = imageIcon.getImage();
+        newimg = image.getScaledInstance(panel.getWidth()/tb.getColumnCount(), tb.getRowHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
 		tb.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -54,7 +65,15 @@ public class Lista extends JPanel{
 				columnaEnTabla = tb.columnAtPoint(e.getPoint());
 				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
 			        //Mirar si ya había algún sospechoso marcado
-		            rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
+		            if(rowYcolYaSel.containsKey(filaEnTabla)) {
+		            	Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(rowYcolYaSel.get(filaEnTabla), false);
+		            	Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
+		            	rowYcolYaSel.replace(filaEnTabla, columnaEnTabla);
+		            }else {
+		            	System.out.println(Gestion.jugadores.get(Gestion.getNumTurno()).lista);
+		            	rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
+		            	Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
+		            }
 					//filasYaSeleccionadas.add(filaEnTabla);
 					tb.repaint();
 				} else  {
@@ -91,9 +110,7 @@ public class Lista extends JPanel{
 	
 	public JLabel lblTachado() {
 		JLabel lblSel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(tb.getColumnModel().getColumn(0).getWidth(), tb.getRowHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        
         lblSel.setIcon(new ImageIcon(newimg));
         return lblSel;
 	}
@@ -108,7 +125,7 @@ public class Lista extends JPanel{
 		private JRadioButton seleccion3;
 		
 		public TablaLista() {
-			for (NombrePersonaje personaje: NombrePersonaje.values()) {
+			for (Sospechosos personaje: Sospechosos.values()) {
 				nombresEnums.add(personaje);
 				seleccionado.add(false);
 			}

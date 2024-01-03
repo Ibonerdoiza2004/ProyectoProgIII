@@ -1,9 +1,7 @@
 package Clases;
 
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -16,14 +14,11 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 public class VentanaTablero extends JPanel{
@@ -49,25 +44,30 @@ public class VentanaTablero extends JPanel{
 	JPanel panelDerecha = new JPanel();
 	HashMap<ArrayList<Integer>,JLabel>labelCasillas;
 	VentanaDado panelDados = new VentanaDado((int)Gestion.sizePantalla.getWidth()-(int)Gestion.sizePantalla.getHeight(), (int)Gestion.sizePantalla.getHeight()-altoBoton, 0);
-	JButton botonDesplegar = new JButton();
-	JButton botonPlegar = new JButton();
+	JButton botonDesplegar;
+	JButton botonPlegar;
 	JPanel panelDesplegable = new JPanel();
 	JPanel panelLista;
 	JPanel panelTablero;
 	ArrayList<JLabel>casillasDelCamino = new ArrayList<>();
-	
+	boolean estadoBoton =true;
 	
 	
 	public VentanaTablero() {
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
+		ImageIcon iconFlechaArriba = new ImageIcon(getClass().getResource("flechaArriba.png"));
+        Image flechaArriba = iconFlechaArriba.getImage();
+        ImageIcon iconFlechaAbajo = new ImageIcon(getClass().getResource("flechaAbajo.png"));
+        Image flechaAbajo = iconFlechaAbajo.getImage();
+		int anchoSimbolos = flechaArriba.getWidth(null)*altoBoton/flechaArriba.getHeight(null);
+		int centroBotones = (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight())/2;        
 		coorXInicioTablero =(int) (2*Gestion.sizePantalla.getHeight())/36;
 		coorXFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/19);
 		coorYInicioTablero = (int) (Gestion.sizePantalla.getHeight())/27;
 		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/29);
 		anchoColumnaTablero = ((double)(-coorXInicioTablero+coorXFinalTablero))/(double)(Gestion.numColumnas);
 		altoFilaTablero = ((double)(-coorYInicioTablero+coorYFinalTablero))/((double)Gestion.numFilas);
-		
 		//PanelIzquierda
 				panelTablero =new JPanel() {//Usar este método paintComponent para probar si las filas y columnas están bien guardadas
 				
@@ -98,7 +98,7 @@ public class VentanaTablero extends JPanel{
 				panelTablero.setLayout(null);
 				panelTablero.setBounds(0,0,(int)Gestion.sizePantalla.getHeight(),(int)Gestion.sizePantalla.getHeight());
 				add(panelTablero);
-				
+
 		//PanelDesplegable	
 		int inicioPanelDesplegable =0;
 
@@ -109,14 +109,21 @@ public class VentanaTablero extends JPanel{
 		panelDesplegable.setLayout(null);
 		panelDesplegable.setBounds(0, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
 		panelDesplegable.add(panelLista);
+		botonPlegar = new JButton() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(flechaAbajo, centroBotones-anchoSimbolos/2, 0, anchoSimbolos, altoBoton, this);
+				
+			}
+		};
 		botonPlegar.setFocusable(false);
-		botonPlegar.setText("\\/");
 		botonPlegar.setVerticalAlignment(SwingConstants.CENTER);
 		botonPlegar.setBounds(0,0,(int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()), altoBoton);
 			
 		panelDesplegable.add(botonPlegar);
 		panelDerecha.add(panelDesplegable);
-		
+
 		//Panel Derecha
 			//PanelDados
 		
@@ -124,8 +131,15 @@ public class VentanaTablero extends JPanel{
 		panelDerecha.add(panelDados);
 		
 			//PanelBoton
+		botonDesplegar = new JButton() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(flechaArriba, centroBotones-anchoSimbolos/2, 0, anchoSimbolos, altoBoton, this);
+				
+			}
+		};
 		botonDesplegar.setFocusable(false);
-		botonDesplegar.setText("/\\");
 		botonDesplegar.setVerticalAlignment(SwingConstants.CENTER);
 		botonDesplegar.setBounds(0, (int)Gestion.sizePantalla.getHeight()-altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),altoBoton );
 		panelDerecha.add(botonDesplegar);
@@ -137,6 +151,8 @@ public class VentanaTablero extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				panelDesplegable.setVisible(true);
+				estadoBoton = panelDados.btnTirar.isEnabled();
+				panelDados.btnTirar.setEnabled(false);
 				botonPlegar.setEnabled(false);
 				botonDesplegar.setVisible(false);
 				
@@ -170,6 +186,7 @@ public class VentanaTablero extends JPanel{
 								e.printStackTrace();
 							}
 						}
+						panelDados.setVisible(false);
 						botonPlegar.setEnabled(true);
 						
 					}
@@ -177,10 +194,12 @@ public class VentanaTablero extends JPanel{
 				t1.start();
 			}
 		});
+
 		botonPlegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				botonPlegar.setEnabled(false);
+				panelDados.setVisible(true);
 				Thread t2 = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -211,8 +230,9 @@ public class VentanaTablero extends JPanel{
 								e.printStackTrace();
 							}
 						}
-						panelDesplegable.setVisible(false);
 						botonDesplegar.setVisible(true);
+						panelDados.btnTirar.setEnabled(estadoBoton);
+						panelDesplegable.setVisible(false);
 					}
 				});
 				t2.start();
@@ -221,6 +241,14 @@ public class VentanaTablero extends JPanel{
 		});
 		crearCasillas();
 		dibujarSprites();
+		String lockAnyadirALaVentana = "AnyadirALaVentana";
+		synchronized (lockAnyadirALaVentana) {
+			try {
+				lockAnyadirALaVentana.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		Gestion.ventanaJuego.add(this);
 		Gestion.ventanaJuego.repaint();
 		pintarCasillas();
@@ -563,7 +591,6 @@ public class VentanaTablero extends JPanel{
 			@Override
 			public void run() {
 				ImageIcon sprite = null;
-				Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
 				TipoSprite direccion = TipoSprite.AndarAbajo;
 				ArrayList<Integer>ubicacionActual = new ArrayList<>();
 				int casillaActualY = Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0];
@@ -659,7 +686,7 @@ public class VentanaTablero extends JPanel{
 				}
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
 					Gestion.aumentarTurno();
-					new VentanaTexto();
+					new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase());
 					eliminarPanel();
 					String lockSiguienteVentana = "siguienteVentana";
 					synchronized (lockSiguienteVentana) {
@@ -683,24 +710,5 @@ public class VentanaTablero extends JPanel{
         Gestion.ventanaJuego.repaint();
 	}
 	
-	public static void main(String[] args) {
-		VentanaTablero v = new VentanaTablero();
-		for(ArrayList<Integer>a:Gestion.tablero) {
-			for(Integer i: a) {
-				if(i==1) {
-					System.out.print("()");
-				}else if(i==0){
-					System.out.print("  ");
-				}
-				else {
-					System.out.print(i+" ");
-				}
-			}
-			System.out.println("");
-		}
-//		Gestion.crearTablero(Gestion.numFilas, Gestion.numColumnas);
-//		System.out.println(v.caminoMasCorto(0,6, 20,22));
-		
-	}
 	
 }

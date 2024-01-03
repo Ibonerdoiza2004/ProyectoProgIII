@@ -50,7 +50,7 @@ public class VentanaNJugadores extends JPanel {
 		cmpTots.setBorder(null);
 		ftfTots.setOpaque(false);
 		ftfTots.setBorder(null);
-		
+
 		
 		spnJugs = new JSpinner(new SpinnerNumberModel(3, 3, 3, 1));
 		JComponent cmpJugs = spnJugs.getEditor();
