@@ -658,9 +658,17 @@ public class VentanaTablero extends JPanel{
 					e.printStackTrace();
 				}
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
-					eliminarPanel();
-					//Aquí habría que poner una ventana que ponga de quien es el turno, que reciba la siguiente ventana y que la cree cuando ya haya enseñado el mensaje
 					Gestion.aumentarTurno();
+					new VentanaTexto();
+					eliminarPanel();
+					String lockSiguienteVentana = "siguienteVentana";
+					synchronized (lockSiguienteVentana) {
+						try {
+							lockSiguienteVentana.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 					new VentanaTablero();
 				}else {
 					//Aquí se puede poner un switch que dependiendo de en qué habitación esté el personaje, le pase una habitación diferente a la ventana acusación

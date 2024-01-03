@@ -196,7 +196,16 @@ public class VentanaAsignarTurnos extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			new VentanaTexto();
 			eliminarPanel();
+			String lockSiguienteVentana = "siguienteVentana";
+			synchronized (lockSiguienteVentana) {
+				try {
+					lockSiguienteVentana.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			new VentanaTablero();
 		}
 	}
