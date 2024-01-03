@@ -23,12 +23,19 @@ import javazoom.jl.player.Player;
 	    this.addWindowListener (new WindowAdapter() {
 	    	 public void windowOpened (WindowEvent e) {
 	    		    // Reproducir el mp3 cuando la ventana se abre
-	    		    try {
-	    				player.play ();
-	    			} catch (JavaLayerException e1) {
-	    				// TODO Auto-generated catch block
-	    				e1.printStackTrace();
-	    			}
+	    		   
+	    		    Thread t = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								player.play ();
+							} catch (JavaLayerException e) {
+								e.printStackTrace();
+							}
+								
+						}
+					});
+	    		    t.start();
 	    		  }
 	    });
 	    this.addWindowListener (new WindowAdapter() {
