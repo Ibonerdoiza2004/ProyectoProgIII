@@ -5,12 +5,16 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
+
+
 enum TipoSprite{AndarArriba, AndarIzquierda, AndarAbajo, AndarDerecha, AgarrarArriba, AgarrarDerecha, AgarrarAbajo, AgarrarIzquierda};
 public class Gestion {
 
@@ -54,6 +58,8 @@ public class Gestion {
 	public void setDatosPartida(Contenedor datosPartida) {
 		Gestion.datosPartida = datosPartida;
 	}
+	
+	
 
 	
 	public static HashMap<Asesinato,ArrayList<Boolean>> creacionLista() {
@@ -120,6 +126,8 @@ public class Gestion {
 		
 		return tablero;
 	}
+	
+	
 
 	public void turnoJugador() {
 		
@@ -190,4 +198,6 @@ public class Gestion {
 		   
 		return mapaPorPersonaje;
 	}
+	
+	
 }

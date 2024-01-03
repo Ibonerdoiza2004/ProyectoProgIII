@@ -104,7 +104,7 @@ public class VentanaInicio extends JPanel{
 			}
 		});
 		
-		Gestion.ventanaJuego= new JFrame();
+		Gestion.ventanaJuego = new JFrame();
 		Gestion.ventanaJuego.setLayout(null);
 		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
