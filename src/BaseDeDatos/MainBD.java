@@ -47,7 +47,9 @@ public class MainBD {
 		try {
 			conn = c.conectar();
 			statement = conn.createStatement();
-			// rs =...
+			
+			//Primero crear las tablas desde aquí:
+			
 			
 			//Datos para tabla Estadísticas
 			int i = 0;

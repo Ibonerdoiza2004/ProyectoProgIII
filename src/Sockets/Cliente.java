@@ -1,64 +1,82 @@
 package Sockets;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-public class Cliente extends JFrame{
-	
-	private JTextField txtEnviar;
-	private JButton btnEnviar;
-	private JPanel pnlPrincipal;
-	
-	public Cliente() {
-		
-		setSize(250, 280);
-		setTitle("Cliente");
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLocationRelativeTo( null );
-		setLayout(new BorderLayout());
-		
-		pnlPrincipal = new JPanel();
-		
-		txtEnviar = new JTextField(20);
-		pnlPrincipal.add(txtEnviar, BorderLayout.NORTH);
-		
-		btnEnviar = new JButton("Enviar");
-		pnlPrincipal.add(btnEnviar, BorderLayout.CENTER);
-		
-		add(pnlPrincipal);
-		
-		btnEnviar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Socket misocket = new Socket("192.168.1.101", 9999);
-					
-					//Contruir flujo de datos de salida
-					DataOutputStream flujo_salida = new DataOutputStream(misocket.getOutputStream());
-					
-					flujo_salida.writeUTF(txtEnviar.getText());
-					flujo_salida.close();
-					
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-	}
-	
-	public static void main(String[] args) {
-		Cliente c = new Cliente();
-		c.setVisible( true );
-	}
+import java.io.*;
+import java.net.Socket;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class Cliente {
+
+    public static void main(String[] args) {
+        new Cliente().iniciarCliente();
+    }
+
+    public void iniciarCliente() {
+        JFrame frame = new JFrame("Cliente");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        JButton btnRecibirPantalla = new JButton("Recibir Pantalla");
+        btnRecibirPantalla.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                solicitarPantalla();
+            }
+        });
+        frame.add(btnRecibirPantalla, BorderLayout.NORTH);
+
+        frame.setVisible(true);
+
+        try {
+            Socket socket = new Socket("localhost", 5000); //Cambiar el string "localhost" a la IP del servidor
+            PrintWriter escritor = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String mensaje;
+                        while ((mensaje = lector.readLine()) != null) {
+                            if (mensaje.equals("IMAGEN")) {
+                                int longitud = Integer.parseInt(lector.readLine());
+                                String datosImagenBase64 = lector.readLine();
+                                byte[] datosImagen = Base64.getDecoder().decode(datosImagenBase64);
+
+                                ByteArrayInputStream bais = new ByteArrayInputStream(datosImagen);
+                                BufferedImage imagen = ImageIO.read(bais);
+
+                                // Mostrar la captura de pantalla en una ventana
+                                JFrame ventanaImagen = new JFrame("Imagen del Servidor");
+                                ventanaImagen.setSize(800, 600);
+                                ventanaImagen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                ventanaImagen.add(new JLabel(new ImageIcon(imagen)));
+                                ventanaImagen.setVisible(true);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void solicitarPantalla() {
+    }
 }

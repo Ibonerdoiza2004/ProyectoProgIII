@@ -5,6 +5,7 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -97,17 +98,21 @@ public class VentanaAcusacion extends JFrame{
 		
 		pnlLabelYFotos = new JPanel(new GridLayout(3,2));
 		
+		Font font = new Font("Arial", Font.BOLD, 25);
 		lblSospechoso = new JLabel("Sospechoso");
+		lblSospechoso.setFont(font);
 		pnlLabelYFotos.add(lblSospechoso);
 		pnlFotoSospechoso = new JPanel();
 		pnlFotoSospechoso.setBorder(border);
 		pnlLabelYFotos.add(pnlFotoSospechoso);
 		lblArma = new JLabel("Arma");
+		lblArma.setFont(font);
 		pnlLabelYFotos.add(lblArma);
 		pnlFotoArma = new JPanel();
 		pnlFotoArma.setBorder(border);
 		pnlLabelYFotos.add(pnlFotoArma);
 		lblLugar = new JLabel("Lugar");
+		lblLugar.setFont(font);
 		pnlLabelYFotos.add(lblLugar);
 		pnlFotoLugar = new JPanel();
 		pnlFotoLugar.setBorder(border);
@@ -205,7 +210,6 @@ public class VentanaAcusacion extends JFrame{
 		
 		getContentPane().add(pnlLabelYFotos, BorderLayout.CENTER);
 		//getContentPane().add(new JScrollPane(jlSospechoso), BorderLayout.EAST);
-		
 		
 		modeloTabla = new TablaLista();
 		tablaLista = new JTable(modeloTabla);
