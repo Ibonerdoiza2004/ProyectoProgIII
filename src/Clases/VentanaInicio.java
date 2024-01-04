@@ -135,8 +135,8 @@ public class VentanaInicio extends JPanel{
 		
 	
 	Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
-		public void windowClosing (WindowEvent e) {
-			player.close ();
+		public void windowClosed (WindowEvent e) {
+			player.close();
 		   	}
 	});
 
