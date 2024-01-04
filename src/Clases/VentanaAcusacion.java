@@ -38,6 +38,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -70,6 +71,8 @@ public class VentanaAcusacion extends JFrame{
 	private JTable tablaLista;
 	private TablaLista modeloTabla;
 	
+	private boolean activarSiAcusacionFinal = false;
+	
 	//private HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>> mapaCordBotones = new HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>>();
 	/**
 	 * Para que solo se pueda seleccinar una opción en la JTable, guardo la fila
@@ -99,20 +102,20 @@ public class VentanaAcusacion extends JFrame{
 		
 		pnlLabelYFotos = new JPanel(new GridLayout(3,2));
 		
-		Font font = new Font("Arial", Font.BOLD, 25);
-		lblSospechoso = new JLabel("Sospechoso");
+		Font font = new Font("Times New Roman", Font.BOLD, 25);
+		lblSospechoso = new JLabel("Sospechoso", SwingConstants.CENTER);
 		lblSospechoso.setFont(font);
 		pnlLabelYFotos.add(lblSospechoso);
 		pnlFotoSospechoso = new JPanel();
 		pnlFotoSospechoso.setBorder(border);
 		pnlLabelYFotos.add(pnlFotoSospechoso);
-		lblArma = new JLabel("Arma");
+		lblArma = new JLabel("Arma", SwingConstants.CENTER);
 		lblArma.setFont(font);
 		pnlLabelYFotos.add(lblArma);
 		pnlFotoArma = new JPanel();
 		pnlFotoArma.setBorder(border);
 		pnlLabelYFotos.add(pnlFotoArma);
-		lblLugar = new JLabel("Lugar");
+		lblLugar = new JLabel("Lugar", SwingConstants.CENTER);
 		lblLugar.setFont(font);
 		pnlLabelYFotos.add(lblLugar);
 		pnlFotoLugar = new JPanel();
@@ -134,6 +137,7 @@ public class VentanaAcusacion extends JFrame{
 		for (Sitio sitio: Sitio.values()) {
 			cbLugar.addItem(sitio);
 		}
+		lblPorHabitacion = new JLabel();
 		
 		//Listeners en combos para los labels:
 		cbSospechoso.addActionListener(new ActionListener() {
@@ -203,20 +207,18 @@ public class VentanaAcusacion extends JFrame{
 			}
 		});
 		
-		//Recorrer las posiciones del tablero para buscar la posición del jugador
-//		ArrayList<ArrayList<Integer>> tablero = Gestion.tablero;
-//		for (ArrayList<Integer> fila: tablero) {
-//			for (Integer celda: fila) {
-//				switch(celda) {
-//				case 2:
-//					
-//				}
-//			}
-//		}
-		
+		//Primero añadir estos combos
 		pnlCombo.add(cbSospechoso);
 		pnlCombo.add(cbArma);
-		pnlCombo.add(cbLugar);
+		
+		//Llamar al método para decidir que componente poner
+		if (activarSiAcusacionFinal) {
+			cbLugar = (JComboBox<Sitio>) devuelveComp();
+			pnlCombo.add(cbLugar);
+		} else {
+			lblPorHabitacion = (JLabel) devuelveComp();
+			pnlCombo.add(lblPorHabitacion);
+		}
 		
 		getContentPane().add(pnlCombo, BorderLayout.WEST);
 		
@@ -294,6 +296,66 @@ public class VentanaAcusacion extends JFrame{
         Image newimg = image.getScaledInstance(tablaLista.getColumnModel().getColumn(0).getWidth(), 35,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
         lblSel.setIcon(new ImageIcon(newimg));
         return lblSel;
+	}
+	
+	private Component devuelveComp() {
+		lblPorHabitacion.setText("");
+		Sitio s;
+		//Buscar la posición del jugador
+		// Estas tres línes de abajo todavía no se pueden ejecutar pero tiene que hacerse así:
+//		System.out.println(Gestion.jugadores.get(0));
+//		int[] posicionJugador = Gestion.jugadores.get(Gestion.getNumTurno()).posicion;
+//		int posibleHabitacion = posicionJugador[1];
+		int posibleHabitacion = 0;
+		switch(posibleHabitacion) {
+		case 2:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 3:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 4:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 5:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 6:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 7:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 8:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 9:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 10:
+			s = Gestion.mapaAsociado.get(posibleHabitacion);
+			lblPorHabitacion.setText(s.toString());
+			break;
+		case 11:
+			activarSiAcusacionFinal = true;
+			return cbLugar; // Y luego le añado el listener
+		default:
+			String def = "<html>NO ESTÁS <br> EN NUNGUNA HABITACIÓN</html>"; //Para que en el JLabel se pueda hacer el salto de línea
+			lblPorHabitacion.setText(def);
+			break;
+		}
+		Border borde = BorderFactory.createLineBorder(Color.BLACK, 4);
+		lblPorHabitacion.setBorder(borde);
+		lblPorHabitacion.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		return lblPorHabitacion;
 	}
 	
 	
