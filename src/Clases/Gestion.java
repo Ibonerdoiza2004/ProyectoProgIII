@@ -73,6 +73,13 @@ public class Gestion {
 		}
 		return listaVacia;
 	}
+	public static HashMap<Asesinato, String> creacionAnotaciones() {
+		HashMap<Asesinato,String> anotacionesVacias = new HashMap<>();
+		for(Asesinato asesinato: datosPartida.todasLasCartas) {
+			anotacionesVacias.put(asesinato, "");
+		}
+		return anotacionesVacias;
+	}
 	public static void repartirCartas(ArrayList<Asesinato> cartas) {
 		ArrayList<Asesinato>copiaCartas = new ArrayList<>(cartas);
 		int numCartas = cartas.size();
