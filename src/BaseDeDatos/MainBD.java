@@ -39,16 +39,25 @@ public class MainBD {
 	private static JButton btnTablaStats = new JButton("Tabla Estadísticas");
 	private static JButton btnTablaPartida = new JButton("Tabla Partida");
 	private static JButton btnUsuario = new JButton("Tabla Usuario");
+	private static ConexionSQlite conexion;
 
 	public static void main(String[] args) {
 		
-		Conexion c = new Conexion();
+		//Conexion c = new Conexion();
+		conexion = new ConexionSQlite();
 		
 		try {
-			conn = c.conectar();
+			//conn = c.conectar();
+			try {
+				conn = conexion.connect();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 			statement = conn.createStatement();
 			
 			//Primero crear las tablas desde aquí:
+			
+			
 			
 			
 			//Datos para tabla Estadísticas

@@ -56,7 +56,8 @@ public class VentanaAcusacion extends JFrame{
 	//Para los listeners:
 	private Sospechosos sospechosoSel;
 	private Armas armaSel;
-	private Sitio sitioSel;
+	private Sitio sitioSel; //Para cuado esté en el centro para la acusación final 
+	private JLabel lblPorHabitacion;
 	
 	private JLabel lblSospechoso;
 	private JLabel lblArma;
@@ -162,12 +163,6 @@ public class VentanaAcusacion extends JFrame{
 			}
 		});
 		
-		pnlCombo.add(cbSospechoso);
-		pnlCombo.add(cbArma);
-		pnlCombo.add(cbLugar);
-		
-		getContentPane().add(pnlCombo, BorderLayout.WEST);
-		
 		//Listeners a los combos:
 		cbArma.addActionListener(new ActionListener() {
 			
@@ -207,6 +202,25 @@ public class VentanaAcusacion extends JFrame{
 				
 			}
 		});
+		
+		//Recorrer las posiciones del tablero para buscar la posición del jugador
+//		ArrayList<ArrayList<Integer>> tablero = Gestion.tablero;
+//		for (ArrayList<Integer> fila: tablero) {
+//			for (Integer celda: fila) {
+//				switch(celda) {
+//				case 2:
+//					
+//				}
+//			}
+//		}
+		
+		pnlCombo.add(cbSospechoso);
+		pnlCombo.add(cbArma);
+		pnlCombo.add(cbLugar);
+		
+		getContentPane().add(pnlCombo, BorderLayout.WEST);
+		
+		
 		
 		getContentPane().add(pnlLabelYFotos, BorderLayout.CENTER);
 		//getContentPane().add(new JScrollPane(jlSospechoso), BorderLayout.EAST);
