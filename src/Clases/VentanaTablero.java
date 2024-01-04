@@ -685,9 +685,9 @@ public class VentanaTablero extends JPanel{
 					e.printStackTrace();
 				}
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
-					Gestion.aumentarTurno();
-					new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase());
+					new VentanaTexto("TURNO DE "+Gestion.jugadores.get((Gestion.getNumTurno()+1)%Gestion.jugadores.size()).getPersonaje().getNombre().toString().toUpperCase());
 					eliminarPanel();
+					Gestion.aumentarTurno();
 					String lockSiguienteVentana = "siguienteVentana";
 					synchronized (lockSiguienteVentana) {
 						try {
