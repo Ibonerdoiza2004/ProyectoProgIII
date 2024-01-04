@@ -8,6 +8,10 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -20,6 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
 
 public class VentanaInicio extends JPanel{
 	
@@ -31,7 +38,7 @@ public class VentanaInicio extends JPanel{
 	protected JButton opciones;
 	protected JButton cerrar;
 	
-	public VentanaInicio() {
+	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
 		
 		
 		pnlCentral = new JPanel(new GridLayout(4,1));
@@ -104,7 +111,34 @@ public class VentanaInicio extends JPanel{
 			}
 		});
 		
+		
 		Gestion.ventanaJuego = new JFrame();
+		
+		Player player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
+		
+		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
+			public void windowOpened (WindowEvent e) {
+		    		   
+				Thread t = new Thread(new Runnable() {
+					@Override
+						public void run() {
+							try {
+								player.play ();
+							} catch (JavaLayerException e) {
+								e.printStackTrace();
+							}			
+						}
+					});
+		    		t.start();
+			}
+	});
+	
+	Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
+		public void windowClosing (WindowEvent e) {
+			player.close ();
+		   	}
+	});
+
 		Gestion.ventanaJuego.setLayout(null);
 		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
@@ -125,7 +159,7 @@ public class VentanaInicio extends JPanel{
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
     }
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, JavaLayerException {
 		VentanaInicio ventana = new VentanaInicio();
 	}
 	public void eliminarPanel() {
