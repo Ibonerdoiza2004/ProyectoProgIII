@@ -31,7 +31,6 @@ public class Gestion {
 	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();
 	protected static JFrame ventanaJuego;
 	protected static HashMap<Integer, Sitio> mapaAsociado = asocioarHabitaciones();
-	
 	public static int getNumTurno() {
 		return numTurno;
 	}
