@@ -132,6 +132,7 @@ public class VentanaInicio extends JPanel{
 		    		t.start();
 			}
 	});
+		
 	
 	Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 		public void windowClosing (WindowEvent e) {
