@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.47.jar"/>
 	<classpathentry kind="lib" path="lib/jl-1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/apala/OneDrive/Documentos/Java/sqlite-jdbc-3.32.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.32.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
