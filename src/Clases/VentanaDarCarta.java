@@ -102,9 +102,7 @@ public class VentanaDarCarta extends JPanel{
 	    Jugador jugador = Gestion.jugadores.get(0);//
 	    
 	    ImageIcon cartaPoseida = jugador.cartas.get(0).getFoto();
-	    if(cartaPoseida==null) {//
-	    	cartaPoseida = Gestion.datosPartida.armas.get(4).getFoto();//
-	    }//
+	   
 		Image imagenCartaPoseida = cartaPoseida.getImage();
 	    
 	    altoCartaPoseida = pCartasPoseidas.getHeight()-150;
@@ -129,11 +127,9 @@ public class VentanaDarCarta extends JPanel{
 	    cartas = new ArrayList<Asesinato>(jugador.cartas);
 		ArrayList<ArrayList<Integer>>coordsCartas = new ArrayList<>();
 		for (int i = 0; i <jugador.cartas.size();i++) {
-			if(jugador.cartas.get(i) instanceof Lugar) {//
-				cartaPoseida=Gestion.datosPartida.armas.get(4).getFoto();//
-			}else {//
-				cartaPoseida=jugador.cartas.get(i).getFoto();//
-			}//
+			
+			cartaPoseida=jugador.cartas.get(i).getFoto();
+			
 	    	
 		    imagenCartaPoseida = cartaPoseida.getImage();
 		    imagenCartaPoseida = imagenCartaPoseida.getScaledInstance(anchoCartaPoseida, altoCartaPoseida, Image.SCALE_SMOOTH);
@@ -142,7 +138,6 @@ public class VentanaDarCarta extends JPanel{
 			lCartaPoseida.setIcon(cartaPoseida);
 			int x = i*anchoCartaPoseida+espacioEntreCartasPoseidas*(i+1);
 			int y = (pCartasPoseidas.getHeight()-imagenCartaPoseida.getHeight(null))/2;
-			System.out.println(x+" "+y);
 			ArrayList<Integer>coordsActual = new ArrayList<>();
 			coordsActual.add(x);
 			coordsActual.add(y);
@@ -191,21 +186,18 @@ public class VentanaDarCarta extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(cartaParaMostrar);
 				if(cartaParaMostrar!=null) {
-					System.out.println("AAAA");
 					Gestion.cartasEnsenyadas.put(cartaParaMostrar, Gestion.jugadores.get(numeroJugador));
 				}else {
-					System.out.println("BBBBB");
 				}
-				numeroJugador = (numeroJugador+1)%5/*Gestion.jugadores.size()*/;
+				numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
 				if(numeroJugador!=Gestion.getNumTurno()) {
 					Gestion.acusacion.clear();
 					Gestion.jugadores.clear();
 					eliminarPanel();
 					new VentanaDarCarta(numeroJugador);
 				}else {
-					System.out.println(Gestion.cartasEnsenyadas);
+					System.out.println(Gestion.cartasEnsenyadas.keySet());
 					f.dispose();
 				}
 				
