@@ -211,12 +211,12 @@ public class VentanaAcusacion extends JPanel{
 		pnlCombo.add(cbArma);
 		
 		//Llamar al método para decidir que componente poner
-		if (activarSiAcusacionFinal) {
-			cbLugar = (JComboBox<Sitio>) devuelveComp();
-			pnlCombo.add(cbLugar);
-		} else {
+		if (devuelveComp() instanceof JLabel) {
 			lblPorHabitacion = (JLabel) devuelveComp();
 			pnlCombo.add(lblPorHabitacion);
+		} else {
+			cbLugar = (JComboBox<Sitio>) devuelveComp();
+			pnlCombo.add(cbLugar);
 		}
 		pnlCombo.setBounds(anchoCarta/4, 0, (int)Gestion.sizePantalla.getWidth()/2-2*anchoCarta-200, (int)Gestion.sizePantalla.getHeight());
 		this.add(pnlCombo);
@@ -242,16 +242,17 @@ public class VentanaAcusacion extends JPanel{
 				System.out.println(cbArma.getSelectedIndex());
 				armaElegida = Gestion.datosPartida.armas.get(cbArma.getSelectedIndex());
 				Gestion.acusacion.add(armaElegida);
-				if(activarSiAcusacionFinal) {
-					lugarElegido=Gestion.datosPartida.lugares.get(cbLugar.getSelectedIndex());
-				}else {
+				if(devuelveComp() instanceof JLabel) {
 					for (Lugar l:Gestion.datosPartida.lugares) {
 						if (l.getNombre().equals(((Sitio)cbLugar.getSelectedItem()))) {
 							lugarElegido = l;
 						}
 					}
 					
+				}else {
+					lugarElegido=Gestion.datosPartida.lugares.get(cbLugar.getSelectedIndex());
 				}
+					
 				Gestion.acusacion.add(lugarElegido);
 				new VentanaDarCarta((Gestion.getNumTurno()+1)%Gestion.jugadores.size());
 				eliminarPanel();
