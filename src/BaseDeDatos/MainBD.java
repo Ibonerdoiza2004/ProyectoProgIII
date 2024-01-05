@@ -26,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-enum Sospechosos{Andoni, Jenny, Carlos, Asier, Nekane, Iñaki}
 enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
 enum NombrePersonaje{Rojo, Amarillo, Negro, Verde, Azul, Morado};
 enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInvestigator, ClueConqueror, CipherSherlock};
@@ -38,11 +37,11 @@ public class MainBD {
 	private static Statement statement;
 	private static ResultSet rs;
 	
-	private static DefaultTableModel modeloTablaStats = new DefaultTableModel();
+	private static DefaultTableModel modeloTabla;
 	private static JPanel pnlCentral = new JPanel();
 	private static JButton btnTablaStats = new JButton("Tabla Estadísticas");
 	private static JButton btnTablaPartida = new JButton("Tabla Partida");
-	private static JButton btnUsuario = new JButton("Tabla Usuario");
+	private static JButton btnJugador = new JButton("Tabla Jugador");
 	private static ConexionSQlite conexion;
 
 	public static void main(String[] args) {
@@ -90,10 +89,10 @@ public class MainBD {
 			statement.executeUpdate(crearTablaPartida);
 			
             String crearTablaJugador = "CREATE TABLE JUGADOR ("
-                    + "ID_JUGADOR INTEGER,"
+                    + "ID_JUGADOR STRING,"
                     + "NOMBRE STRING,"
                     + "PERSONAJE_ASIGNADO STRING,"
-                    + "HABITACION_ACTUAL STRING,"
+                    + "HABITACION_MAS_VISITADA STRING,"
                     + "NUM_PARTIDAS_JUGADAS INTEGER"
                     + ")";
             statement.executeUpdate(crearTablaJugador);
@@ -166,16 +165,35 @@ public class MainBD {
 			
 			//Cargar datos para 50 jugadores:
 			PosiblesNicks[] valoresNicks = PosiblesNicks.values();
-//			i = 0;
-//			while (i < 50) {
-//				//AQUI
-//			}
+			Sitio[] valoresSitio = Sitio.values();
+			PreparedStatement psJugador = conn.prepareStatement("INSERT INTO JUGADOR VALUES (?, ?, ?, ?, ?)");
+			i = 0;
+			while (i < 50) {
+				String idJugador = "J"+i;
+				String nom = valoresNicks[r.nextInt(valoresNicks.length-1)+1].toString();
+				String personajeAsigando = valores[r.nextInt(valores.length-1)+1].toString();
+				String habitacion = valoresSitio[r.nextInt(valoresSitio.length-1)+1].toString();
+				Integer numPartidas = r.nextInt(50)+1;
+				psJugador.setString(1, idJugador);
+				psJugador.setString(2, nom);
+				psJugador.setString(3, personajeAsigando);
+				psJugador.setString(4, habitacion);
+				psJugador.setInt(5, numPartidas);
+				psJugador.executeUpdate();
+				i ++;
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		//Después de cargar todo, se carga la parte visual
+		try {
+			Thread.sleep(2000); //Simplemente para que se cargen todos los datos antes de cargarlos en las tablas
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		//Después de cargar todo, se carga la parte visual, las JTables
 		ini();
 		ventBD.setVisible( true );
 		
@@ -183,11 +201,32 @@ public class MainBD {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				cambiarTabla();
 				cargarTablaEstadisticas();
-				ventBD.add(new JScrollPane(tablaEstadisticas), BorderLayout.CENTER);
 				ventBD.repaint();
 				ventBD.revalidate();
-				
+			}
+		});
+		
+		btnTablaPartida.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			cambiarTabla();
+			cargarTablaPartida();
+			ventBD.repaint();
+			ventBD.revalidate();
+			}
+		});
+		
+		btnJugador.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cambiarTabla();
+				cargarTablaJugador();
+				ventBD.repaint();
+				ventBD.revalidate();
 			}
 		});
 		
@@ -210,12 +249,25 @@ public class MainBD {
 	private static void ini() {
 		ventBD = new JFrame();
 		ventBD.setLayout(new BorderLayout());
-		ventBD.setSize(640, 480);
+		ventBD.setSize(800, 600);
 		ventBD.setLocationRelativeTo( null );
 		ventBD.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
+		modeloTabla = new DefaultTableModel();
+		tablaDatos = new JTable();
+		ventBD.add(new JScrollPane(tablaDatos), BorderLayout.CENTER); //Solo hacerlo una vez
+		
 		JPanel pnlBotonera = new JPanel();
-		pnlBotonera.add(btnTablaStats); pnlBotonera.add(btnTablaPartida); pnlBotonera.add(btnUsuario);
+		pnlBotonera.add(btnTablaStats); pnlBotonera.add(btnTablaPartida); pnlBotonera.add(btnJugador);
+		
+		ventBD.add(pnlBotonera, BorderLayout.SOUTH);
+	}
+	
+	private static JTable tablaDatos;
+	private static JFrame ventBD;
+	
+	
+	private static void cargarTablaEstadisticas() {
 		
 		Vector<String> cabeceras = new Vector<String>();
 		cabeceras.add("NUM_PARTIDAS"); cabeceras.add("JUGADORES_REALES"); cabeceras.add("NUM_NPCS");
@@ -223,17 +275,8 @@ public class MainBD {
 		cabeceras.add("MRS_WHITE"); cabeceras.add("MR_GREEN"); cabeceras.add("MRS_PEACOCK");
 		cabeceras.add("PROFESOR_PLUM");
 	
-		modeloTablaStats.setDataVector(new Vector<Vector<Object>>(), cabeceras);
-		tablaEstadisticas = new JTable(modeloTablaStats);
-		
-		ventBD.add(pnlBotonera, BorderLayout.SOUTH);
-	}
-	
-	private static JTable tablaEstadisticas;
-	private static JFrame ventBD;
-	
-	
-	private static void cargarTablaEstadisticas() {
+		modeloTabla.setDataVector(new Vector<Vector<Object>>(), cabeceras);
+		tablaDatos.setModel(modeloTabla);
 		
 		String sent = "";
 		try {
@@ -254,13 +297,77 @@ public class MainBD {
 				fila.add(num_partidas); fila.add(jug_reales); fila.add(npcs);
 				fila.add(media_h_partidas); fila.add(miss_scarlet); fila.add(colonel_mustard);
 				fila.add(mrs_white); fila.add(mr_green); fila.add(mrs_peacock); fila.add(profesor_plum);
-				modeloTablaStats.addRow(fila);
+				modeloTabla.addRow(fila);
 			}
-			tablaEstadisticas.repaint();
+			tablaDatos.repaint();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private static void cargarTablaPartida() {
+		
+		Vector<String> cabeceras = new Vector<String>();
+		cabeceras.add("ID_PARTIDA"); cabeceras.add("FECHA_PARTIDA"); cabeceras.add("DURACION");
+		cabeceras.add("GANADOR"); cabeceras.add("NUM_JUGS");
+		//Estas dos líneas de abajo las vuelva poner por si esta es la primera tabla que se selecciona
+		modeloTabla.setDataVector(new Vector<Vector<Object>>(), cabeceras);
+		tablaDatos.setModel(modeloTabla);
+		
+		String sent = "SELECT * FROM PARTIDA";
+		try {
+			rs = statement.executeQuery(sent);
+			while (rs.next()) {
+				int idPartida = rs.getInt(1);
+				String fechaPartida = rs.getString(2);
+				int duracion = rs.getInt(3);
+				String ganador = rs.getString(4);
+				int numJugadores = rs.getInt(5);
+				Vector<Object> fila = new Vector<Object>();
+				fila.add(idPartida); fila.add(fechaPartida); fila.add(duracion); fila.add(ganador); fila.add(numJugadores);
+				modeloTabla.addRow(fila);
+			}
+			tablaDatos.repaint();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void cargarTablaJugador() {
+		
+		Vector<String> cabeceras = new Vector<String>();
+		cabeceras.add("ID_JUGADOR"); cabeceras.add("NOMBRE"); cabeceras.add("PERSONAJE_ASIGNADO");
+		cabeceras.add("HABITACION_MAS_VISITADA"); cabeceras.add("NUM_PARTIDAS_JUGADAS");
+		modeloTabla.setDataVector(new Vector<Vector<Object>>(), cabeceras);
+		tablaDatos.setModel(modeloTabla);
+		
+		String sent = "SELECT * FROM JUGADOR";
+		try {
+			rs = statement.executeQuery(sent);
+			
+			while (rs.next()) {
+				String idJugador = rs.getString(1);
+				String nombre = rs.getString(2);
+				String personajeAsignado = rs.getString(3);
+				String habitacion = rs.getString(4);
+				int partidasJugadas = rs.getInt(5);
+				Vector<Object> fila = new Vector<Object>();
+				fila.add(idJugador); fila.add(nombre); fila.add(personajeAsignado); fila.add(habitacion);
+				fila.add(partidasJugadas);
+				modeloTabla.addRow(fila);
+			}
+			tablaDatos.repaint();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private static void cambiarTabla() {
+		modeloTabla.setRowCount(0);
+		modeloTabla.setColumnCount(0);
+		tablaDatos.repaint();
 	}
 	
 }
