@@ -105,7 +105,7 @@ public class VentanaTablero extends JPanel{
 		panelDerecha.setLayout(null);
 		panelLista = new JPanel(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
-		panelLista.add(new Lista(panelLista).sPane);
+		panelLista.add(new Lista(panelLista, Gestion.getNumTurno()).sPane);
 		panelDesplegable.setLayout(null);
 		panelDesplegable.setBounds(0, (int)Gestion.sizePantalla.getHeight(), (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-2*altoBoton);
 		panelDesplegable.add(panelLista);
@@ -698,7 +698,10 @@ public class VentanaTablero extends JPanel{
 					}
 					new VentanaTablero();
 				}else {
-					//Aquí se puede poner un switch que dependiendo de en qué habitación esté el personaje, le pase una habitación diferente a la ventana acusación
+					Gestion.cartasEnsenyadas.clear();
+					//Aquí se añade un nuevo panel con VentanaAcusacion
+					
+					eliminarPanel();
 				}
 			}
 		});

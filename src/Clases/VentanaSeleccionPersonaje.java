@@ -1074,7 +1074,6 @@ public class VentanaSeleccionPersonaje extends JPanel{
 				} else if (cont == 1){
 					eliminarPanel();
 					anadirPanel();
-					Gestion.jugadores.clear();
 				} 
 				
 			}	
