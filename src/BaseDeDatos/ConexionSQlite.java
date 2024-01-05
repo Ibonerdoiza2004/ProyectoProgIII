@@ -14,7 +14,7 @@ public class ConexionSQlite {
 		
 		Class.forName("org.sqlite.JDBC");
 		
-		conn = DriverManager.getConnection("jdbc:sqlite:bd_proyecto_prog.bd");
+		conn = DriverManager.getConnection("jdbc:sqlite:bd_proyecto_prog.db");
 		
 		return conn;
 	}

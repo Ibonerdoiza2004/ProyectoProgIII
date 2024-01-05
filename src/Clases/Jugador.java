@@ -2,7 +2,6 @@ package Clases;
 
 import java.util.*;
 enum OpcionesLista{SI, NO, REGULAR}
-enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInvestigator, ClueConqueror, CipherSherlock};
 
 public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
 	

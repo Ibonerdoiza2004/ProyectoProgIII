@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,9 +28,12 @@ import javax.swing.table.DefaultTableModel;
 
 enum Sospechosos{Andoni, Jenny, Carlos, Asier, Nekane, Iñaki}
 enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
+enum NombrePersonaje{Rojo, Amarillo, Negro, Verde, Azul, Morado};
+enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInvestigator, ClueConqueror, CipherSherlock};
 
 public class MainBD {
 	
+	private static int Num_Partida = 0;
 	private static Connection conn;
 	private static Statement statement;
 	private static ResultSet rs;
@@ -59,7 +63,7 @@ public class MainBD {
 			//Estas tres líneas son provisionales
 			statement.executeUpdate("DROP TABLE IF EXISTS estadisticas");
 			statement.executeUpdate("DROP TABLE IF EXISTS partida");
-			statement.executeUpdate("DROP TABLE IF EXISTS usuario");
+			statement.executeUpdate("DROP TABLE IF EXISTS jugador");
 			
 			String crearTablaEstadisticas = "CREATE TABLE ESTADISTICAS ("
 			        + "NUM_PARTIDAS_MES INTEGER,"
@@ -102,42 +106,70 @@ public class MainBD {
 			 * Elimino lo todos los datos de la tabla
 			 * hasta cargar los oficiales
 			 */
+			int num_partidas_mes = 0; //Voy a necesitar esta variable
 			while (i != 20) {
 				
 				//Datos de prueba para tabla estadísticas:
-				int num_partidas_mes = r.nextInt(500)+30;
-				int num_jugadores_reales = r.nextInt(2500);
-				int num_npcs = 3000-num_jugadores_reales;
+				num_partidas_mes = r.nextInt(100)+1;
+				int num_jugadores_reales = r.nextInt(450)+1;
+				int num_npcs = 600-num_jugadores_reales;
 				int duracion_partida = r.nextInt(3)+1;
-				int miss_scarlet = r.nextInt(500)+50;
-				int colonel_Mustard = r.nextInt(500)+50;
-				int mrs_white = r.nextInt(500)+50;
-				int mr_green = r.nextInt(500)+50;
-				int mrs_peacock = r.nextInt(500)+50;
-				int profesor_plum = r.nextInt(500)+50;
+				int numEscogidos = 0;
+				int miss_scarlet = r.nextInt(100)+1;
+				int colonel_Mustard = r.nextInt(100)+1;
+				int mrs_white = r.nextInt(100)+1;
+				int mr_green = r.nextInt(100)+1;
+				int mrs_peacock = r.nextInt(100)+1;
+				numEscogidos += miss_scarlet; numEscogidos += colonel_Mustard; numEscogidos += mrs_white;
+				numEscogidos += mr_green; numEscogidos += mrs_peacock;
+				int profesor_plum = 600 - numEscogidos;
 				String sent = "insert into estadisticas values (" + num_partidas_mes + ", " + num_jugadores_reales
 						+ ", " + num_npcs + ", " + duracion_partida + ", " + miss_scarlet + ", " + colonel_Mustard
 						+ ", " + mrs_white + ", " + mr_green + ", " + mrs_peacock + ", " + profesor_plum + ")";
 				System.out.println(sent);
 				statement.executeUpdate(sent);
-				
-				//Datos de prueba para tabla partida:
-				int id_partida = r.nextInt(100+1);
-				String fechaAleatoria = "2023-11-13";
-		        int duracion_p = r.nextInt(3+1);
-		        String ganador = "ganador";
-		        int jugadores = r.nextInt(6+1);
-		        sent = "insert into partida values (" + id_partida + ", " + fechaAleatoria + ", " + 
-		        duracion_p + ", " + ganador + ", " + jugadores + ")";
-		        System.out.println(java.sql.Date.valueOf(fechaAleatoria));
-		        System.out.println(sent);
-		        statement.executeUpdate(sent);
 		        
 		        //Datos de prueba para tabla Jugador:
-		        int id_jugador = r.nextInt(50+1);
-		        //____________________________________SEGUIR AQUI
+		        //int id_jugador = r.nextInt(50+1);
+		        
 				i ++;
 			}
+			
+			//Cargar datos de las partidas del último mes
+			i = 0;
+			NombrePersonaje[] valores = NombrePersonaje.values();
+			while (i < num_partidas_mes) {
+				Num_Partida ++;
+				//Para insertar mejor crear PrepraedStatements
+				PreparedStatement psPartida = conn.prepareStatement("INSERT INTO partida VALUES (?,?,?,?,?)");
+				
+				//Datos de prueba para tabla partida:
+				int id_partida = Num_Partida;
+				//String fechaAleatoria = "2023-11-13";
+				LocalDate fechaAleatoria = LocalDate.of(2023, 11, r.nextInt(29) + 1);
+				String fechaFormateada = fechaAleatoria.toString();
+		        int duracion_p = r.nextInt(3)+1;
+		        String ganador = valores[r.nextInt(valores.length-1)+1].name();
+		        int numJugadores = r.nextInt(6)+1;
+		        psPartida.setInt(1, id_partida);
+		        psPartida.setString(2, fechaFormateada);
+		        psPartida.setInt(3, duracion_p);
+		        psPartida.setString(4, ganador);
+		        psPartida.setInt(5, numJugadores);
+		        psPartida.executeUpdate();
+//				String sent = "insert into partida values (" + id_partida + ", " + fechaFormateada
+//						+ ", " + duracion_p + ", " + ganador + ", " + numJugadores + ")";
+//				System.out.println(sent);
+//				statement.executeUpdate(sent);
+		        i ++;
+			}
+			
+			//Cargar datos para 50 jugadores:
+			PosiblesNicks[] valoresNicks = PosiblesNicks.values();
+//			i = 0;
+//			while (i < 50) {
+//				//AQUI
+//			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -164,9 +196,7 @@ public class MainBD {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
-//					rs.close();
-//					statement.close();
-//					conn.close();
+					conexion.disconnect(); //Acabar la conexón con la BD al cerrar la ventana
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
