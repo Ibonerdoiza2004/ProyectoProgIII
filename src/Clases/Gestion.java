@@ -30,7 +30,6 @@ public class Gestion {
 	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites = crearSprites();
 	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();
 	protected static JFrame ventanaJuego;
-	protected static HashMap<Integer, Sitio> mapaAsociado = asocioarHabitaciones();
 	protected static HashMap<Asesinato, Jugador>cartasEnsenyadas = new HashMap<>();
 	public static int getNumTurno() {
 		return numTurno;
@@ -135,42 +134,7 @@ public class Gestion {
 		
 		return tablero;
 	}
-	
-	
-
-	public void turnoJugador() {
 		
-	}
-	
-	
-	public static HashMap<Integer, Sitio> asocioarHabitaciones() {
-		HashMap<Integer, Sitio> mapaAsociado = new HashMap<Integer, Sitio>();
-		for (ArrayList<Integer> fila: Gestion.tablero) {
-			for (Integer celda: fila) {
-				switch (celda) {
-				case 2:
-					mapaAsociado.put(celda, Sitio.CERO_UNO);
-				case 3:
-					mapaAsociado.put(celda, Sitio.ASEO);
-				case 4:
-					mapaAsociado.put(celda, Sitio.SALA_DE_ORDENADORES);
-				case 5:
-					mapaAsociado.put(celda, Sitio.CAFETERIA);
-				case 6:
-					mapaAsociado.put(celda, Sitio.LABORATORIO);
-				case 7:
-					mapaAsociado.put(celda, Sitio.DECANATO);
-				case 8:
-					mapaAsociado.put(celda, Sitio.TREINTA_Y_TRES);
-				case 9:
-					mapaAsociado.put(celda, Sitio.GIMNASIO);
-				case 10:
-					mapaAsociado.put(celda, Sitio.CLAUSTRO);
-				}
-			}
-		}
-		return mapaAsociado;
-	}
 	
 
 	public static void main(String[] args) {
@@ -196,8 +160,6 @@ public class Gestion {
 			System.out.println("");
 		}
 		
-		//Número y nombre de habitación asociados: 
-		System.out.println(asocioarHabitaciones());
 	}
 	public static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> crearSprites(){
 		int inicioX = 4;
@@ -213,7 +175,6 @@ public class Gestion {
 			try {
 				imagenHojaSprites = ImageIO.read(new File(("src/sprites/"+personaje+".png")));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				crearSprites();
 			}

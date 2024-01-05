@@ -26,6 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -44,11 +45,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 
 
-public class VentanaAcusacion extends JFrame{
+public class VentanaAcusacion extends JPanel{
 	
 	//Atributos:
 	private JPanel pnlCombo;
-	private JPanel pnlLabelYFotos;
+	private JPanel pnlLabels;
+	private JPanel pnlFotos;
 	
 	private JComboBox<Sospechosos> cbSospechoso;
 	private JComboBox<Armas> cbArma;
@@ -64,13 +66,15 @@ public class VentanaAcusacion extends JFrame{
 	private JLabel lblArma;
 	private JLabel lblLugar;
 	
+	Sospechoso sospechosoElegido;
+	Arma armaElegida;
+	Lugar lugarElegido;
+	
 	private JPanel pnlFotoSospechoso;
 	private JPanel pnlFotoArma;
 	private JPanel pnlFotoLugar;
-	
-	private JTable tablaLista;
-	private TablaLista modeloTabla;
-	
+	int anchoCarta;
+	int altoCarta = (int)Gestion.sizePantalla.getHeight()/3;
 	private boolean activarSiAcusacionFinal = false;
 	
 	//private HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>> mapaCordBotones = new HashMap<Point, HashMap<JPanel, ArrayList<JRadioButton>>>();
@@ -83,44 +87,39 @@ public class VentanaAcusacion extends JFrame{
 	int columnaEnTabla;
 	private HashMap<Integer, Integer> rowYcolYaSel = new HashMap<Integer, Integer>();
 	
-	public JTable getTablaLista() {
-		return tablaLista;
-	}
-
-	public void setTablaLista(JTable tablaLista) {
-		this.tablaLista = tablaLista;
-	}
 
 	public VentanaAcusacion() {
 		
-		setSize(new Dimension(640,480));
-		setLocationRelativeTo( null );
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("VENTANA ACUSACION");
-		
+		setSize(Gestion.sizePantalla);
+		setLayout(null);
+		anchoCarta = altoCarta*Gestion.datosPartida.armas.get(0).getFoto().getIconWidth()/Gestion.datosPartida.armas.get(0).getFoto().getIconHeight();
 		Border border = BorderFactory.createLineBorder(Color.BLACK, 5, true);
 		
-		pnlLabelYFotos = new JPanel(new GridLayout(3,2));
+		pnlLabels= new JPanel(new GridLayout(3,1));
+		pnlFotos= new JPanel(new GridLayout(3,1));
 		
 		Font font = new Font("Times New Roman", Font.BOLD, 25);
 		lblSospechoso = new JLabel("Sospechoso", SwingConstants.CENTER);
+		lblSospechoso.setOpaque(false);
 		lblSospechoso.setFont(font);
-		pnlLabelYFotos.add(lblSospechoso);
+		pnlLabels.add(lblSospechoso);
 		pnlFotoSospechoso = new JPanel();
 		pnlFotoSospechoso.setBorder(border);
-		pnlLabelYFotos.add(pnlFotoSospechoso);
+		pnlFotos.add(pnlFotoSospechoso);
 		lblArma = new JLabel("Arma", SwingConstants.CENTER);
 		lblArma.setFont(font);
-		pnlLabelYFotos.add(lblArma);
+		lblArma.setOpaque(false);
+		pnlLabels.add(lblArma);
 		pnlFotoArma = new JPanel();
 		pnlFotoArma.setBorder(border);
-		pnlLabelYFotos.add(pnlFotoArma);
+		pnlFotos.add(pnlFotoArma);
 		lblLugar = new JLabel("Lugar", SwingConstants.CENTER);
 		lblLugar.setFont(font);
-		pnlLabelYFotos.add(lblLugar);
+		lblLugar.setOpaque(false);
+		pnlLabels.add(lblLugar);
 		pnlFotoLugar = new JPanel();
 		pnlFotoLugar.setBorder(border);
-		pnlLabelYFotos.add(pnlFotoLugar);
+		pnlFotos.add(pnlFotoLugar);
        
 		pnlCombo = new JPanel(new GridLayout(3,1));
 		
@@ -182,8 +181,8 @@ public class VentanaAcusacion extends JFrame{
 		        lblSel.setIcon(new ImageIcon(newimg));
 		        pnlFotoArma.removeAll();
 		        pnlFotoArma.add(lblSel,BorderLayout.CENTER);
-		        repaint();
-		        revalidate();
+		        Gestion.ventanaJuego.repaint();
+		        Gestion.ventanaJuego.revalidate();
 				
 			}
 		});
@@ -201,8 +200,8 @@ public class VentanaAcusacion extends JFrame{
 		        lblSel.setIcon(new ImageIcon(newimg));
 		        pnlFotoSospechoso.removeAll();
 		        pnlFotoSospechoso.add(lblSel, BorderLayout.CENTER);
-		        repaint();
-		        revalidate();
+		        Gestion.ventanaJuego.repaint();
+		        Gestion.ventanaJuego.revalidate();
 				
 			}
 		});
@@ -219,83 +218,50 @@ public class VentanaAcusacion extends JFrame{
 			lblPorHabitacion = (JLabel) devuelveComp();
 			pnlCombo.add(lblPorHabitacion);
 		}
-		
-		getContentPane().add(pnlCombo, BorderLayout.WEST);
-		
-		
-		
-		getContentPane().add(pnlLabelYFotos, BorderLayout.CENTER);
-		//getContentPane().add(new JScrollPane(jlSospechoso), BorderLayout.EAST);
-		
-		modeloTabla = new TablaLista();
-		tablaLista = new JTable(modeloTabla);
-		//tablaLista.setRowHeight(200);
-		
-		/**
-		 * Listener para coger las coordenadas en la tabla
-		 * y poder marcar tu elección
-		 */
-		tablaLista.addMouseListener(new MouseAdapter() {
+		pnlCombo.setBounds(anchoCarta/4, 0, (int)Gestion.sizePantalla.getWidth()/2-2*anchoCarta-200, (int)Gestion.sizePantalla.getHeight());
+		this.add(pnlCombo);
+		pnlLabels.setBounds((int)Gestion.sizePantalla.getWidth()/2-3*anchoCarta/2-200, 0, 200, (int)Gestion.sizePantalla.getHeight());
+		this.add(pnlLabels);
+		pnlFotos.setBounds((int)Gestion.sizePantalla.getWidth()/2-5*anchoCarta/4, 0, anchoCarta, (int)Gestion.sizePantalla.getHeight());
+		this.add(pnlFotos);
+		JPanel panelLista = new JPanel(null);
+		panelLista.setBounds((int)Gestion.sizePantalla.getWidth()/2, 0, (int)(Gestion.sizePantalla.getWidth()/2) ,(int)Gestion.sizePantalla.getHeight()-150);
+		panelLista.add(new Lista(panelLista, Gestion.getNumTurno()).sPane);
+		this.add(panelLista);
+		JButton btnAcusar= new JButton("Acusar");
+		btnAcusar.setFont(new Font("Serif", Font.BOLD, 33));
+		btnAcusar.setBounds((int)Gestion.sizePantalla.getWidth()/2, (int)Gestion.sizePantalla.getHeight()-150, (int)Gestion.sizePantalla.getWidth()/2, 150);
+		btnAcusar.addActionListener(new ActionListener() {
 			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				filaEnTabla = tablaLista.rowAtPoint(e.getPoint());
-				columnaEnTabla = tablaLista.columnAtPoint(e.getPoint());
-				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
-					//filasYaSeleccionadas.add(filaEnTabla);
-					tablaLista.repaint();
-				} else  {
-					filaEnTabla = 0;
-					columnaEnTabla = 0;
+			public void actionPerformed(ActionEvent e) {
+				Gestion.acusacion = new ArrayList<>();
+				System.out.println(cbSospechoso.getSelectedIndex());
+				sospechosoElegido = Gestion.datosPartida.sospechosos.get(cbSospechoso.getSelectedIndex());
+				Gestion.acusacion.add(sospechosoElegido);
+				System.out.println(cbArma.getSelectedIndex());
+				armaElegida = Gestion.datosPartida.armas.get(cbArma.getSelectedIndex());
+				Gestion.acusacion.add(armaElegida);
+				if(activarSiAcusacionFinal) {
+					lugarElegido=Gestion.datosPartida.lugares.get(cbLugar.getSelectedIndex());
+				}else {
+					for (Lugar l:Gestion.datosPartida.lugares) {
+						if (l.getNombre().equals(((Sitio)cbLugar.getSelectedItem()))) {
+							lugarElegido = l;
+						}
+					}
+					
 				}
-				
+				Gestion.acusacion.add(lugarElegido);
+				new VentanaDarCarta((Gestion.getNumTurno()+1)%Gestion.jugadores.size());
+				eliminarPanel();
 			}
 		});
 		
-		tablaLista.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-		    private JLabel lblSel = new JLabel();
-
-		    @Override
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-		            boolean hasFocus, int row, int column) {
-		        table.setRowHeight(35);
-		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-		        if (column == 0) {
-		            return c;
-		        }
-		        //Mirar si ya había algún sospechoso marcado
-		        for (Integer r: rowYcolYaSel.keySet()) {
-		        	if (r == row && rowYcolYaSel.get(r) == column) {
-		        		lblSel = lblTachado();
-		                return lblSel;
-		        	}
-		        }
-		        
-		        if (filaEnTabla >= 0 && filaEnTabla == row && column == columnaEnTabla) {
-		            try {
-		            	lblSel = lblTachado();
-		                rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
-		            } catch (Exception e) {
-		                e.printStackTrace();
-		            }
-		            return lblSel;
-		        }
-		        return c;
-		    }
-		});
+		this.add(btnAcusar);
+		Gestion.ventanaJuego.add(this);
+		this.revalidate();
 		
-		getContentPane().add(new JScrollPane(tablaLista), BorderLayout.EAST);
-		
-	}
-	
-	public JLabel lblTachado() {
-		JLabel lblSel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(tablaLista.getColumnModel().getColumn(0).getWidth(), 35,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
-        lblSel.setIcon(new ImageIcon(newimg));
-        return lblSel;
 	}
 	
 	private Component devuelveComp() {
@@ -304,53 +270,21 @@ public class VentanaAcusacion extends JFrame{
 		//Buscar la posición del jugador
 		// Estas tres línes de abajo todavía no se pueden ejecutar pero tiene que hacerse así:
 //		System.out.println(Gestion.jugadores.get(0));
-//		int[] posicionJugador = Gestion.jugadores.get(Gestion.getNumTurno()).posicion;
-//		int posibleHabitacion = posicionJugador[1];
-		int posibleHabitacion = 0;
+		int[] posicionJugador = Gestion.jugadores.get(Gestion.getNumTurno()).posicion;
+		int posibleHabitacion = Gestion.tablero.get(posicionJugador[0]).get(posicionJugador[1]);
 		switch(posibleHabitacion) {
-		case 2:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 3:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 4:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 5:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 6:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 7:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 8:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 9:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 10:
-			s = Gestion.mapaAsociado.get(posibleHabitacion);
-			lblPorHabitacion.setText(s.toString());
-			break;
-		case 11:
-			activarSiAcusacionFinal = true;
-			return cbLugar; // Y luego le añado el listener
-		default:
-			String def = "<html>NO ESTÁS <br> EN NUNGUNA HABITACIÓN</html>"; //Para que en el JLabel se pueda hacer el salto de línea
-			lblPorHabitacion.setText(def);
-			break;
+			case 2,3,4,5,6,7,8,9,10:
+				s = Gestion.datosPartida.lugares.get(posibleHabitacion-2).getNombre();
+				lblPorHabitacion.setText(s.toString());
+				break;
+		
+			case 11:
+				activarSiAcusacionFinal = true;
+				return cbLugar; // Y luego le añado el listener
+			default:
+				String def = "<html>NO ESTÁS <br> EN NUNGUNA HABITACIÓN</html>"; //Para que en el JLabel se pueda hacer el salto de línea
+				lblPorHabitacion.setText(def);
+				break;
 		}
 		Border borde = BorderFactory.createLineBorder(Color.BLACK, 4);
 		lblPorHabitacion.setBorder(borde);
@@ -391,10 +325,12 @@ public class VentanaAcusacion extends JFrame{
 //		return;
 //	}
 	
-	
+	public void eliminarPanel() {
+		Gestion.ventanaJuego.remove(this);
+		Gestion.ventanaJuego.repaint();
+	}
 	public static void main(String[] args) {
 		VentanaAcusacion vent = new VentanaAcusacion();
-		vent.setVisible( true );
 	}
 
 }

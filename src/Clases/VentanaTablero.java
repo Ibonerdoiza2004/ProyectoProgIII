@@ -700,7 +700,7 @@ public class VentanaTablero extends JPanel{
 				}else {
 					Gestion.cartasEnsenyadas.clear();
 					//Aquí se añade un nuevo panel con VentanaAcusacion
-					
+					new VentanaAcusacion();
 					eliminarPanel();
 				}
 			}

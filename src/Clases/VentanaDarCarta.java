@@ -36,7 +36,6 @@ public class VentanaDarCarta extends JPanel{
 	private int inicioX;
 	private int inicioY;
 	int numeroJugador;
-	static JFrame f;
 	private ImageIcon recuadroCarta = null;
 	public VentanaDarCarta(int numJugador) {
 		
@@ -49,7 +48,7 @@ public class VentanaDarCarta extends JPanel{
 		pCartaElegida.setOpaque(false);
 		pCartasPedidas.setOpaque(false);
 		setBounds(0, 0, (int)Gestion.sizePantalla.getWidth(),(int) Gestion.sizePantalla.getHeight());
-		f.add(this);
+		Gestion.ventanaJuego.add(this);
 		JLabel l = new JLabel("AAAAAAAAAA");
 		l.setBounds(0, 0, 100, 100);
 		pArriba.add(pCartasPedidas);
@@ -62,9 +61,6 @@ public class VentanaDarCarta extends JPanel{
 		
 		pAbajo.add(pCartasPoseidas);
 		
-		Gestion.acusacion.add(Gestion.datosPartida.armas.get(0));
-		Gestion.acusacion.add(Gestion.datosPartida.armas.get(1));
-		Gestion.acusacion.add(Gestion.datosPartida.sospechosos.get(0));
 		
 	    ImageIcon cartaPedida= Gestion.acusacion.get(0).getFoto(); //hay que añadir fotos a todos los posibles implicados de la clase asesinato
 	    Image imagenCarta = cartaPedida.getImage();
@@ -93,13 +89,7 @@ public class VentanaDarCarta extends JPanel{
 		pCartasPedidas.add(lAcusacion);
 		
 		
-		
-		Gestion.jugadores.add(new Jugador(new Personaje(), false));//
-	    Gestion.jugadores.add(new Jugador(new Personaje(), false));//
-	    Gestion.jugadores.add(new Jugador(new Personaje(), false));//
-	    Gestion.jugadores.add(new Jugador(new Personaje(), false));//
-		Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas); //
-	    Jugador jugador = Gestion.jugadores.get(0);//
+	    Jugador jugador = Gestion.jugadores.get(numeroJugador);//
 	    
 	    ImageIcon cartaPoseida = jugador.cartas.get(0).getFoto();
 	   
@@ -154,7 +144,6 @@ public class VentanaDarCarta extends JPanel{
 			pCartasPoseidas.add(lCartaPoseida);
 			labelCartas.add(lCartaPoseida);
 			
-			
 	    }
 	    JLabel lPoseidas = new JLabel("Cartas en posesión");
 		lPoseidas.setFont(new Font("Serif", Font.BOLD, 33));
@@ -192,19 +181,17 @@ public class VentanaDarCarta extends JPanel{
 				}
 				numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
 				if(numeroJugador!=Gestion.getNumTurno()) {
-					Gestion.acusacion.clear();
-					Gestion.jugadores.clear();
 					eliminarPanel();
 					new VentanaDarCarta(numeroJugador);
 				}else {
 					System.out.println(Gestion.cartasEnsenyadas.keySet());
-					f.dispose();
+					Gestion.ventanaJuego.dispose();
 				}
 				
 			}
 		});
 		
-		f.addMouseListener(new MouseListener() {
+		Gestion.ventanaJuego.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -326,7 +313,7 @@ public class VentanaDarCarta extends JPanel{
 				clickX = e.getX();
 				clickY = e.getY();
 				if (e.getX() >= lRecuadro.getX()+(int)Gestion.sizePantalla.getWidth()/2 && e.getX() <= lRecuadro.getX()+(int)Gestion.sizePantalla.getWidth()/2+lRecuadro.getWidth()
-				&& e.getY() >= lRecuadro.getY() && e.getY() <= lRecuadro.getY()+lRecuadro.getHeight()) {
+				&& e.getY() >= lRecuadro.getY() && e.getY() <= lRecuadro.getY()+lRecuadro.getHeight()&&labelCartaElegida!=null) {
 					labelCartaMovida = labelCartaElegida;
 					cartaMovida = cartaParaMostrar;
 					index = -1;
@@ -372,7 +359,7 @@ public class VentanaDarCarta extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {}
 		});
-		f.addMouseMotionListener(new MouseMotionAdapter() {
+		Gestion.ventanaJuego.addMouseMotionListener(new MouseMotionAdapter() {
 			
 			
 			@Override
@@ -392,17 +379,7 @@ public class VentanaDarCarta extends JPanel{
 		
 	}
 	public void eliminarPanel() {
-		f.remove(this);
-		f.repaint();
-	}
-	public static void main(String[] args) {
-		f = new JFrame();
-		f.setSize(Gestion.sizePantalla);
-		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		f.setUndecorated(true);
-		f.setLayout(null);
-		f.setVisible(true);
-		new VentanaDarCarta(1);
+		Gestion.ventanaJuego.remove(this);
+		Gestion.ventanaJuego.repaint();
 	}
 }
