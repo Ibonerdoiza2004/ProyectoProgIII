@@ -56,9 +56,43 @@ public class MainBD {
 			statement = conn.createStatement();
 			
 			//Primero crear las tablas desde aquí:
+			//Estas tres líneas son provisionales
+			statement.executeUpdate("DROP TABLE IF EXISTS estadisticas");
+			statement.executeUpdate("DROP TABLE IF EXISTS partida");
+			statement.executeUpdate("DROP TABLE IF EXISTS usuario");
 			
+			String crearTablaEstadisticas = "CREATE TABLE ESTADISTICAS ("
+			        + "NUM_PARTIDAS_MES INTEGER,"
+			        + "NUM_JUGADORES_REALES INTEGER,"
+			        + "NUM_NPCS INTEGER,"
+			        + "MEDIA_DURACION_PARTIDA INTEGER,"
+			        + "MISS_SCARLET INTEGER,"
+			        + "COLONER_MUSTARD INTEGER,"
+			        + "MRS_WHITE INTEGER,"
+			        + "MR_GREEN INTEGER,"
+			        + "MRS_PEACOCK INTEGER,"
+			        + "PROFESOR_PLUM INTEGER"
+			        + ")";
 			
+			statement.executeUpdate(crearTablaEstadisticas);
 			
+			String crearTablaPartida = "CREATE TABLE PARTIDA ("
+			        + "ID_PARTIDA INTEGER,"
+			        + "FECHA_PARTIDA TEXT,"
+			        + "DURACION INTEGER,"
+			        + "GANADOR STRING,"
+			        + "NUM_JUGS INTEGER"
+			        + ")";
+			statement.executeUpdate(crearTablaPartida);
+			
+            String crearTablaJugador = "CREATE TABLE JUGADOR ("
+                    + "ID_JUGADOR INTEGER,"
+                    + "NOMBRE STRING,"
+                    + "PERSONAJE_ASIGNADO STRING,"
+                    + "HABITACION_ACTUAL STRING,"
+                    + "NUM_PARTIDAS_JUGADAS INTEGER"
+                    + ")";
+            statement.executeUpdate(crearTablaJugador);
 			
 			//Datos para tabla Estadísticas
 			int i = 0;
