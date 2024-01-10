@@ -52,7 +52,7 @@ public class VentanaNJugadores extends JPanel {
 		ftfTots.setBorder(null);
 
 		
-		spnJugs = new JSpinner(new SpinnerNumberModel(3, 3, 3, 1));
+		spnJugs = new JSpinner(new SpinnerNumberModel(3, 1, 3, 1));
 		JComponent cmpJugs = spnJugs.getEditor();
 		JFormattedTextField ftfJugs = ((JSpinner.DefaultEditor) cmpJugs).getTextField();
 		ftfJugs.setFont(new Font(totFont.getName(), totFont.getStyle(), 60));
@@ -202,7 +202,17 @@ public class VentanaNJugadores extends JPanel {
 				}
 				
 				while (valorInt1!=0) {
-					if (resta==3) {
+					if (resta==5) {
+						resta--;
+						Jugador j2 = new Jugador(new Personaje(), false);
+						Gestion.jugadores.add(j2);
+						valorInt1--;
+					}else if (resta==4) {
+						resta--;
+						Jugador j3 = new Jugador(new Personaje(), false);
+						Gestion.jugadores.add(j3);
+						valorInt1--;
+					}else if (resta==3) {
 						resta--;
 						Jugador j4 = new Jugador(new Personaje(), false);
 						Gestion.jugadores.add(j4);
