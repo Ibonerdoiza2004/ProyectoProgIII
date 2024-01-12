@@ -19,7 +19,7 @@ public class VentanaNJugadores extends JPanel {
 
 	public VentanaNJugadores() {
 		
-		
+		Gestion.jugadores.clear();
 		lblTots = new JLabel("Nº Jugadores Totales");
 		Font totFont = lblTots.getFont();
 		lblTots.setFont(new Font(totFont.getName(), totFont.getStyle(), 30));
