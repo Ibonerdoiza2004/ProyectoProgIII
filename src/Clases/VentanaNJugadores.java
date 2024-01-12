@@ -154,7 +154,7 @@ public class VentanaNJugadores extends JPanel {
 				nBots.setText(resta+"");
 			}
 		});
-		
+		 
 		continuar.addActionListener(new ActionListener() {
 
 			@Override
