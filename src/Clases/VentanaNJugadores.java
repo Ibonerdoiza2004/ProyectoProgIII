@@ -234,7 +234,6 @@ public class VentanaNJugadores extends JPanel {
 				}
 				
 			}
-			
 		});;
 	}
 	
