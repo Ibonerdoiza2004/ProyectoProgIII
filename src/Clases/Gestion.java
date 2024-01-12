@@ -1,4 +1,4 @@
-package Clases;
+ package Clases;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -30,6 +30,7 @@ public class Gestion {
 	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites = crearSprites();
 	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();
 	protected static JFrame ventanaJuego;
+	protected static HashMap<Asesinato, Jugador>cartasEnsenyadas = new HashMap<>();
 	public static int getNumTurno() {
 		return numTurno;
 	}
@@ -72,6 +73,13 @@ public class Gestion {
 			listaVacia.put(asesinato, cadaCarta);
 		}
 		return listaVacia;
+	}
+	public static HashMap<Asesinato, String> creacionAnotaciones() {
+		HashMap<Asesinato,String> anotacionesVacias = new HashMap<>();
+		for(Asesinato asesinato: datosPartida.todasLasCartas) {
+			anotacionesVacias.put(asesinato, "");
+		}
+		return anotacionesVacias;
 	}
 	public static void repartirCartas(ArrayList<Asesinato> cartas) {
 		ArrayList<Asesinato>copiaCartas = new ArrayList<>(cartas);
@@ -126,12 +134,7 @@ public class Gestion {
 		
 		return tablero;
 	}
-	
-	
-
-	public void turnoJugador() {
 		
-	}
 	
 
 	public static void main(String[] args) {
@@ -151,11 +154,12 @@ public class Gestion {
 				}else if(i==11){
 				System.out.print("II");
 				}else {
-					System.out.print(i+" ");
+					System.out.print(i+" "); 
 				}
 			}
 			System.out.println("");
 		}
+		
 	}
 	public static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> crearSprites(){
 		int inicioX = 4;
@@ -171,7 +175,6 @@ public class Gestion {
 			try {
 				imagenHojaSprites = ImageIO.read(new File(("src/sprites/"+personaje+".png")));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				crearSprites();
 			}

@@ -1,12 +1,9 @@
 package Clases;
 
 import java.util.*;
-enum OpcionesLista{SI, NO, REGULAR}
 
 public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
 	
-	
-
 	private Random r = new Random();
 	
 	private static int contador = 1;
@@ -18,7 +15,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	protected HashMap<Asesinato, ArrayList<Boolean>> lista = new HashMap<>(); //Lista que se rellena con la información
 	protected int[] posicion = new int[2];
 	protected boolean npc;
-	
+	protected HashMap<Asesinato, String>anotaciones = new HashMap<>();
 	public static int getContador() {
 		return contador;
 	}
@@ -76,6 +73,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacionFinal = false;
 		this.acusacion = new HashMap<Implicados, Asesinato>();
 		this.lista = Gestion.creacionLista();
+		this.anotaciones = Gestion.creacionAnotaciones();
 		this.npc = npc;
 	}
 

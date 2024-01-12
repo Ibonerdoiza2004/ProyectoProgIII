@@ -34,12 +34,12 @@ public class Lista extends JPanel{
 		this.tbLista = tbLista;
 	}
 
-	public Lista(JPanel panel) {
+	public Lista(JPanel panel, int numJugador) {
 		rowYcolYaSel = new HashMap<Integer, Integer>();
-		for (Asesinato carta:Gestion.jugadores.get(Gestion.getNumTurno()).lista.keySet()) {
-			for(Boolean bool : Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(carta)) {
+		for (Asesinato carta:Gestion.jugadores.get(numJugador).lista.keySet()) {
+			for(Boolean bool : Gestion.jugadores.get(numJugador).lista.get(carta)) {
 				if(bool) {
-					rowYcolYaSel.put(Gestion.datosPartida.todasLasCartas.indexOf(carta),  Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(carta).indexOf(bool));
+					rowYcolYaSel.put(Gestion.datosPartida.todasLasCartas.indexOf(carta),  Gestion.jugadores.get(numJugador).lista.get(carta).indexOf(bool));
 					break;
 				}
 			}
@@ -66,13 +66,13 @@ public class Lista extends JPanel{
 				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
 			        //Mirar si ya había algún sospechoso marcado
 		            if(rowYcolYaSel.containsKey(filaEnTabla)) {
-		            	Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(rowYcolYaSel.get(filaEnTabla), false);
-		            	Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
+		            	Gestion.jugadores.get(numJugador).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(rowYcolYaSel.get(filaEnTabla), false);
+		            	Gestion.jugadores.get(numJugador).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
 		            	rowYcolYaSel.replace(filaEnTabla, columnaEnTabla);
 		            }else {
-		            	System.out.println(Gestion.jugadores.get(Gestion.getNumTurno()).lista);
+		            	System.out.println(Gestion.jugadores.get(numJugador).lista);
 		            	rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
-		            	Gestion.jugadores.get(Gestion.getNumTurno()).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
+		            	Gestion.jugadores.get(numJugador).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
 		            }
 					//filasYaSeleccionadas.add(filaEnTabla);
 					tb.repaint();

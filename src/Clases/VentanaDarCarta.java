@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class VentanaDarCarta extends JFrame{
+public class VentanaDarCarta extends JPanel{
 	private JPanel pCartaElegida = new JPanel(null);
 	private JPanel pCartasPoseidas = new JPanel(null);
 	private JPanel pCartasPedidas = new JPanel(null);
@@ -35,47 +35,43 @@ public class VentanaDarCarta extends JFrame{
 	private int clickY = 0;
 	private int inicioX;
 	private int inicioY;
+	int numeroJugador;
 	private ImageIcon recuadroCarta = null;
-	public VentanaDarCarta() {
-		setSize(Gestion.sizePantalla);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.setUndecorated(true);
-		setLayout(null);
-		JPanel panelPrincipal = new JPanel(new GridLayout(2,1));
-		panelPrincipal.setOpaque(false);
+	public VentanaDarCarta(int numJugador) {
+		
+		numeroJugador = numJugador;
+		setLayout(new GridLayout(2,1));
+		setOpaque(false);
 		pArriba.setOpaque(false);
 		pAbajo.setOpaque(false);
 		pCartasPoseidas.setOpaque(false);
 		pCartaElegida.setOpaque(false);
 		pCartasPedidas.setOpaque(false);
-		panelPrincipal.setBounds(0, 0, (int)Gestion.sizePantalla.getWidth(),(int) Gestion.sizePantalla.getHeight());
-		add(panelPrincipal);
-		panelPrincipal.add(pArriba);
+		setBounds(0, 0, (int)Gestion.sizePantalla.getWidth(),(int) Gestion.sizePantalla.getHeight());
+		Gestion.ventanaJuego.add(this);
+		JLabel l = new JLabel("AAAAAAAAAA");
+		l.setBounds(0, 0, 100, 100);
 		pArriba.add(pCartasPedidas);
 		pArriba.add(pCartaElegida);
-		panelPrincipal.add(pAbajo);
-		setVisible(true);
+		this.add(pArriba);
+		this.add(pAbajo);
 		int anchoBotones = 300;
 		
-		pCartasPoseidas.setBounds(0, 0, pAbajo.getWidth()-anchoBotones,pAbajo.getHeight() );
+		pCartasPoseidas.setBounds(0, 0, (int)Gestion.sizePantalla.getWidth()-anchoBotones, (int)Gestion.sizePantalla.getHeight()/2 );
 		
 		pAbajo.add(pCartasPoseidas);
 		
-		Gestion.acusacion.add(Gestion.datosPartida.armas.get(0));
-		Gestion.acusacion.add(Gestion.datosPartida.armas.get(1));
-		Gestion.acusacion.add(Gestion.datosPartida.sospechosos.get(0));
 		
 	    ImageIcon cartaPedida= Gestion.acusacion.get(0).getFoto(); //hay que añadir fotos a todos los posibles implicados de la clase asesinato
 	    Image imagenCarta = cartaPedida.getImage();
 	    
-	    int altoCarta = pCartasPedidas.getHeight()-150;
+	    int altoCarta = (int)Gestion.sizePantalla.getHeight()/2-150;
 		int anchoCarta = (int) ((double) imagenCarta.getWidth(null) / imagenCarta.getHeight(null) * altoCarta);
-		if (anchoCarta>pCartasPedidas.getWidth()/(Gestion.acusacion.size()+1)) {
-			anchoCarta = pCartasPedidas.getWidth()/(Gestion.acusacion.size()+1);
+		if (anchoCarta>(int)Gestion.sizePantalla.getWidth()/(2*(Gestion.acusacion.size()+1))) {
+			anchoCarta = (int)Gestion.sizePantalla.getWidth()/(2*(Gestion.acusacion.size()+1));
 			altoCarta = (int) ((double) imagenCarta.getHeight(null) / imagenCarta.getWidth(null) * anchoCarta);
 		}
-		int espacioEntreCartasPedidas = (pCartasPedidas.getWidth()-anchoCarta*Gestion.acusacion.size())/(Gestion.acusacion.size()+1);
+		int espacioEntreCartasPedidas = ((int)Gestion.sizePantalla.getWidth()/2-anchoCarta*Gestion.acusacion.size())/(Gestion.acusacion.size()+1);
 		
 		for (int i = 0; i <Gestion.acusacion.size();i++) {
 	    	cartaPedida=Gestion.acusacion.get(i).getFoto();
@@ -84,27 +80,19 @@ public class VentanaDarCarta extends JFrame{
 		    cartaPedida = new ImageIcon(imagenCarta);
 			JLabel lCartaPedida = new JLabel();
 			lCartaPedida.setIcon(cartaPedida);
-			lCartaPedida.setBounds(i*anchoCarta+(i+1)*espacioEntreCartasPedidas,(pCartasPedidas.getHeight()-imagenCarta.getHeight(null))/2,anchoCarta,altoCarta);
+			lCartaPedida.setBounds(i*anchoCarta+(i+1)*espacioEntreCartasPedidas,((int)Gestion.sizePantalla.getHeight()/3-imagenCarta.getHeight(null))/2,anchoCarta,altoCarta);
 			pCartasPedidas.add(lCartaPedida);
 	    }
 	    JLabel lAcusacion = new JLabel("Acusación");
 		lAcusacion.setFont(new Font("Serif", Font.BOLD, 33));
-		lAcusacion.setBounds(pCartasPedidas.getWidth()/2-75,(((pCartasPedidas.getHeight()-imagenCarta.getHeight(null))/2)-33)/2 , 150, 30);
+		lAcusacion.setBounds((int)Gestion.sizePantalla.getWidth()/4-75,((((int)Gestion.sizePantalla.getHeight()/2-imagenCarta.getHeight(null))/2)-33)/2 , 150, 30);
 		pCartasPedidas.add(lAcusacion);
 		
 		
-		
-		Gestion.jugadores.add(new Jugador(new Personaje(), false));
-	    Gestion.jugadores.add(new Jugador(new Personaje(), false));
-	    Gestion.jugadores.add(new Jugador(new Personaje(), false));
-	    Gestion.jugadores.add(new Jugador(new Personaje(), false));
-		Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
-	    Jugador jugador = Gestion.jugadores.get(0);
+	    Jugador jugador = Gestion.jugadores.get(numeroJugador);//
 	    
 	    ImageIcon cartaPoseida = jugador.cartas.get(0).getFoto();
-	    if(cartaPoseida==null) {
-	    	cartaPoseida = Gestion.datosPartida.armas.get(4).getFoto();
-	    }
+	   
 		Image imagenCartaPoseida = cartaPoseida.getImage();
 	    
 	    altoCartaPoseida = pCartasPoseidas.getHeight()-150;
@@ -116,7 +104,7 @@ public class VentanaDarCarta extends JFrame{
 		}
 		int espacioEntreCartasPoseidas = (pCartasPoseidas.getWidth()-anchoCartaPoseida*jugador.cartas.size())/(jugador.cartas.size()+1);
 
-		pBotones.setBounds(getWidth()-anchoBotones, 0, anchoBotones-espacioEntreCartasPoseidas, pAbajo.getHeight());
+		pBotones.setBounds((int)Gestion.sizePantalla.getWidth()-anchoBotones, 0, anchoBotones-espacioEntreCartasPoseidas, (int)Gestion.sizePantalla.getHeight()/2);
 		JButton bContinuar = new JButton("Continuar");
 		bContinuar.setFocusable(false);
 		bContinuar.setFont(new Font("Serif", Font.BOLD, 33));
@@ -129,11 +117,9 @@ public class VentanaDarCarta extends JFrame{
 	    cartas = new ArrayList<Asesinato>(jugador.cartas);
 		ArrayList<ArrayList<Integer>>coordsCartas = new ArrayList<>();
 		for (int i = 0; i <jugador.cartas.size();i++) {
-			if(jugador.cartas.get(i) instanceof Lugar) {
-				cartaPoseida=Gestion.datosPartida.armas.get(4).getFoto();
-			}else {
-				cartaPoseida=jugador.cartas.get(i).getFoto();
-			}
+			
+			cartaPoseida=jugador.cartas.get(i).getFoto();
+			
 	    	
 		    imagenCartaPoseida = cartaPoseida.getImage();
 		    imagenCartaPoseida = imagenCartaPoseida.getScaledInstance(anchoCartaPoseida, altoCartaPoseida, Image.SCALE_SMOOTH);
@@ -158,7 +144,6 @@ public class VentanaDarCarta extends JFrame{
 			pCartasPoseidas.add(lCartaPoseida);
 			labelCartas.add(lCartaPoseida);
 			
-			
 	    }
 	    JLabel lPoseidas = new JLabel("Cartas en posesión");
 		lPoseidas.setFont(new Font("Serif", Font.BOLD, 33));
@@ -166,17 +151,16 @@ public class VentanaDarCarta extends JFrame{
 		pCartasPoseidas.add(lPoseidas);
 		
 		
-		
 		JLabel lRecuadro = new JLabel();
 		lRecuadro.setIcon(recuadroCarta);
-		lRecuadro.setBounds((pCartaElegida.getWidth()-recuadroCarta.getImage().getWidth(null))/2,(pCartaElegida.getHeight()-recuadroCarta.getImage().getHeight(null))/2 , recuadroCarta.getImage().getWidth(null), recuadroCarta.getImage().getHeight(null));
+		lRecuadro.setBounds(((int)Gestion.sizePantalla.getWidth()/2-recuadroCarta.getImage().getWidth(null))/2,((int)Gestion.sizePantalla.getHeight()/2-recuadroCarta.getImage().getHeight(null))/2 , recuadroCarta.getImage().getWidth(null), recuadroCarta.getImage().getHeight(null));
 		pCartaElegida.add(lRecuadro);
 		JLabel lElegida = new JLabel("Carta para enseñar");
 		lElegida.setHorizontalAlignment(JLabel.CENTER);
 		lElegida.setFont(new Font("Serif", Font.BOLD, 33));
-		lElegida.setBounds(pCartaElegida.getWidth()/2-175, 10 , 350, 33);
+		lElegida.setBounds((int)Gestion.sizePantalla.getWidth()/4-175, 10 , 350, 33);
 		pCartaElegida.add(lElegida);
-		panelPrincipal.repaint();
+		repaint();
 		
 		boolean enable = true;
 		for(Asesinato carta:jugador.cartas) {
@@ -184,27 +168,38 @@ public class VentanaDarCarta extends JFrame{
 				enable = false;
 			}
 		}
+		revalidate();
 		bContinuar.setEnabled(enable);
 		
 		bContinuar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(cartaParaMostrar);
-				dispose();
+				if(cartaParaMostrar!=null) {
+					Gestion.cartasEnsenyadas.put(cartaParaMostrar, Gestion.jugadores.get(numeroJugador));
+				}else {
+				}
+				numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
+				if(numeroJugador!=Gestion.getNumTurno()) {
+					eliminarPanel();
+					new VentanaDarCarta(numeroJugador);
+				}else {
+					System.out.println(Gestion.cartasEnsenyadas.keySet());
+					Gestion.ventanaJuego.dispose();
+				}
 				
 			}
 		});
 		
-		addMouseListener(new MouseListener() {
+		Gestion.ventanaJuego.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				boolean pass = false;
 				if(labelCartaMovida != null) {
-					panelPrincipal.remove(labelCartaMovida);
-					panelPrincipal.repaint();
-					if (e.getX() >= lRecuadro.getX()+pCartasPedidas.getWidth() && e.getX() <= lRecuadro.getX()+pCartasPedidas.getWidth()+lRecuadro.getWidth()
+					remove(labelCartaMovida);
+					repaint();
+					if (e.getX() >= lRecuadro.getX()+(int)Gestion.sizePantalla.getWidth()/2 && e.getX() <= lRecuadro.getX()+(int)Gestion.sizePantalla.getWidth()/2+lRecuadro.getWidth()
 						&& e.getY() >= lRecuadro.getY() && e.getY() <= lRecuadro.getY()+lRecuadro.getHeight()) {
 							if(Gestion.acusacion.contains(cartaMovida)){
 								pass=true;
@@ -235,7 +230,7 @@ public class VentanaDarCarta extends JFrame{
 					}else {
 						for (int i = 0; i < coordsCartas.size(); i++){
 							if(e.getX() >= coordsCartas.get(i).get(0) && e.getX() <= coordsCartas.get(i).get(0)+anchoCartaPoseida
-									&& e.getY() >= coordsCartas.get(i).get(1)+pCartasPedidas.getHeight() && e.getY() <= coordsCartas.get(i).get(1)+pCartasPedidas.getHeight()+altoCartaPoseida) {
+									&& e.getY() >= coordsCartas.get(i).get(1)+(int)Gestion.sizePantalla.getHeight()/2 && e.getY() <= coordsCartas.get(i).get(1)+(int)Gestion.sizePantalla.getHeight()/2+altoCartaPoseida) {
 									pass = true;
 									if (labelCartas.get(i) != null) {
 											if (index==-1) {
@@ -317,37 +312,37 @@ public class VentanaDarCarta extends JFrame{
 				cartaMovida = null;
 				clickX = e.getX();
 				clickY = e.getY();
-				if (e.getX() >= lRecuadro.getX()+pCartasPedidas.getWidth() && e.getX() <= lRecuadro.getX()+pCartasPedidas.getWidth()+lRecuadro.getWidth()
-				&& e.getY() >= lRecuadro.getY() && e.getY() <= lRecuadro.getY()+lRecuadro.getHeight()) {
+				if (e.getX() >= lRecuadro.getX()+(int)Gestion.sizePantalla.getWidth()/2 && e.getX() <= lRecuadro.getX()+(int)Gestion.sizePantalla.getWidth()/2+lRecuadro.getWidth()
+				&& e.getY() >= lRecuadro.getY() && e.getY() <= lRecuadro.getY()+lRecuadro.getHeight()&&labelCartaElegida!=null) {
 					labelCartaMovida = labelCartaElegida;
 					cartaMovida = cartaParaMostrar;
 					index = -1;
 					pCartaElegida.remove(labelCartaMovida);
 					inicioX = labelCartaMovida.getX();
 					inicioY = labelCartaMovida.getY();
-					labelCartaMovida.setBounds(-clickX+(pCartasPedidas.getWidth()+labelCartaMovida.getX())+e.getX(), -clickY+labelCartaMovida.getY()+e.getY(),
+					labelCartaMovida.setBounds(-clickX+((int)Gestion.sizePantalla.getWidth()/2+labelCartaMovida.getX())+e.getX(), -clickY+labelCartaMovida.getY()+e.getY(),
 						anchoCartaPoseida, altoCartaPoseida);
-					panelPrincipal.add(labelCartaMovida);
+					add(labelCartaMovida);
 					labelCartaMovida.repaint();
-					panelPrincipal.setComponentZOrder(labelCartaMovida, 0);
-					panelPrincipal.setComponentZOrder(pArriba, 1);
+					setComponentZOrder(labelCartaMovida, 0);
+					setComponentZOrder(pArriba, 1);
 					
 				}
 				for (int i = 0; i < coordsCartas.size(); i++){
 					if(labelCartas.get(i) != null && e.getX() >= coordsCartas.get(i).get(0) && e.getX() <= coordsCartas.get(i).get(0)+anchoCartaPoseida
-							&& e.getY() >= coordsCartas.get(i).get(1)+pCartasPedidas.getHeight() && e.getY() <= coordsCartas.get(i).get(1)+pCartasPedidas.getHeight()+altoCartaPoseida) {
+							&& e.getY() >= coordsCartas.get(i).get(1)+(int)Gestion.sizePantalla.getHeight()/2 && e.getY() <= coordsCartas.get(i).get(1)+(int)Gestion.sizePantalla.getHeight()/2+altoCartaPoseida) {
 						labelCartaMovida = labelCartas.get(i);
 						cartaMovida = cartas.get(i);
 						index = i;
 						pCartasPoseidas.remove(labelCartaMovida);
 						inicioX = labelCartaMovida.getX();
 						inicioY = labelCartaMovida.getY();
-						labelCartaMovida.setBounds(-clickX+labelCartaMovida.getX()+e.getX(), -clickY+e.getY()+(labelCartaMovida.getY()+pCartaElegida.getHeight()),
+						labelCartaMovida.setBounds(-clickX+labelCartaMovida.getX()+e.getX(), -clickY+e.getY()+(labelCartaMovida.getY()+(int)Gestion.sizePantalla.getHeight()/2),
 							anchoCartaPoseida, altoCartaPoseida);
-						panelPrincipal.add(labelCartaMovida);
+						add(labelCartaMovida);
 						labelCartaMovida.repaint();
-						panelPrincipal.setComponentZOrder(labelCartaMovida, 0);
-						panelPrincipal.setComponentZOrder(pArriba, 1);
+						setComponentZOrder(labelCartaMovida, 0);
+						setComponentZOrder(pArriba, 1);
 						
 						break;
 					}
@@ -364,17 +359,17 @@ public class VentanaDarCarta extends JFrame{
 			@Override
 			public void mouseClicked(MouseEvent e) {}
 		});
-		addMouseMotionListener(new MouseMotionAdapter() {
+		Gestion.ventanaJuego.addMouseMotionListener(new MouseMotionAdapter() {
 			
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (labelCartaMovida!=null) {
 					if(index ==-1) {
-						labelCartaMovida.setBounds(-clickX+(pCartasPedidas.getWidth()+inicioX)+e.getX(), -clickY+inicioY+e.getY(),
+						labelCartaMovida.setBounds(-clickX+((int)Gestion.sizePantalla.getWidth()/2+inicioX)+e.getX(), -clickY+inicioY+e.getY(),
 							anchoCartaPoseida, altoCartaPoseida);
 					}else {
-						labelCartaMovida.setBounds(-clickX+inicioX+e.getX(), -clickY+e.getY()+(inicioY+pCartaElegida.getHeight()),
+						labelCartaMovida.setBounds(-clickX+inicioX+e.getX(), -clickY+e.getY()+(inicioY+(int)Gestion.sizePantalla.getHeight()/2),
 								anchoCartaPoseida, altoCartaPoseida);
 					}
 				}
@@ -383,7 +378,8 @@ public class VentanaDarCarta extends JFrame{
 		});
 		
 	}
-	public static void main(String[] args) {
-		new VentanaDarCarta();
+	public void eliminarPanel() {
+		Gestion.ventanaJuego.remove(this);
+		Gestion.ventanaJuego.repaint();
 	}
 }

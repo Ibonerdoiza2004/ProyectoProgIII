@@ -46,9 +46,9 @@ public class Contenedor implements Serializable{
 		this.lugares = new ArrayList<Lugar>();
 		for(Sitio sitio:Sitio.values()) {
 			//Añadir la foto
-//			URL sitioURL = getClass().getResource("../cartasLugares/"+sitio+".png");
-//			ImageIcon isitio = new ImageIcon(sitioURL);
-			lugares.add(new Lugar(sitio, false, null));
+			URL sitioURL = getClass().getResource("../cartasLugares/"+sitio+".png");
+			ImageIcon isitio = new ImageIcon(sitioURL);
+			lugares.add(new Lugar(sitio, false, isitio));
 		}
 		
 		

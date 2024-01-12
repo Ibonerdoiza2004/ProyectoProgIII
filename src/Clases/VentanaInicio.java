@@ -37,6 +37,7 @@ public class VentanaInicio extends JPanel{
 	protected JButton cargarLocal;
 	protected JButton opciones;
 	protected JButton cerrar;
+	Player player;
 	
 	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
 		
@@ -114,7 +115,6 @@ public class VentanaInicio extends JPanel{
 		
 		Gestion.ventanaJuego = new JFrame();
 		
-		Player player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
 		
 		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 			public void windowOpened (WindowEvent e) {
@@ -122,11 +122,8 @@ public class VentanaInicio extends JPanel{
 				Thread t = new Thread(new Runnable() {
 					@Override
 						public void run() {
-							try {
-								player.play ();
-							} catch (JavaLayerException e) {
-								e.printStackTrace();
-							}			
+							sonar();
+								
 						}
 					});
 		    		t.start();
@@ -162,6 +159,16 @@ public class VentanaInicio extends JPanel{
 	
 	public static void main(String[] args) throws FileNotFoundException, JavaLayerException {
 		VentanaInicio ventana = new VentanaInicio();
+	}
+	public void sonar() {
+		try {
+			player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
+			player.play ();
+			player.close ();
+			sonar();
+		} catch (JavaLayerException | FileNotFoundException e) {
+			e.printStackTrace();
+		}			
 	}
 	public void eliminarPanel() {
 		Gestion.ventanaJuego.remove(this);

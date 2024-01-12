@@ -965,6 +965,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 			} else if (cont > jugadores + 1) {
 				//Empezar partida
 				eliminarPanel();
+				Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
 				new VentanaAsignarTurnos();
 			}
 		}
@@ -1074,7 +1075,6 @@ public class VentanaSeleccionPersonaje extends JPanel{
 				} else if (cont == 1){
 					eliminarPanel();
 					anadirPanel();
-					Gestion.jugadores.clear();
 				} 
 				
 			}	
