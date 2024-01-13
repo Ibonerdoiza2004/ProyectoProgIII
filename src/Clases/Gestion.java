@@ -31,6 +31,7 @@ public class Gestion {
 	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();
 	protected static JFrame ventanaJuego;
 	protected static HashMap<Asesinato, Jugador>cartasEnsenyadas = new HashMap<>();
+	protected static VentanaInicio vInicio= null;
 	public static int getNumTurno() {
 		return numTurno;
 	}

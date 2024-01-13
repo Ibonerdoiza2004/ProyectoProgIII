@@ -203,26 +203,26 @@ public class VentanaNJugadores extends JPanel {
 				while (valorInt1!=0) {
 					if (resta==5) {
 						resta--;
-						Jugador j2 = new Jugador(new Personaje(), false);
+						Jugador j2 = new Jugador(new Personaje(), true);
 						Gestion.jugadores.add(j2);
 						valorInt1--;
 					}else if (resta==4) {
 						resta--;
-						Jugador j3 = new Jugador(new Personaje(), false);
+						Jugador j3 = new Jugador(new Personaje(), true);
 						Gestion.jugadores.add(j3);
 						valorInt1--;
 					}else if (resta==3) {
 						resta--;
-						Jugador j4 = new Jugador(new Personaje(), false);
+						Jugador j4 = new Jugador(new Personaje(), true);
 						Gestion.jugadores.add(j4);
 						valorInt1--;
 					} else if (resta==2) {
 						resta--;
-						Jugador j5 = new Jugador(new Personaje(), false);
+						Jugador j5 = new Jugador(new Personaje(), true);
 						Gestion.jugadores.add(j5);
 						valorInt1--;	
 					} else if (resta==1) {
-						Jugador j6 = new Jugador(new Personaje(), false);
+						Jugador j6 = new Jugador(new Personaje(), true);
 						Gestion.jugadores.add(j6);
 						valorInt1--;
 					}

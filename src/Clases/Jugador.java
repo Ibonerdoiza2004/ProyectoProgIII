@@ -16,6 +16,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	protected int[] posicion = new int[2];
 	protected boolean npc;
 	protected HashMap<Asesinato, String>anotaciones = new HashMap<>();
+	protected int anteriorPuerta = -1;
 	public static int getContador() {
 		return contador;
 	}
@@ -75,11 +76,12 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.lista = Gestion.creacionLista();
 		this.anotaciones = Gestion.creacionAnotaciones();
 		this.npc = npc;
+		anteriorPuerta = -1;
 	}
 
 	
 	public Jugador(ArrayList<Asesinato> cartas, Personaje personaje, HashMap<Implicados, Asesinato> acusacion,
-			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, ArrayList<Boolean>> listaVacia, boolean npc) {
+			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, ArrayList<Boolean>> listaVacia, boolean npc, int anteriorPuerta) {
 		super();
 		this.codigo = contador;
 		contador ++;
@@ -90,6 +92,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacionFinal = acusacionFinal;
 		this.lista = listaVacia;
 		this.npc = npc;
+		this.anteriorPuerta=anteriorPuerta;
 	}
 	@Override
 	public String toString() {

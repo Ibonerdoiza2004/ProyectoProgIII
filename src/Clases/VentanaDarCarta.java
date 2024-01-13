@@ -1,5 +1,6 @@
 package Clases;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -175,18 +176,57 @@ public class VentanaDarCarta extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(cartaParaMostrar!=null) {
-					Gestion.cartasEnsenyadas.put(cartaParaMostrar, Gestion.jugadores.get(numeroJugador));
-				}else {
-				}
-				numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
-				if(numeroJugador!=Gestion.getNumTurno()) {
-					eliminarPanel();
-					new VentanaDarCarta(numeroJugador);
-				}else {
-					System.out.println(Gestion.cartasEnsenyadas.keySet());
-					Gestion.ventanaJuego.dispose();
-				}
+					Thread t = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							bContinuar.setEnabled(false);
+							if(cartaParaMostrar!=null) {
+								Gestion.cartasEnsenyadas.put(cartaParaMostrar, Gestion.jugadores.get(numeroJugador));
+							}
+							numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
+							while(Gestion.jugadores.get(numeroJugador).npc&&numeroJugador!=Gestion.getNumTurno()) {
+			//					Enseñar carta
+								ArrayList<Asesinato>posiblesCartas = new ArrayList<>();
+								for (Asesinato carta: Gestion.jugadores.get(numeroJugador).cartas) {
+									if(Gestion.acusacion.contains(carta)) {
+										posiblesCartas.add(carta);
+									}
+								}
+								if(!posiblesCartas.isEmpty()) {
+									Gestion.cartasEnsenyadas.put(posiblesCartas.get((int)(Math.random()*posiblesCartas.size())), Gestion.jugadores.get(numeroJugador));
+								}
+								numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
+							}
+							if(Gestion.jugadores.get(numeroJugador)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
+								eliminarPanel();
+								String lockSiguienteVentana = "siguienteVentana";
+								synchronized (lockSiguienteVentana) {
+									try {
+										lockSiguienteVentana.wait();
+									} catch (InterruptedException ex) {
+										ex.printStackTrace();
+									}
+								}
+								new VentanaDarCarta(numeroJugador);
+							}else {
+								Gestion.aumentarTurno();
+								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+								eliminarPanel();
+								String lockSiguienteVentana = "siguienteVentana";
+								synchronized (lockSiguienteVentana) {
+									try {
+										lockSiguienteVentana.wait();
+									} catch (InterruptedException ex) {
+										ex.printStackTrace();
+									}
+								}
+								new VentanaTablero();
+							}
+						}
+					});
+					t.start();
 				
 			}
 		});

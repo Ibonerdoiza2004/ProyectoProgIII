@@ -116,6 +116,16 @@ public class VentanaAsignarTurnos extends JPanel{
 		
 		for(Integer i : jugadores) {
 			izquierdaArriba.setText("Turno de "+Gestion.jugadores.get(i).getPersonaje().getNombre());
+			if(Gestion.jugadores.get(i).npc) {
+				panelDados.btnTirar.setEnabled(false);
+				try {
+					Thread.sleep(1500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				panelDados.tirarDado();
+			}
 			String lock = "lock";
 			synchronized (lock) {
 				 try {
@@ -216,7 +226,8 @@ public class VentanaAsignarTurnos extends JPanel{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase());
+			panelDados.btnTirar.setFocusable(false);
+			new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 			eliminarPanel();
 			String lockSiguienteVentana = "siguienteVentana";
 			synchronized (lockSiguienteVentana) {

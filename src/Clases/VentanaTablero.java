@@ -146,7 +146,10 @@ public class VentanaTablero extends JPanel{
 		
 		panelDerecha.setBounds((int)Gestion.sizePantalla.getHeight(), 0, (int)Gestion.sizePantalla.getWidth(),(int)Gestion.sizePantalla.getHeight());
 		add(panelDerecha);
-		
+		if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+			panelDados.btnTirar.setEnabled(false);
+			botonDesplegar.setEnabled(false);
+		}
 		botonDesplegar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -436,7 +439,15 @@ public class VentanaTablero extends JPanel{
 			
 		}
 	public void pintarCasillas() {		 
-		
+		if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+			try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			panelDados.tirarDado();
+		}
 		String lock = "lock";
 		synchronized (lock) {
 			 try {
@@ -478,47 +489,89 @@ public class VentanaTablero extends JPanel{
 			}
 			panelTablero.repaint();
 		}
-		seleccionarCasilla();
+		if(!Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+			seleccionarCasilla();
+		}else {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int longCaminoMasCorto = 200;
+			ArrayList<Integer>casillaMasCercanaAPuerta=null;
+			int valorPuerta =-1;
+			for (int i = 0; i<Gestion.tablero.size();i++){
+				for(int j =0; j<Gestion.tablero.get(i).size();j++) {
+					if(Gestion.tablero.get(i).get(j)!=0 &&Gestion.tablero.get(i).get(j)!=1 && Gestion.tablero.get(i).get(j)!=11 
+							&& Gestion.tablero.get(i).get(j)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta) {
+						ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
+						if(longCaminoMasCorto>posible.size()) {
+							if(posible.size()<=movimientos) {
+								casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
+								valorPuerta = Gestion.tablero.get(i).get(j);
+								Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta=valorPuerta;
+							}else {
+								casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+							}
+							longCaminoMasCorto = posible.size();
+							valorPuerta = Gestion.tablero.get(i).get(j);
+						}
+					}
+				}
+			}
+				
+			
+			filaSeleccionada=casillaMasCercanaAPuerta.get(0);
+			columnaSeleccionada=casillaMasCercanaAPuerta.get(1);
+			labelSeleccionada = labelCasillas.get(casillaMasCercanaAPuerta);
+			casillaSeleccionadaY = coordsFilas.get(casillaMasCercanaAPuerta.get(0));
+			casillaSeleccionadaX = coordsColumnas.get(casillaMasCercanaAPuerta.get(1));
+			alSeleccionarCasilla();
+		}
 	}
 	public void seleccionarCasilla() {
 		panelTablero.addMouseMotionListener(new MouseMotionAdapter() {
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				int tempY = filaSeleccionada;
-				int tempX = columnaSeleccionada;
-				for (int i = 0; i<coordsFilas.size();i++) {
-					ArrayList<Integer>coordsFila = coordsFilas.get(i);
-					if (coordsFila.get(0)<e.getY()&&coordsFila.get(1)>e.getY()) {
-						filaSeleccionada = i;
-						break;
+				if(!Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+					int tempY = filaSeleccionada;
+					int tempX = columnaSeleccionada;
+					for (int i = 0; i<coordsFilas.size();i++) {
+						ArrayList<Integer>coordsFila = coordsFilas.get(i);
+						if (coordsFila.get(0)<e.getY()&&coordsFila.get(1)>e.getY()) {
+							filaSeleccionada = i;
+							break;
+						}
 					}
-				}
-				for (int i = 0; i<coordsColumnas.size();i++) {
-					ArrayList<Integer>coordsColumna = coordsColumnas.get(i);
-					if (coordsColumna.get(0)<e.getX()&&coordsColumna.get(1)>e.getX()) {
-						columnaSeleccionada = i;
-						break;
+					for (int i = 0; i<coordsColumnas.size();i++) {
+						ArrayList<Integer>coordsColumna = coordsColumnas.get(i);
+						if (coordsColumna.get(0)<e.getX()&&coordsColumna.get(1)>e.getX()) {
+							columnaSeleccionada = i;
+							break;
+						}
 					}
-				}
-				
-				if(tempY!=filaSeleccionada||tempX!=columnaSeleccionada) {
-					if(labelSeleccionada!=null) {
-						labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
-					}
-					if(filaSeleccionada!=-1&&columnaSeleccionada!=-1) {	
-						ArrayList<Integer>casillaSeleccionada= new ArrayList<>();
-						casillaSeleccionada.add(filaSeleccionada);
-						casillaSeleccionada.add(columnaSeleccionada);
-						labelSeleccionada = labelCasillas.get(casillaSeleccionada);
+					
+					if(tempY!=filaSeleccionada||tempX!=columnaSeleccionada) {
 						if(labelSeleccionada!=null) {
-							casillaSeleccionadaY = coordsFilas.get(casillaSeleccionada.get(0));
-							casillaSeleccionadaX = coordsColumnas.get(casillaSeleccionada.get(1));
-							labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-5, casillaSeleccionadaY.get(0)-5, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+10, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+10);
-							panelTablero.setComponentZOrder(labelSeleccionada, 1);
+							labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
+						}
+						if(filaSeleccionada!=-1&&columnaSeleccionada!=-1) {	
+							ArrayList<Integer>casillaSeleccionada= new ArrayList<>();
+							casillaSeleccionada.add(filaSeleccionada);
+							casillaSeleccionada.add(columnaSeleccionada);
+							labelSeleccionada = labelCasillas.get(casillaSeleccionada);
+							if(labelSeleccionada!=null) {
+								casillaSeleccionadaY = coordsFilas.get(casillaSeleccionada.get(0));
+								casillaSeleccionadaX = coordsColumnas.get(casillaSeleccionada.get(1));
+								labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-5, casillaSeleccionadaY.get(0)-5, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+10, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+10);
+								panelTablero.setComponentZOrder(labelSeleccionada, 1);
+							}
 						}
 					}
 				}
+				
 				
 			}
 			
@@ -526,62 +579,8 @@ public class VentanaTablero extends JPanel{
 		panelTablero.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(filaSeleccionada!=-1&&columnaSeleccionada!=-1&&labelSeleccionada!=null) {
-					for (MouseMotionListener listener : panelTablero.getMouseMotionListeners()) {
-					    panelTablero.removeMouseMotionListener(listener);
-					}
-					for (MouseListener listener : panelTablero.getMouseListeners()) {
-					    panelTablero.removeMouseListener(listener);
-					}
-					Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
-					for(JLabel casilla:labelCasillas.values()) {
-						panelTablero.remove(casilla);
-					}
-					labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
-					JLabel labelDestino= new JLabel() {
-						protected void paintComponent(Graphics g) {
-							
-							g.setColor(Color.RED);
-							g.fillRect(1, 1, getWidth()-2, getHeight()-2);
-							Graphics2D g2d = (Graphics2D) g;
-					        g2d.setStroke(new BasicStroke(2));
-							g2d.setColor(Color.black);
-							g2d.drawRect(1, 1, getWidth()-2, getHeight()-2);
-							
-						};
-					};
-					labelDestino.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
-					panelTablero.add(labelDestino);
-					panelTablero.setComponentZOrder(labelDestino, 1);
-					
-					
-					caminoMasCorto = caminoMasCorto(jugador.posicion[0], jugador.posicion[1], filaSeleccionada, columnaSeleccionada);
-					
-					for(int i = 1; i<caminoMasCorto.size()-1;i++) {
-						JLabel siguienteCasilla= new JLabel() {
-							protected void paintComponent(Graphics g) {
-								
-								g.setColor(Color.MAGENTA);
-								g.fillRect(1, 1, getWidth()-2, getHeight()-2);
-								Graphics2D g2d = (Graphics2D) g;
-						        g2d.setStroke(new BasicStroke(2));
-								g2d.setColor(Color.black);
-								g2d.drawRect(1, 1, getWidth()-2, getHeight()-2);
-								
-							};
-						};
-						ArrayList<Integer> fila = coordsFilas.get(caminoMasCorto.get(i).get(0));
-						ArrayList<Integer> columna = coordsColumnas.get(caminoMasCorto.get(i).get(1));
-						siguienteCasilla.setBounds(columna.get(0)-1, fila.get(0)-1, columna.get(1)-columna.get(0)+2, fila.get(1)-fila.get(0)+2);
-						panelTablero.add(siguienteCasilla);
-						casillasDelCamino.add(siguienteCasilla);
-						panelTablero.setComponentZOrder(siguienteCasilla, 1);
-						panelTablero.repaint();
-					}
-					
-					moverPersonaje();
-				}
-			}
+				alSeleccionarCasilla();				}
+			
 		});
 	}
 	public void moverPersonaje() {
@@ -685,9 +684,9 @@ public class VentanaTablero extends JPanel{
 					e.printStackTrace();
 				}
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
-					new VentanaTexto("TURNO DE "+Gestion.jugadores.get((Gestion.getNumTurno()+1)%Gestion.jugadores.size()).getPersonaje().getNombre().toString().toUpperCase());
-					eliminarPanel();
 					Gestion.aumentarTurno();
+					new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+					eliminarPanel();
 					String lockSiguienteVentana = "siguienteVentana";
 					synchronized (lockSiguienteVentana) {
 						try {
@@ -700,13 +699,120 @@ public class VentanaTablero extends JPanel{
 				}else {
 					Gestion.cartasEnsenyadas.clear();
 					//Aquí se añade un nuevo panel con VentanaAcusacion
-					new VentanaAcusacion();
-					eliminarPanel();
+					if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+//						Hacer acusacion
+						Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta=0;
+						Gestion.acusacion=new ArrayList<>();
+						Gestion.acusacion.add(Gestion.datosPartida.armas.get((int)(Math.random()*Gestion.datosPartida.armas.size())));
+						Gestion.acusacion.add(Gestion.datosPartida.sospechosos.get((int)(Math.random()*Gestion.datosPartida.sospechosos.size())));
+						Gestion.acusacion.add(Gestion.datosPartida.lugares.get((int)(Math.random()*Gestion.datosPartida.lugares.size())));
+						int jug = (Gestion.getNumTurno()+1)%Gestion.jugadores.size();
+						while(Gestion.jugadores.get(jug).npc&&Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+//							Enseñar carta
+							ArrayList<Asesinato>posiblesCartas = new ArrayList<>();
+							for (Asesinato carta: Gestion.jugadores.get(jug).cartas) {
+								if(Gestion.acusacion.contains(carta)) {
+									posiblesCartas.add(carta);
+								}
+							}
+							if(!posiblesCartas.isEmpty()) {
+								Gestion.cartasEnsenyadas.put(posiblesCartas.get((int)(Math.random()*posiblesCartas.size())), Gestion.jugadores.get(jug));
+							}
+							jug = (jug+1)%Gestion.jugadores.size();
+						}
+						if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+							new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
+							eliminarPanel();
+							String lockSiguienteVentana = "siguienteVentana";
+							synchronized (lockSiguienteVentana) {
+								try {
+									lockSiguienteVentana.wait();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							new VentanaDarCarta(jug);
+						}else {
+							Gestion.aumentarTurno();
+							new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+							eliminarPanel();
+							String lockSiguienteVentana = "siguienteVentana";
+							synchronized (lockSiguienteVentana) {
+								try {
+									lockSiguienteVentana.wait();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							new VentanaTablero();
+						}
+					}else {
+						new VentanaAcusacion();
+						eliminarPanel();
+					}
+					
 				}
 			}
 		});
 		hiloMoverPersonaje.start();
 		
+	}
+	public void alSeleccionarCasilla() {
+		if(filaSeleccionada!=-1&&columnaSeleccionada!=-1&&labelSeleccionada!=null) {
+			for (MouseMotionListener listener : panelTablero.getMouseMotionListeners()) {
+			    panelTablero.removeMouseMotionListener(listener);
+			}
+			for (MouseListener listener : panelTablero.getMouseListeners()) {
+			    panelTablero.removeMouseListener(listener);
+			}
+			Jugador jugador = Gestion.jugadores.get(Gestion.getNumTurno());
+			for(JLabel casilla:labelCasillas.values()) {
+				panelTablero.remove(casilla);
+			}
+			labelSeleccionada.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
+			JLabel labelDestino= new JLabel() {
+				protected void paintComponent(Graphics g) {
+					
+					g.setColor(Color.RED);
+					g.fillRect(1, 1, getWidth()-2, getHeight()-2);
+					Graphics2D g2d = (Graphics2D) g;
+			        g2d.setStroke(new BasicStroke(2));
+					g2d.setColor(Color.black);
+					g2d.drawRect(1, 1, getWidth()-2, getHeight()-2);
+					
+				};
+			};
+			labelDestino.setBounds(casillaSeleccionadaX.get(0)-1, casillaSeleccionadaY.get(0)-1, casillaSeleccionadaX.get(1)-casillaSeleccionadaX.get(0)+2, casillaSeleccionadaY.get(1)-casillaSeleccionadaY.get(0)+2);
+			panelTablero.add(labelDestino);
+			panelTablero.setComponentZOrder(labelDestino, 1);
+			
+			
+			caminoMasCorto = caminoMasCorto(jugador.posicion[0], jugador.posicion[1], filaSeleccionada, columnaSeleccionada);
+			
+			for(int i = 1; i<caminoMasCorto.size()-1;i++) {
+				JLabel siguienteCasilla= new JLabel() {
+					protected void paintComponent(Graphics g) {
+						
+						g.setColor(Color.MAGENTA);
+						g.fillRect(1, 1, getWidth()-2, getHeight()-2);
+						Graphics2D g2d = (Graphics2D) g;
+				        g2d.setStroke(new BasicStroke(2));
+						g2d.setColor(Color.black);
+						g2d.drawRect(1, 1, getWidth()-2, getHeight()-2);
+						
+					};
+				};
+				ArrayList<Integer> fila = coordsFilas.get(caminoMasCorto.get(i).get(0));
+				ArrayList<Integer> columna = coordsColumnas.get(caminoMasCorto.get(i).get(1));
+				siguienteCasilla.setBounds(columna.get(0)-1, fila.get(0)-1, columna.get(1)-columna.get(0)+2, fila.get(1)-fila.get(0)+2);
+				panelTablero.add(siguienteCasilla);
+				casillasDelCamino.add(siguienteCasilla);
+				panelTablero.setComponentZOrder(siguienteCasilla, 1);
+				panelTablero.repaint();
+			}
+			
+			moverPersonaje();
+		}
 	}
 	public void eliminarPanel() {
 		Gestion.ventanaJuego.remove(this);

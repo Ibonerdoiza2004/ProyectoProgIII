@@ -118,7 +118,6 @@ public class VentanaInicio extends JPanel{
 		
 		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 			public void windowOpened (WindowEvent e) {
-		    		   
 				Thread t = new Thread(new Runnable() {
 					@Override
 						public void run() {
@@ -148,6 +147,7 @@ public class VentanaInicio extends JPanel{
 		
 		Font defaultFont = nuevaOnline.getFont();
 		System.out.println(defaultFont);
+		Gestion.vInicio=this;
 	}
 	
 	protected void paintComponent(Graphics g) {

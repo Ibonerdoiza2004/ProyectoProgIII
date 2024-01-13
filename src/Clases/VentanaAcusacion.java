@@ -205,6 +205,24 @@ public class VentanaAcusacion extends JPanel{
 				
 			}
 		});
+		cbLugar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Sitio nom = (Sitio) cbLugar.getSelectedItem();
+				String sitio = nom.toString();
+				JLabel lblSel = new JLabel();
+				ImageIcon imageIcon = new ImageIcon("src/cartasLugares/"+sitio+".png");
+		        Image image = imageIcon.getImage();
+		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+		        lblSel.setIcon(new ImageIcon(newimg));
+		        pnlFotoLugar.removeAll();
+		        pnlFotoLugar.add(lblSel, BorderLayout.CENTER);
+		        Gestion.ventanaJuego.repaint();
+		        Gestion.ventanaJuego.revalidate();
+				
+			}
+		});
 		
 		//Primero añadir estos combos
 		pnlCombo.add(cbSospechoso);
@@ -235,27 +253,85 @@ public class VentanaAcusacion extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Gestion.acusacion = new ArrayList<>();
-				System.out.println(cbSospechoso.getSelectedIndex());
-				sospechosoElegido = Gestion.datosPartida.sospechosos.get(cbSospechoso.getSelectedIndex());
-				Gestion.acusacion.add(sospechosoElegido);
-				System.out.println(cbArma.getSelectedIndex());
-				armaElegida = Gestion.datosPartida.armas.get(cbArma.getSelectedIndex());
-				Gestion.acusacion.add(armaElegida);
-				if(devuelveComp() instanceof JLabel) {
-					for (Lugar l:Gestion.datosPartida.lugares) {
-						if (l.getNombre().equals(((Sitio)cbLugar.getSelectedItem()))) {
-							lugarElegido = l;
+				Thread t = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						btnAcusar.setEnabled(false);
+						Gestion.acusacion = new ArrayList<>();
+						System.out.println(cbSospechoso.getSelectedIndex());
+						sospechosoElegido = Gestion.datosPartida.sospechosos.get(cbSospechoso.getSelectedIndex());
+						Gestion.acusacion.add(sospechosoElegido);
+						System.out.println(cbArma.getSelectedIndex());
+						armaElegida = Gestion.datosPartida.armas.get(cbArma.getSelectedIndex());
+						Gestion.acusacion.add(armaElegida);
+						if(devuelveComp() instanceof JLabel) {
+							for (Lugar l:Gestion.datosPartida.lugares) {
+								if (l.getNombre().equals(((Sitio)cbLugar.getSelectedItem()))) {
+									lugarElegido = l;
+								}
+							}
+
+							Gestion.acusacion.add(lugarElegido);
+							int jug = (Gestion.getNumTurno()+1)%Gestion.jugadores.size();
+							while(Gestion.jugadores.get(jug).npc&&Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+//								Enseñar carta
+								ArrayList<Asesinato>posiblesCartas = new ArrayList<>();
+								for (Asesinato carta: Gestion.jugadores.get(jug).cartas) {
+									if(Gestion.acusacion.contains(carta)) {
+										posiblesCartas.add(carta);
+									}
+								}
+								if(!posiblesCartas.isEmpty()) {
+									Gestion.cartasEnsenyadas.put(posiblesCartas.get((int)(Math.random()*posiblesCartas.size())), Gestion.jugadores.get(jug));
+								}
+								jug = (jug+1)%Gestion.jugadores.size();
+							}
+							if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
+								eliminarPanel();
+								String lockSiguienteVentana = "siguienteVentana";
+								synchronized (lockSiguienteVentana) {
+									try {
+										lockSiguienteVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								new VentanaDarCarta(jug);
+							}else {
+								Gestion.aumentarTurno();
+								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+								eliminarPanel();
+								String lockSiguienteVentana = "siguienteVentana";
+								synchronized (lockSiguienteVentana) {
+									try {
+										lockSiguienteVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								new VentanaTablero();
+							}
+							
+						}else {
+							lugarElegido=Gestion.datosPartida.lugares.get(cbLugar.getSelectedIndex());
+							Gestion.acusacion.add(lugarElegido);
+							if(Gestion.acusacion.get(0).equals(Gestion.datosPartida.implicados.get(Implicados.PERSONA))&&
+									Gestion.acusacion.get(1).equals(Gestion.datosPartida.implicados.get(Implicados.ARMA))&&
+									Gestion.acusacion.get(2).equals(Gestion.datosPartida.implicados.get(Implicados.LUGAR))) {
+								new VentanaVictoria();
+							}else {
+								new VentanaDerrota();
+								eliminarPanel();
+							}
 						}
+							
+						
+						
 					}
-					
-				}else {
-					lugarElegido=Gestion.datosPartida.lugares.get(cbLugar.getSelectedIndex());
-				}
-					
-				Gestion.acusacion.add(lugarElegido);
-				new VentanaDarCarta((Gestion.getNumTurno()+1)%Gestion.jugadores.size());
-				eliminarPanel();
+				});	
+				t.start();
 			}
 		});
 		

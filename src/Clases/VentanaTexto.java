@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 
 public class VentanaTexto extends JPanel{
 	float alpha = 1;
-	public VentanaTexto(String sTexto) {
+	public VentanaTexto(String sTexto, int jug) {
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
 		setBackground(Color.BLACK);
@@ -46,14 +46,13 @@ public class VentanaTexto extends JPanel{
 		consejo.setOpaque(false);
 		consejo.setBounds(0, 0, getWidth(), getHeight()-10);
 		add(texto);
-		add(consejo);
+		if(!Gestion.jugadores.get(jug).npc) {
+			add(consejo);
+		}
 		add(lFondo);
-		
 		Gestion.ventanaJuego.add(this);
 		repaint();
 		this.requestFocus();
-		
-		
 		
 		Thread t = new Thread(new Runnable() {
 			
@@ -98,11 +97,21 @@ public class VentanaTexto extends JPanel{
 
 			}
 		});
+		if(Gestion.jugadores.get(jug).npc) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			t.start();
+		}
+		
 		addKeyListener(new KeyListener() {
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if(e.getKeyChar()==KeyEvent.VK_ENTER) {
+				if(e.getKeyChar()==KeyEvent.VK_ENTER && !Gestion.jugadores.get(jug).npc) {
 					t.start();
 					removeKeyListener(this);
 				}
