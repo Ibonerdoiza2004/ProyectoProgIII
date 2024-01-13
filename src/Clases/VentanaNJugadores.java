@@ -119,7 +119,6 @@ public class VentanaNJugadores extends JPanel {
 		this.add(pnlSur);
 		
 		
-	
 		setSize(Gestion.sizePantalla);
 		Gestion.ventanaJuego.add(this);
 		revalidate();
