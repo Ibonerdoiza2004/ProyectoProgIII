@@ -11,7 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
@@ -65,6 +68,7 @@ public class MainBD {
 			statement.executeUpdate("DROP TABLE IF EXISTS jugador");
 			
 			String crearTablaEstadisticas = "CREATE TABLE ESTADISTICAS ("
+					+ "MES_STATS TEXT,"
 			        + "NUM_PARTIDAS_MES INTEGER,"
 			        + "NUM_JUGADORES_REALES INTEGER,"
 			        + "NUM_NPCS INTEGER,"
@@ -96,6 +100,15 @@ public class MainBD {
                     + "NUM_PARTIDAS_JUGADAS INTEGER"
                     + ")";
             statement.executeUpdate(crearTablaJugador);
+            
+            String crearTablaRelacion = "CREATE TABLE PARTICIPA (" //Con las claves primarias de partida y jugador
+                    + "ID_JUGADOR STRING,"
+                    + "ID_PARTIDA STRING,"
+                    + "PRIMARY KEY (ID_JUGADOR,ID_PARTIDA),"
+                    + "FOREIGN KEY (ID_JUGADOR) REFERENCES JUGADOR(ID_JUGADOR),"
+                    + "FOREIGN KEY (ID_PARTIDA), REFERENCES PARTIDA(ID_PARTIDA)"
+                    + ")";
+            
 			
 			//Datos para tabla Estadísticas
 			int i = 0;
@@ -106,9 +119,14 @@ public class MainBD {
 			 * hasta cargar los oficiales
 			 */
 			int num_partidas_mes = 0; //Voy a necesitar esta variable
+			@SuppressWarnings("deprecation")
+			LocalDate fechaInicial = LocalDate.of(2023, 5, 1);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+			String fechaTexto;
 			while (i != 20) {
 				
 				//Datos de prueba para tabla estadísticas:
+				fechaTexto = formatter.format(fechaInicial);
 				num_partidas_mes = r.nextInt(100)+1;
 				int num_jugadores_reales = r.nextInt(450)+1;
 				int num_npcs = 600-num_jugadores_reales;
@@ -122,11 +140,12 @@ public class MainBD {
 				numEscogidos += miss_scarlet; numEscogidos += colonel_Mustard; numEscogidos += mrs_white;
 				numEscogidos += mr_green; numEscogidos += mrs_peacock;
 				int profesor_plum = 600 - numEscogidos;
-				String sent = "insert into estadisticas values (" + num_partidas_mes + ", " + num_jugadores_reales
+				String sent = "insert into estadisticas values (" + fechaTexto + ", "+ num_partidas_mes + ", " + num_jugadores_reales
 						+ ", " + num_npcs + ", " + duracion_partida + ", " + miss_scarlet + ", " + colonel_Mustard
 						+ ", " + mrs_white + ", " + mr_green + ", " + mrs_peacock + ", " + profesor_plum + ")";
 				System.out.println(sent);
 				statement.executeUpdate(sent);
+				fechaInicial = fechaInicial.plusMonths(1);
 		        
 		        //Datos de prueba para tabla Jugador:
 		        //int id_jugador = r.nextInt(50+1);
