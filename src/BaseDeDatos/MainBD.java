@@ -40,12 +40,18 @@ public class MainBD {
 	private static Statement statement;
 	private static ResultSet rs;
 	
+	private static JFrame ventBD;
+	private static JTable tablaDatos;
 	private static DefaultTableModel modeloTabla;
 	private static JPanel pnlCentral = new JPanel();
 	private static JButton btnTablaStats = new JButton("Tabla Estadísticas");
 	private static JButton btnTablaPartida = new JButton("Tabla Partida");
 	private static JButton btnJugador = new JButton("Tabla Jugador");
+	private static JButton btnParticipa = new JButton("Tabla de realción Participa");
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+	private static final LocalDate currentMonth = LocalDate.of(2024, 01, 01);
 	private static ConexionSQlite conexion;
+	private static int num_partidas_mes;
 
 	public static void main(String[] args) {
 		
@@ -66,9 +72,10 @@ public class MainBD {
 			statement.executeUpdate("DROP TABLE IF EXISTS estadisticas");
 			statement.executeUpdate("DROP TABLE IF EXISTS partida");
 			statement.executeUpdate("DROP TABLE IF EXISTS jugador");
+			statement.executeUpdate("DROP TABLE IF EXISTS participa");
 			
 			String crearTablaEstadisticas = "CREATE TABLE ESTADISTICAS ("
-					+ "MES_STATS TEXT,"
+					+ "MES_STATS STRING,"
 			        + "NUM_PARTIDAS_MES INTEGER,"
 			        + "NUM_JUGADORES_REALES INTEGER,"
 			        + "NUM_NPCS INTEGER,"
@@ -84,7 +91,7 @@ public class MainBD {
 			statement.executeUpdate(crearTablaEstadisticas);
 			
 			String crearTablaPartida = "CREATE TABLE PARTIDA ("
-			        + "ID_PARTIDA INTEGER,"
+			        + "ID_PARTIDA STRING,"
 			        + "FECHA_PARTIDA TEXT,"
 			        + "DURACION INTEGER,"
 			        + "GANADOR STRING,"
@@ -104,12 +111,15 @@ public class MainBD {
             String crearTablaRelacion = "CREATE TABLE PARTICIPA (" //Con las claves primarias de partida y jugador
                     + "ID_JUGADOR STRING,"
                     + "ID_PARTIDA STRING,"
+                    + "FECHA_PARTIDAS STRING,"
                     + "PRIMARY KEY (ID_JUGADOR,ID_PARTIDA),"
                     + "FOREIGN KEY (ID_JUGADOR) REFERENCES JUGADOR(ID_JUGADOR),"
-                    + "FOREIGN KEY (ID_PARTIDA), REFERENCES PARTIDA(ID_PARTIDA)"
+                    + "FOREIGN KEY (ID_PARTIDA) REFERENCES PARTIDA(ID_PARTIDA)"
                     + ")";
+            statement.executeUpdate(crearTablaRelacion);
+            //PUEDO CREAR UN MAPA PARA ASOCIAR JUGADRO-PARTIDA-FECHA CON UN MISMO COLOR EN LAS FILAS DE SUS TABLAS
+			//HACER LOGIN Y REGISTRO PARA JUGADORES. SI YA ESTÁN EN LA BD, YA TIENEN SU ID DE JUGADOR, SI NO,SE LES DA EL SIGUIENTE ID QUE SERÁ J+EL INT STATIC
             
-			
 			//Datos para tabla Estadísticas
 			int i = 0;
 			Random r = new Random();
@@ -118,13 +128,11 @@ public class MainBD {
 			 * Elimino lo todos los datos de la tabla
 			 * hasta cargar los oficiales
 			 */
-			int num_partidas_mes = 0; //Voy a necesitar esta variable
+			num_partidas_mes = 0; //Voy a necesitar esta variable
 			@SuppressWarnings("deprecation")
-			LocalDate fechaInicial = LocalDate.of(2023, 5, 1);
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+			LocalDate fechaInicial = LocalDate.of(2022, 5, 1);
 			String fechaTexto;
 			while (i != 20) {
-				
 				//Datos de prueba para tabla estadísticas:
 				fechaTexto = formatter.format(fechaInicial);
 				num_partidas_mes = r.nextInt(100)+1;
@@ -140,7 +148,7 @@ public class MainBD {
 				numEscogidos += miss_scarlet; numEscogidos += colonel_Mustard; numEscogidos += mrs_white;
 				numEscogidos += mr_green; numEscogidos += mrs_peacock;
 				int profesor_plum = 600 - numEscogidos;
-				String sent = "insert into estadisticas values (" + fechaTexto + ", "+ num_partidas_mes + ", " + num_jugadores_reales
+				String sent = "insert into estadisticas values ( '" + fechaTexto + "', "+ num_partidas_mes + ", " + num_jugadores_reales
 						+ ", " + num_npcs + ", " + duracion_partida + ", " + miss_scarlet + ", " + colonel_Mustard
 						+ ", " + mrs_white + ", " + mr_green + ", " + mrs_peacock + ", " + profesor_plum + ")";
 				System.out.println(sent);
@@ -156,24 +164,25 @@ public class MainBD {
 			//Cargar datos de las partidas del último mes
 			i = 0;
 			NombrePersonaje[] valores = NombrePersonaje.values();
-			while (i < num_partidas_mes) {
+			while (i < num_partidas_mes) { //Son los datos de las partidas y jugadores del último mes
 				Num_Partida ++;
 				//Para insertar mejor crear PrepraedStatements
 				PreparedStatement psPartida = conn.prepareStatement("INSERT INTO partida VALUES (?,?,?,?,?)");
 				
 				//Datos de prueba para tabla partida:
-				int id_partida = Num_Partida;
+				String id_partida = "P"+(i+1);
 				//String fechaAleatoria = "2023-11-13";
-				LocalDate fechaAleatoria = LocalDate.of(2023, 11, r.nextInt(29) + 1);
-				String fechaFormateada = fechaAleatoria.toString();
+				//LocalDate fechaAleatoria = LocalDate.of(2023, 11, r.nextInt(29) + 1);
+				String fechaFormateada = fechaInicial.minusMonths(1).toString();
 		        int duracion_p = r.nextInt(3)+1;
 		        String ganador = valores[r.nextInt(valores.length-1)+1].name();
-		        int numJugadores = r.nextInt(6)+1;
-		        psPartida.setInt(1, id_partida);
+		        int numJugadores = r.nextInt(6)+1; //Atributo a utilizar
+		        psPartida.setString(1, id_partida);
 		        psPartida.setString(2, fechaFormateada);
 		        psPartida.setInt(3, duracion_p);
 		        psPartida.setString(4, ganador);
 		        psPartida.setInt(5, numJugadores);
+		        datosParticipa(id_partida, numJugadores);
 		        psPartida.executeUpdate();
 //				String sent = "insert into partida values (" + id_partida + ", " + fechaFormateada
 //						+ ", " + duracion_p + ", " + ganador + ", " + numJugadores + ")";
@@ -182,25 +191,8 @@ public class MainBD {
 		        i ++;
 			}
 			
-			//Cargar datos para 50 jugadores:
-			PosiblesNicks[] valoresNicks = PosiblesNicks.values();
-			Sitio[] valoresSitio = Sitio.values();
-			PreparedStatement psJugador = conn.prepareStatement("INSERT INTO JUGADOR VALUES (?, ?, ?, ?, ?)");
-			i = 0;
-			while (i < 50) {
-				String idJugador = "J"+i;
-				String nom = valoresNicks[r.nextInt(valoresNicks.length-1)+1].toString();
-				String personajeAsigando = valores[r.nextInt(valores.length-1)+1].toString();
-				String habitacion = valoresSitio[r.nextInt(valoresSitio.length-1)+1].toString();
-				Integer numPartidas = r.nextInt(50)+1;
-				psJugador.setString(1, idJugador);
-				psJugador.setString(2, nom);
-				psJugador.setString(3, personajeAsigando);
-				psJugador.setString(4, habitacion);
-				psJugador.setInt(5, numPartidas);
-				psJugador.executeUpdate();
-				i ++;
-			}
+			//Cargar los datos de las partidas
+			cargarDatosPartida();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -278,18 +270,16 @@ public class MainBD {
 		
 		JPanel pnlBotonera = new JPanel();
 		pnlBotonera.add(btnTablaStats); pnlBotonera.add(btnTablaPartida); pnlBotonera.add(btnJugador);
+		pnlBotonera.add(btnParticipa);
 		
 		ventBD.add(pnlBotonera, BorderLayout.SOUTH);
 	}
-	
-	private static JTable tablaDatos;
-	private static JFrame ventBD;
 	
 	
 	private static void cargarTablaEstadisticas() {
 		
 		Vector<String> cabeceras = new Vector<String>();
-		cabeceras.add("NUM_PARTIDAS"); cabeceras.add("JUGADORES_REALES"); cabeceras.add("NUM_NPCS");
+		cabeceras.add("MES_STATS"); cabeceras.add("NUM_PARTIDAS"); cabeceras.add("JUGADORES_REALES"); cabeceras.add("NUM_NPCS");
 		cabeceras.add("MEDIA_DUR_PARTIDA"); cabeceras.add("MISS_SCARLET"); cabeceras.add("COLONEL_MUSTARD");
 		cabeceras.add("MRS_WHITE"); cabeceras.add("MR_GREEN"); cabeceras.add("MRS_PEACOCK");
 		cabeceras.add("PROFESOR_PLUM");
@@ -302,18 +292,19 @@ public class MainBD {
 			sent = "select * from estadisticas";
 			rs = statement.executeQuery(sent);
 			while (rs.next()) {
-				int num_partidas = rs.getInt(1);
-				int jug_reales = rs.getInt(2);
-				int npcs = rs.getInt(3);
-				int media_h_partidas = rs.getInt(4);
-				int miss_scarlet = rs.getInt(5);
-				int colonel_mustard = rs.getInt(6);
-				int mrs_white = rs.getInt(7);
-				int mr_green = rs.getInt(8);
-				int mrs_peacock = rs.getInt(9);
-				int profesor_plum = rs.getInt(10);
-				Vector<Integer> fila = new Vector<Integer>();
-				fila.add(num_partidas); fila.add(jug_reales); fila.add(npcs);
+				String fechaStats = rs.getString(1);
+				int num_partidas = rs.getInt(2);
+				int jug_reales = rs.getInt(3);
+				int npcs = rs.getInt(4);
+				int media_h_partidas = rs.getInt(5);
+				int miss_scarlet = rs.getInt(6);
+				int colonel_mustard = rs.getInt(7);
+				int mrs_white = rs.getInt(8);
+				int mr_green = rs.getInt(9);
+				int mrs_peacock = rs.getInt(10);
+				int profesor_plum = rs.getInt(11);
+				Vector<Object> fila = new Vector<Object>();
+				fila.add(fechaStats); fila.add(num_partidas); fila.add(jug_reales); fila.add(npcs);
 				fila.add(media_h_partidas); fila.add(miss_scarlet); fila.add(colonel_mustard);
 				fila.add(mrs_white); fila.add(mr_green); fila.add(mrs_peacock); fila.add(profesor_plum);
 				modeloTabla.addRow(fila);
@@ -338,7 +329,7 @@ public class MainBD {
 		try {
 			rs = statement.executeQuery(sent);
 			while (rs.next()) {
-				int idPartida = rs.getInt(1);
+				String idPartida = rs.getString(1);
 				String fechaPartida = rs.getString(2);
 				int duracion = rs.getInt(3);
 				String ganador = rs.getString(4);
@@ -381,6 +372,59 @@ public class MainBD {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private static void cargarTablaParticipa() {
+		Vector<String> cabeceras = new Vector<String>();
+		cabeceras.add("ID_JUGADOR"); cabeceras.add("ID_PARTIDA"); cabeceras.add("FECHA_PARTIDAS");
+		modeloTabla.setDataVector(new Vector<Vector<Object>>(), cabeceras);
+		tablaDatos.setModel(modeloTabla);
+		
+		String sent = "SELECT * FROM PARTICIPA;";
+		try {
+			rs = statement.executeQuery(sent);
+			 while (rs.next()) {
+				 //AQUÍ
+			 }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void cargarDatosPartida() throws SQLException {
+		Random r = new Random();
+		NombrePersonaje[] valores = NombrePersonaje.values();
+		PosiblesNicks[] valoresNicks = PosiblesNicks.values();
+		Sitio[] valoresSitio = Sitio.values();
+		PreparedStatement psJugador = conn.prepareStatement("INSERT INTO JUGADOR VALUES (?, ?, ?, ?, ?)");
+		int i = 1;
+		while (i <= num_partidas_mes*6) {
+			String idJugador = "J"+i;
+			String nom = valoresNicks[r.nextInt(valoresNicks.length-1)+1].toString();
+			String personajeAsigando = valores[r.nextInt(valores.length-1)+1].toString();
+			String habitacion = valoresSitio[r.nextInt(valoresSitio.length-1)+1].toString();
+			Integer numPartidas = r.nextInt(50)+1;
+			psJugador.setString(1, idJugador);
+			psJugador.setString(2, nom);
+			psJugador.setString(3, personajeAsigando);
+			psJugador.setString(4, habitacion);
+			psJugador.setInt(5, numPartidas);
+			psJugador.executeUpdate();
+			i ++;
+		}
+	}
+	
+	private static void datosParticipa(String idPartda, int numJugadores) throws SQLException {
+		int i = 1;
+		PreparedStatement psParticipa = conn.prepareStatement("INSERT INTO PARTICIPA VALUES (?, ?, ?)");
+		while (i <= numJugadores) {
+			String idJugador = "J"+i;
+			psParticipa.setString(1, idJugador);
+			psParticipa.setString(2, idPartda);
+			psParticipa.setString(3, formatter.format(currentMonth));
+			psParticipa.executeUpdate();
+			i ++;
+		}
 	}
 	
 	private static void cambiarTabla() {
