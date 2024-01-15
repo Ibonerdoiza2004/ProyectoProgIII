@@ -7,6 +7,8 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	private Random r = new Random();
 	
 	private static int contador = 1;
+	private String nick;
+	private String personajeElegido;
 	protected int codigo;
 	protected ArrayList<Asesinato> cartas = new ArrayList<>(); //Cartas que le tocan
 	protected Personaje personaje = null; //El personaje elegido
@@ -64,6 +66,23 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 
 	public void setLista(HashMap<Asesinato, ArrayList<Boolean>> lista) {
 		this.lista = lista;
+	}
+	
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	public String getPersonajeElegido() {
+		return personajeElegido;
+	}
+
+	public void setPersonajeElegido(String personajeElegido) {
+		this.personajeElegido = personajeElegido;
 	}
 
 	public Jugador(Personaje personaje, boolean npc) {

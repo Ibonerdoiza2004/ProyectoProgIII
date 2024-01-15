@@ -29,13 +29,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import Clases.Jugador;
+
 enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
 enum NombrePersonaje{Rojo, Amarillo, Negro, Verde, Azul, Morado};
 enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInvestigator, ClueConqueror, CipherSherlock};
 
 public class MainBD {
 	
-	private static int Num_Partida = 0;
+	private static int NumJugadoresRegistrados = 0;
 	private static Connection conn;
 	private static Statement statement;
 	private static ResultSet rs;
@@ -55,11 +57,9 @@ public class MainBD {
 
 	public static void main(String[] args) {
 		
-		//Conexion c = new Conexion();
 		conexion = new ConexionSQlite();
 		
 		try {
-			//conn = c.conectar();
 			try {
 				conn = conexion.connect();
 			} catch (ClassNotFoundException e) {
@@ -165,7 +165,6 @@ public class MainBD {
 			i = 0;
 			NombrePersonaje[] valores = NombrePersonaje.values();
 			while (i < num_partidas_mes) { //Son los datos de las partidas y jugadores del último mes
-				Num_Partida ++;
 				//Para insertar mejor crear PrepraedStatements
 				PreparedStatement psPartida = conn.prepareStatement("INSERT INTO partida VALUES (?,?,?,?,?)");
 				
@@ -227,6 +226,18 @@ public class MainBD {
 			cargarTablaPartida();
 			ventBD.repaint();
 			ventBD.revalidate();
+			}
+		});
+		
+		btnParticipa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cambiarTabla();
+				cargarTablaParticipa();
+				ventBD.repaint();
+				ventBD.revalidate();
+				
 			}
 		});
 		
@@ -384,8 +395,14 @@ public class MainBD {
 		try {
 			rs = statement.executeQuery(sent);
 			 while (rs.next()) {
-				 //AQUÍ
+				 String idJugador = rs.getString(1);
+				 String idPartida = rs.getString(2);
+				 String fecha = rs.getString(3);
+				 Vector<String> fila = new Vector<String>();
+				 fila.add(idJugador); fila.add(idPartida); fila.add(fecha);
+				 modeloTabla.addRow(fila);
 			 }
+			 tablaDatos.repaint();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -426,6 +443,30 @@ public class MainBD {
 			i ++;
 		}
 	}
+	
+	//Meter datos en tablas al crear partida real:
+	public boolean anyadirJugador(Jugador jugador) {
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador");
+			while (rs.next()){
+				NumJugadoresRegistrados ++; //Para que sea el id de un nuevo jugador
+			}
+			String sent = "INSERT INTO jugador VALUES (" +
+					"'J" + NumJugadoresRegistrados + "', " +
+					"'" + jugador.getNick() + "', " +
+					null + ", " + 0 + ")";
+			statement.executeUpdate(sent);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+//	public boolean anyadirPartida(Partida p) {
+//		
+//	}
 	
 	private static void cambiarTabla() {
 		modeloTabla.setRowCount(0);
