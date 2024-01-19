@@ -48,14 +48,15 @@ public class Lista extends JPanel{
 		tb = new JTable(tbLista);
 		sPane= new JScrollPane(tb);
 		tb.setRowHeight((int)(panel.getHeight()/(double)tb.getRowCount()));
-		for (int i=0;i<tb.getColumnCount();i++) {
-			tb.getColumnModel().getColumn(i).setPreferredWidth((int)(((double)panel.getWidth()/(double)tb.getColumnCount())));
+		for (int i=0;i<tb.getColumnCount()-1;i++) {
+			tb.getColumnModel().getColumn(i).setPreferredWidth((int)(((double)panel.getWidth()/((double)tb.getColumnCount()+1))));
 		}
+		tb.getColumnModel().getColumn(4).setPreferredWidth((int)(((double)panel.getWidth()*2.0/((double)tb.getColumnCount()+1))));
 		sPane.setBounds(0,0,panel.getWidth(),panel.getHeight());
 		panel.add(sPane);
 		ImageIcon imageIcon = new ImageIcon(getClass().getResource("tachado.png"));
         Image image = imageIcon.getImage();
-        newimg = image.getScaledInstance(panel.getWidth()/tb.getColumnCount(), tb.getRowHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        newimg = image.getScaledInstance(panel.getWidth()/(tb.getColumnCount()+1), tb.getRowHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
 		tb.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -63,14 +64,13 @@ public class Lista extends JPanel{
 				
 				filaEnTabla = tb.rowAtPoint(e.getPoint());
 				columnaEnTabla = tb.columnAtPoint(e.getPoint());
-				if (filaEnTabla >= 0 && columnaEnTabla >= 1) {
+				if (filaEnTabla >= 0 && columnaEnTabla >= 1&&columnaEnTabla<4) {
 			        //Mirar si ya había algún sospechoso marcado
 		            if(rowYcolYaSel.containsKey(filaEnTabla)) {
 		            	Gestion.jugadores.get(numJugador).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(rowYcolYaSel.get(filaEnTabla), false);
 		            	Gestion.jugadores.get(numJugador).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
 		            	rowYcolYaSel.replace(filaEnTabla, columnaEnTabla);
 		            }else {
-		            	System.out.println(Gestion.jugadores.get(numJugador).lista);
 		            	rowYcolYaSel.put(filaEnTabla, columnaEnTabla);
 		            	Gestion.jugadores.get(numJugador).lista.get(Gestion.datosPartida.todasLasCartas.get(filaEnTabla)).set(columnaEnTabla, true);
 		            }
@@ -91,7 +91,7 @@ public class Lista extends JPanel{
 		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 		            boolean hasFocus, int row, int column) {
 		        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-		        if (column == 0) {
+		        if (column == 0||column==4) {
 		            return c;
 		        }
 		        for (Integer r: rowYcolYaSel.keySet()) {
@@ -107,6 +107,7 @@ public class Lista extends JPanel{
 		    }
 		});
 	}
+	
 	
 	public JLabel lblTachado() {
 		JLabel lblSel = new JLabel();
@@ -146,16 +147,16 @@ public class Lista extends JPanel{
 
 		@Override
 		public int getColumnCount() {
-			return 4;
+			return 5;
 		}
 
-		private static final String[] cabeceras = {"Nombre","100%","Duda","0%"};
+		private static final String[] cabeceras = {"Nombre","100%","Duda","0%","Anotaciones"};
 		@Override
 		public String getColumnName(int columnIndex) {
 			return cabeceras[columnIndex];
 		}
 
-		private static final Class<?>[] clases = {Object.class, Object.class,Object.class,Object.class};
+		private static final Class<?>[] clases = {Object.class, Object.class,Object.class,Object.class,String.class};
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			return clases[columnIndex];
@@ -163,6 +164,9 @@ public class Lista extends JPanel{
 
 		@Override
 		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			if(columnIndex==4) {
+				return true;
+			}
 			return false;
 		}
 
@@ -171,8 +175,8 @@ public class Lista extends JPanel{
 			switch (columnIndex) {
 			case 0:
 				return nombresEnums.get(rowIndex);
-//			case 1:
-//				return seleccionado.get(rowIndex);
+			case 4:
+				return Gestion.jugadores.get(Gestion.getNumTurno()).anotaciones.get(rowIndex);
 			default:
 				return null;
 			}
@@ -180,9 +184,9 @@ public class Lista extends JPanel{
 
 		@Override
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-//	        if (columnIndex == 1 && aValue instanceof Boolean) {
-//	        	seleccionado.set(rowIndex, (Boolean) aValue);
-//	        }
+	        if (columnIndex == 4 && aValue != null && aValue instanceof String) {
+	        	 Gestion.jugadores.get(Gestion.getNumTurno()).anotaciones.set(rowIndex, aValue.toString());
+	        }
 		}
 
 		@Override

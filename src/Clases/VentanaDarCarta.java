@@ -211,6 +211,7 @@ public class VentanaDarCarta extends JPanel{
 								}
 								new VentanaDarCarta(numeroJugador);
 							}else {
+								Gestion.logicaMarcarLista(Gestion.jugadores.get(Gestion.getNumTurno()));
 								Gestion.aumentarTurno();
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();

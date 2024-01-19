@@ -1,4 +1,4 @@
- package Clases;
+package Clases;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -75,12 +75,22 @@ public class Gestion {
 		}
 		return listaVacia;
 	}
-	public static HashMap<Asesinato, String> creacionAnotaciones() {
-		HashMap<Asesinato,String> anotacionesVacias = new HashMap<>();
+	public static ArrayList<String> creacionAnotaciones() {
+		ArrayList<String> anotacionesVacias = new ArrayList<>();
 		for(Asesinato asesinato: datosPartida.todasLasCartas) {
-			anotacionesVacias.put(asesinato, "");
+			anotacionesVacias.add("");
 		}
 		return anotacionesVacias;
+	}
+	public static HashMap<Asesinato,HashMap<INFONPCS, Object>>creacionInfoParaNpcs(){
+		HashMap<Asesinato,HashMap<INFONPCS, Object>>info = new HashMap<>();
+		for(Asesinato asesinato: datosPartida.todasLasCartas) {
+			HashMap<INFONPCS, Object>cadaCarta = new HashMap<>();
+			cadaCarta.put(INFONPCS.SINENSENYARME, 0);
+			cadaCarta.put(INFONPCS.ENSENYADA, false);
+			info.put(asesinato, cadaCarta);
+		}
+		return info;
 	}
 	public static void repartirCartas(ArrayList<Asesinato> cartas) {
 		ArrayList<Asesinato>copiaCartas = new ArrayList<>(cartas);
@@ -135,8 +145,363 @@ public class Gestion {
 		
 		return tablero;
 	}
+	public static ArrayList<ArrayList<Integer>> caminoMasCorto(int filaInicio, int columnaInicio, int filaFinal, int columnaFinal) {
+		ArrayList<Integer> ultimoVertice = new ArrayList<>();
+		ultimoVertice.add(filaFinal);
+		ultimoVertice.add(columnaFinal);
+		HashMap <ArrayList<Integer>,ArrayList<ArrayList<Integer>>> vertices = new HashMap<>();
+		HashMap<ArrayList<Integer>,ArrayList<ArrayList<Integer>>> verticesAdyacentes = new HashMap<>();
+		ArrayList<Integer> verticeActual = new ArrayList<>();
+		verticeActual.add(filaInicio);
+		verticeActual.add(columnaInicio);
+		ArrayList<ArrayList<Integer>> solucion = new ArrayList<>();
+		solucion.add(verticeActual);
+		verticesAdyacentes.put(verticeActual, solucion);
+		while (true) {
+			verticeActual = ((ArrayList<Integer>) verticesAdyacentes.keySet().toArray()[0]);
+			for (ArrayList<Integer> i:verticesAdyacentes.keySet()) {
+				if (verticesAdyacentes.get(i).size() < verticesAdyacentes.get(verticeActual).size()) {
+					verticeActual = i;
+				}
+			}
+			vertices.put(verticeActual, verticesAdyacentes.get(verticeActual));
+			verticesAdyacentes.remove(verticeActual);
+			
+			if((verticeActual.equals(ultimoVertice)||Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1))!=11)) {
+				ArrayList<Integer>nuevoVerticeDerecha = new ArrayList<>();
+				nuevoVerticeDerecha.add(verticeActual.get(0));
+				nuevoVerticeDerecha.add((verticeActual.get(1)+1));
+				if(!vertices.containsKey(nuevoVerticeDerecha)) {
+					if (verticeActual.get(1)!=Gestion.tablero.get(verticeActual.get(0)).size()-1) {
+						if(Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1)+1)!=0) {
+							
+							solucion = new ArrayList<>(vertices.get(verticeActual));
+							solucion.add(nuevoVerticeDerecha);
+							if(!verticesAdyacentes.containsKey(nuevoVerticeDerecha)) {
+								verticesAdyacentes.put(nuevoVerticeDerecha, solucion);
+							}
+						}
+					}
+				}
+				ArrayList<Integer>nuevoVerticeIzquierda = new ArrayList<>();
+				nuevoVerticeIzquierda.add(verticeActual.get(0));
+				nuevoVerticeIzquierda.add(verticeActual.get(1)-1);
+				if(!vertices.containsKey(nuevoVerticeIzquierda)) {
+					if(verticeActual.get(1)!=0) {
+						if(Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1)-1)!=0) {
+							solucion = new ArrayList<>(vertices.get(verticeActual));
+							solucion.add(nuevoVerticeIzquierda);
+							if(!verticesAdyacentes.containsKey(nuevoVerticeIzquierda)) {
+								verticesAdyacentes.put(nuevoVerticeIzquierda, solucion);
+							}
+						}
+					}
+				}
+				ArrayList<Integer>nuevoVerticeArriba = new ArrayList<>();
+				nuevoVerticeArriba.add(verticeActual.get(0)-1);
+				nuevoVerticeArriba.add(verticeActual.get(1));
+				if(!vertices.containsKey(nuevoVerticeArriba)) {
+					if(verticeActual.get(0)!=0) {
+						if(Gestion.tablero.get(verticeActual.get(0)-1).get(verticeActual.get(1))!=0) {
+							solucion = new ArrayList<>(vertices.get(verticeActual));
+							solucion.add(nuevoVerticeArriba);
+							if(!verticesAdyacentes.containsKey(nuevoVerticeArriba)) {
+								verticesAdyacentes.put(nuevoVerticeArriba, solucion);
+							}
+						}
+					}
+				}
+				ArrayList<Integer>nuevoVerticeAbajo = new ArrayList<>();
+				nuevoVerticeAbajo.add(verticeActual.get(0)+1);
+				nuevoVerticeAbajo.add(verticeActual.get(1));
+				if(!vertices.containsKey(nuevoVerticeAbajo)) {
+					if(verticeActual.get(0)!=Gestion.tablero.size()-1) {
+						if(Gestion.tablero.get(verticeActual.get(0)+1).get(verticeActual.get(1))!=0) {
+							solucion = new ArrayList<>(vertices.get(verticeActual));
+							solucion.add(nuevoVerticeAbajo);
+							if(!verticesAdyacentes.containsKey(nuevoVerticeAbajo)) {
+								verticesAdyacentes.put(nuevoVerticeAbajo, solucion);
+							}
+						}
+					}
+				}
+			}
+			
+			
+			
+			if((verticeActual.equals(ultimoVertice))) {
+				break;
+			}
+		}
 		
-	
+		return vertices.get(verticeActual);
+	}
+		
+	public static void logicaAcusar(Jugador jug) {
+		Gestion.acusacion = new ArrayList<>();
+		int minimoArma = Integer.MAX_VALUE;
+		int minimoSospechoso = Integer.MAX_VALUE;
+		if(Gestion.tablero.get(jug.posicion[0]).get(jug.posicion[1])==11) {
+			for(Asesinato carta : jug.infoParaNpcs.keySet()) {
+				if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==Integer.MAX_VALUE) {
+					Gestion.acusacion.add(carta);
+				}
+			}
+		}else {
+			boolean armaConocida=false;
+			boolean sospechosoConocido = false;
+			for(Asesinato carta : jug.infoParaNpcs.keySet()) {
+				if(!((boolean) jug.infoParaNpcs.get(carta).get(INFONPCS.ENSENYADA))) {
+					if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)<minimoArma&&carta instanceof Arma) {
+						minimoArma = (int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME);
+					}else if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)<minimoSospechoso&&carta instanceof Sospechoso) {
+						minimoSospechoso = (int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME);
+					}
+					if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==Integer.MAX_VALUE) {
+						if(carta instanceof Sospechoso) {
+							sospechosoConocido= true;
+						}
+						if(carta instanceof Arma) {
+							armaConocida= true;
+						}
+					}
+				}	
+			}
+			Sospechoso s = null;
+			Arma a = null;
+			if(sospechosoConocido) {
+				ArrayList<Asesinato>cartasJugador = new ArrayList<>();
+				for (Asesinato carta:jug.cartas) {
+					if(carta instanceof Sospechoso) {
+						cartasJugador.add(carta);
+					}
+				}
+				if(cartasJugador.isEmpty()) {
+					s=(Sospechoso) cartasJugador.get((int)(Math.random()*cartasJugador.size()));
+				}else {
+					s=Gestion.datosPartida.sospechosos.get((int)(Math.random()*Gestion.datosPartida.sospechosos.size()));
+				}
+			}else {
+				ArrayList<Sospechoso>sospechosoAcusado = new ArrayList<>();
+				for(Asesinato carta : jug.infoParaNpcs.keySet()) {
+					if(!((boolean) jug.infoParaNpcs.get(carta).get(INFONPCS.ENSENYADA))) {
+						if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==minimoSospechoso&&carta instanceof Sospechoso) {
+							sospechosoAcusado.add((Sospechoso) carta);
+						}
+					}
+				}
+				s = sospechosoAcusado.get((int)(Math.random()*sospechosoAcusado.size()));
+			}
+			if(armaConocida) {
+				ArrayList<Asesinato>cartasJugador = new ArrayList<>();
+				for (Asesinato carta:jug.cartas) {
+					if(carta instanceof Arma) {
+						cartasJugador.add(carta);
+					}
+				}
+				if(cartasJugador.isEmpty()) {
+					a=(Arma) cartasJugador.get((int)(Math.random()*cartasJugador.size()));
+				}else {
+					a=Gestion.datosPartida.armas.get((int)(Math.random()*Gestion.datosPartida.armas.size()));
+				}
+			}else {
+				ArrayList<Arma>armaAcusado = new ArrayList<>();
+				for(Asesinato carta : jug.infoParaNpcs.keySet()) {
+					if(!((boolean) jug.infoParaNpcs.get(carta).get(INFONPCS.ENSENYADA))) {
+						if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==minimoArma&&carta instanceof Arma) {
+							armaAcusado.add((Arma) carta);
+						}
+					}
+				}
+				a = armaAcusado.get((int)(Math.random()*armaAcusado.size()));
+			}
+			
+			if(!((int)jug.infoParaNpcs.get(s).get(INFONPCS.SINENSENYARME)==Integer.MAX_VALUE)) {
+				Gestion.aumentarTurnosSinEnsenyar(s,Gestion.jugadores.get(Gestion.getNumTurno()));
+			}
+			if(!((int)jug.infoParaNpcs.get(a).get(INFONPCS.SINENSENYARME)==Integer.MAX_VALUE)) {
+				Gestion.aumentarTurnosSinEnsenyar(a,Gestion.jugadores.get(Gestion.getNumTurno()));
+			}
+			Gestion.acusacion.add(s);
+			Gestion.acusacion.add(a);
+		}
+	}
+	public static void aumentarTurnosSinEnsenyar(Asesinato carta, Jugador jugador) {
+		jugador.infoParaNpcs.get(carta).replace(INFONPCS.SINENSENYARME, (int)jugador.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)+1);
+	}
+	public static ArrayList<Integer> logicaMover(Jugador jug, int movimientos) {
+		int count =0;
+		Lugar habitacionConocida = null;
+		int minPedidaHabitacionN = Integer.MAX_VALUE;
+		ArrayList<Asesinato> minPedidaHabitacion= new ArrayList<>();
+		for(Asesinato carta : jug.infoParaNpcs.keySet()) {
+			if(carta instanceof Lugar){
+				if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)<minPedidaHabitacionN) {
+					minPedidaHabitacion.clear();
+					minPedidaHabitacionN=(int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME);
+					minPedidaHabitacion.add(carta);
+				}else if ((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==minPedidaHabitacionN) {
+					minPedidaHabitacion.add(carta);
+				}	
+			}
+			if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==Integer.MAX_VALUE) {
+				count++;
+				if(carta instanceof Lugar) {
+					habitacionConocida= (Lugar)carta;
+				}
+			}
+		}
+		ArrayList<Integer>casillaMasCercanaAPuerta=null;
+		if(count==3) {
+//			Ir al centro para acusar
+			for (int i = 0; i<Gestion.tablero.size();i++){
+				for(int j =0; j<Gestion.tablero.get(i).size();j++) {
+					if(Gestion.tablero.get(i).get(j)==11) {
+						ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
+						if(posible.size()<=movimientos) {
+							casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
+						}else {
+							casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+						}
+						
+					}
+				}
+			}
+		}else {
+//			Diferenciar si ya conozco alguno, se que lo conozco porque es integer max value
+//			Si no conozco ninguna carta seguir acusando diferentes cartas
+//			Si conozco alguno, perguntar alguna desconocida y dos cartas que tenga yo
+//			Modificar el metodo de logicaAcusar para que despues de la segunda pregunta, (haga una pregunta random de una carta suba a 3 y) use la formula de arriba
+			
+			int longCaminoMasCorto = Integer.MAX_VALUE;
+			if(habitacionConocida == null) {
+				for (int i = 0; i<Gestion.tablero.size();i++){
+					for(int j =0; j<Gestion.tablero.get(i).size();j++) {
+						if(Gestion.tablero.get(i).get(j)!=0 &&Gestion.tablero.get(i).get(j)!=1 && Gestion.tablero.get(i).get(j)!=11 &&
+								 minPedidaHabitacion.contains(Gestion.datosPartida.lugares.get(Gestion.tablero.get(i).get(j)-2))) {
+							ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
+							if(longCaminoMasCorto>posible.size()) {	
+								if(posible.size()<=movimientos) {
+									casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
+								}else {
+									casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+								}
+								longCaminoMasCorto = posible.size();
+							}
+							
+						}
+					}
+				}
+			}else {
+				ArrayList<Asesinato>cartasJugador = new ArrayList<>();
+				for (Asesinato carta:jug.cartas) {
+					if(carta instanceof Lugar) {
+						cartasJugador.add(carta);
+					}
+				}
+				if(cartasJugador.isEmpty()) {
+					for (int i = 0; i<Gestion.tablero.size();i++){
+						for(int j =0; j<Gestion.tablero.get(i).size();j++) {
+							if(Gestion.tablero.get(i).get(j)!=0 &&Gestion.tablero.get(i).get(j)!=1 && Gestion.tablero.get(i).get(j)!=11) {
+								ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
+								if(longCaminoMasCorto>posible.size()) {	
+									if(posible.size()<=movimientos) {
+										casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
+									}else {
+										casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+									}
+									longCaminoMasCorto = posible.size();
+								}
+								
+							}
+						}
+					}
+				}else {
+					for (int i = 0; i<Gestion.tablero.size();i++){
+						for(int j =0; j<Gestion.tablero.get(i).size();j++) {
+							if(Gestion.tablero.get(i).get(j)!=0 &&Gestion.tablero.get(i).get(j)!=1 && Gestion.tablero.get(i).get(j)!=11 &&
+									cartasJugador.contains(Gestion.datosPartida.lugares.get(Gestion.tablero.get(i).get(j)))) {
+								ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
+								if(longCaminoMasCorto>posible.size()) {	
+									if(posible.size()<=movimientos) {
+										casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
+									}else {
+										casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+									}
+									longCaminoMasCorto = posible.size();
+								}
+								
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		return casillaMasCercanaAPuerta;
+	}
+	public static void logicaMarcarLista(Jugador j) {
+		
+		for(Asesinato carta : Gestion.acusacion) {
+			if((boolean)j.infoParaNpcs.get(carta).get(INFONPCS.ENSENYADA)== false) {
+				if(Gestion.cartasEnsenyadas.isEmpty()&&!j.cartas.contains(carta)) {
+					j.infoParaNpcs.get(carta).replace(INFONPCS.SINENSENYARME, Integer.MAX_VALUE);
+				}
+				if(Gestion.cartasEnsenyadas.containsKey(carta)) {
+					j.infoParaNpcs.get(carta).replace(INFONPCS.ENSENYADA, true);
+					System.out.println("CARTA PEDIDA ENSEÑADA: "+carta);
+					
+				}else {
+					j.infoParaNpcs.get(carta).replace(INFONPCS.SINENSENYARME, j.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME));
+					System.out.println("CARTA PEDIDA NO ENSEÑADA: "+carta);
+					
+				}
+			}
+		}
+		int sospechososMarcados = 0;
+		Asesinato sosSinMarcar =null;
+		int armasMarcadas = 0;
+		Asesinato armaSinMarcar =null;
+		int lugaresMarcados = 0;
+		Asesinato lugSinMarcar =null;
+		for(Asesinato carta:j.infoParaNpcs.keySet()) {
+			if((boolean)j.infoParaNpcs.get(carta).get(INFONPCS.ENSENYADA)==true) {
+				if(carta instanceof Sospechoso) {
+					sospechososMarcados++;
+				}else if(carta instanceof Arma) {
+					armasMarcadas++;
+				}else {
+					lugaresMarcados++;
+				}
+			}else {
+				if(carta instanceof Sospechoso) {
+					sosSinMarcar = carta;
+				}else if(carta instanceof Arma) {
+					armaSinMarcar = carta;
+				}else {
+					lugSinMarcar = carta;
+				}
+			}
+		}
+		if(sospechososMarcados==Gestion.datosPartida.sospechosos.size()-1) {
+			j.infoParaNpcs.get(sosSinMarcar).replace(INFONPCS.SINENSENYARME,Integer.MAX_VALUE);
+			System.out.println("Culpable "+sosSinMarcar);
+			j.infoParaNpcs.get(sosSinMarcar).get(INFONPCS.SINENSENYARME);
+		}
+		if(armasMarcadas==Gestion.datosPartida.armas.size()-1) {
+			j.infoParaNpcs.get(armaSinMarcar).replace(INFONPCS.SINENSENYARME,Integer.MAX_VALUE);
+			System.out.println("Culpable "+armaSinMarcar);
+		}
+		if(lugaresMarcados==Gestion.datosPartida.lugares.size()-1) {
+			j.infoParaNpcs.get(lugSinMarcar).replace(INFONPCS.SINENSENYARME,Integer.MAX_VALUE);
+			System.out.println("Culpable "+lugSinMarcar);
+		}
+		for(Asesinato carta:j.infoParaNpcs.keySet()) {
+			if((boolean)j.infoParaNpcs.get(carta).get(INFONPCS.ENSENYADA)) {
+				System.out.println(carta);
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		

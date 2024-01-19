@@ -1,7 +1,7 @@
 package Clases;
 
 import java.util.*;
-
+enum INFONPCS{SINENSENYARME, ENSENYADA}
 public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
 	
 	private Random r = new Random();
@@ -17,8 +17,9 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	protected HashMap<Asesinato, ArrayList<Boolean>> lista = new HashMap<>(); //Lista que se rellena con la información
 	protected int[] posicion = new int[2];
 	protected boolean npc;
-	protected HashMap<Asesinato, String>anotaciones = new HashMap<>();
+	protected ArrayList<String>anotaciones = new ArrayList<>();
 	protected int anteriorPuerta = -1;
+	protected HashMap<Asesinato,HashMap<INFONPCS, Object>>infoParaNpcs = new HashMap<>();
 	public static int getContador() {
 		return contador;
 	}
@@ -94,13 +95,14 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.acusacion = new HashMap<Implicados, Asesinato>();
 		this.lista = Gestion.creacionLista();
 		this.anotaciones = Gestion.creacionAnotaciones();
+		this.infoParaNpcs=Gestion.creacionInfoParaNpcs();
 		this.npc = npc;
 		anteriorPuerta = -1;
 	}
 
 	
 	public Jugador(ArrayList<Asesinato> cartas, Personaje personaje, HashMap<Implicados, Asesinato> acusacion,
-			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, ArrayList<Boolean>> listaVacia, boolean npc, int anteriorPuerta) {
+			boolean acusacionFinal,int[] posicion, HashMap<Asesinato, ArrayList<Boolean>> listaVacia, boolean npc, int anteriorPuerta, HashMap<Asesinato,HashMap<INFONPCS, Object>>infoParaNpcs) {
 		super();
 		this.codigo = contador;
 		contador ++;
@@ -112,6 +114,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.lista = listaVacia;
 		this.npc = npc;
 		this.anteriorPuerta=anteriorPuerta;
+		this.infoParaNpcs=infoParaNpcs;
 	}
 	@Override
 	public String toString() {

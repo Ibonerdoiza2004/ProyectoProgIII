@@ -37,7 +37,13 @@ public class VentanaAsignarTurnos extends JPanel{
 		add(panelIzquierda);
 		add(panelDerecha);
 		
-		for(Jugador jugador:Gestion.jugadores) {
+		for(Jugador j : Gestion.jugadores) {
+			if(j.npc) {
+				for(Asesinato carta: j.cartas) {
+					 j.infoParaNpcs.get(carta).replace(INFONPCS.ENSENYADA, true);
+				}
+			}
+			
 		}
 		Image spritePersonaje = Gestion.sprites.get(Gestion.jugadores.get(0).getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0);
 	    

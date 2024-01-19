@@ -278,94 +278,7 @@ public class VentanaTablero extends JPanel{
 //		System.out.println(coordsFilas.size() + " " + coordsFilas);
 //		System.out.println(coordsColumnas.size() + " " + coordsColumnas);
 	}
-	public ArrayList<ArrayList<Integer>> caminoMasCorto(int filaInicio, int columnaInicio, int filaFinal, int columnaFinal) {
-		ArrayList<Integer> ultimoVertice = new ArrayList<>();
-		ultimoVertice.add(filaFinal);
-		ultimoVertice.add(columnaFinal);
-		HashMap <ArrayList<Integer>,ArrayList<ArrayList<Integer>>> vertices = new HashMap<>();
-		HashMap<ArrayList<Integer>,ArrayList<ArrayList<Integer>>> verticesAdyacentes = new HashMap<>();
-		ArrayList<Integer> verticeActual = new ArrayList<>();
-		verticeActual.add(filaInicio);
-		verticeActual.add(columnaInicio);
-		ArrayList<ArrayList<Integer>> solucion = new ArrayList<>();
-		solucion.add(verticeActual);
-		verticesAdyacentes.put(verticeActual, solucion);
-		while (true) {
-			verticeActual = ((ArrayList<Integer>) verticesAdyacentes.keySet().toArray()[0]);
-			for (ArrayList<Integer> i:verticesAdyacentes.keySet()) {
-				if (verticesAdyacentes.get(i).size() < verticesAdyacentes.get(verticeActual).size()) {
-					verticeActual = i;
-				}
-			}
-			vertices.put(verticeActual, verticesAdyacentes.get(verticeActual));
-			verticesAdyacentes.remove(verticeActual);
-			
-			
-			ArrayList<Integer>nuevoVerticeDerecha = new ArrayList<>();
-			nuevoVerticeDerecha.add(verticeActual.get(0));
-			nuevoVerticeDerecha.add((verticeActual.get(1)+1));
-			if(!vertices.containsKey(nuevoVerticeDerecha)) {
-				if (verticeActual.get(1)!=Gestion.tablero.get(verticeActual.get(0)).size()-1) {
-					if(Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1)+1)!=0) {
-						solucion = new ArrayList<>(vertices.get(verticeActual));
-						solucion.add(nuevoVerticeDerecha);
-						if(!verticesAdyacentes.containsKey(nuevoVerticeDerecha)) {
-							verticesAdyacentes.put(nuevoVerticeDerecha, solucion);
-						}
-					}
-				}
-			}
-			ArrayList<Integer>nuevoVerticeIzquierda = new ArrayList<>();
-			nuevoVerticeIzquierda.add(verticeActual.get(0));
-			nuevoVerticeIzquierda.add(verticeActual.get(1)-1);
-			if(!vertices.containsKey(nuevoVerticeIzquierda)) {
-				if(verticeActual.get(1)!=0) {
-					if(Gestion.tablero.get(verticeActual.get(0)).get(verticeActual.get(1)-1)!=0) {
-						solucion = new ArrayList<>(vertices.get(verticeActual));
-						solucion.add(nuevoVerticeIzquierda);
-						if(!verticesAdyacentes.containsKey(nuevoVerticeIzquierda)) {
-							verticesAdyacentes.put(nuevoVerticeIzquierda, solucion);
-						}
-					}
-				}
-			}
-			ArrayList<Integer>nuevoVerticeArriba = new ArrayList<>();
-			nuevoVerticeArriba.add(verticeActual.get(0)-1);
-			nuevoVerticeArriba.add(verticeActual.get(1));
-			if(!vertices.containsKey(nuevoVerticeArriba)) {
-				if(verticeActual.get(0)!=0) {
-					if(Gestion.tablero.get(verticeActual.get(0)-1).get(verticeActual.get(1))!=0) {
-						solucion = new ArrayList<>(vertices.get(verticeActual));
-						solucion.add(nuevoVerticeArriba);
-						if(!verticesAdyacentes.containsKey(nuevoVerticeArriba)) {
-							verticesAdyacentes.put(nuevoVerticeArriba, solucion);
-						}
-					}
-				}
-			}
-			ArrayList<Integer>nuevoVerticeAbajo = new ArrayList<>();
-			nuevoVerticeAbajo.add(verticeActual.get(0)+1);
-			nuevoVerticeAbajo.add(verticeActual.get(1));
-			if(!vertices.containsKey(nuevoVerticeAbajo)) {
-				if(verticeActual.get(0)!=Gestion.tablero.size()-1) {
-					if(Gestion.tablero.get(verticeActual.get(0)+1).get(verticeActual.get(1))!=0) {
-						solucion = new ArrayList<>(vertices.get(verticeActual));
-						solucion.add(nuevoVerticeAbajo);
-						if(!verticesAdyacentes.containsKey(nuevoVerticeAbajo)) {
-							verticesAdyacentes.put(nuevoVerticeAbajo, solucion);
-						}
-					}
-				}
-			}
-			
-			
-			if((verticeActual.equals(ultimoVertice))) {
-				break;
-			}
-		}
-		
-		return vertices.get(verticeActual);
-	}
+	
 	public void dibujarSprites() {
 		ImageIcon sprite = new ImageIcon(Gestion.sprites.get(jugador.getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0));
 		labelJugador =new JLabel();
@@ -418,20 +331,22 @@ public class VentanaTablero extends JPanel{
 				if(tablero.get(fila).get(columna)==1) {
 					casillasPosibles.add(pos);
 				}else {
-					puertasPosibles.add(pos);
+					if(tablero.get(fila).get(columna)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta) {
+						puertasPosibles.add(pos);
+					}
 				}
 			}
-			if(iteracion<movimiento) {
-				if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)!=0)) {
+			if(iteracion<movimiento&&tablero.get(fila).get(columna)!=11) {
+				if((fila!=tablero.size()-1)&&(tablero.get(fila+1).get(columna)!=0)&&(tablero.get(fila+1).get(columna)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta)) {
 					movimientoCasillasRecursive(fila+1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
 				}
-				if((fila!=0)&&(tablero.get(fila-1).get(columna)!=0)) {
+				if((fila!=0)&&(tablero.get(fila-1).get(columna)!=0)&&(tablero.get(fila-1).get(columna)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta)) {
 					movimientoCasillasRecursive(fila-1, columna, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
 				}
-				if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)!=0)) {
+				if((columna!=tablero.get(fila).size()-1)&&(tablero.get(fila).get(columna+1)!=0)&&(tablero.get(fila).get(columna+1)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta)) {
 					movimientoCasillasRecursive(fila, columna+1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
 				}
-				if((columna!=0)&&(tablero.get(fila).get(columna-1)!=0)) {	
+				if((columna!=0)&&(tablero.get(fila).get(columna-1)!=0)&&(tablero.get(fila).get(columna-1)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta)) {	
 					movimientoCasillasRecursive(fila, columna-1, movimiento, iteracion+1, casillasPosibles, puertasPosibles, tablero);
 				}
 				
@@ -498,28 +413,28 @@ public class VentanaTablero extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			int longCaminoMasCorto = 200;
-			ArrayList<Integer>casillaMasCercanaAPuerta=null;
-			int valorPuerta =-1;
-			for (int i = 0; i<Gestion.tablero.size();i++){
-				for(int j =0; j<Gestion.tablero.get(i).size();j++) {
-					if(Gestion.tablero.get(i).get(j)!=0 &&Gestion.tablero.get(i).get(j)!=1 && Gestion.tablero.get(i).get(j)!=11 
-							&& Gestion.tablero.get(i).get(j)!=Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta) {
-						ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
-						if(longCaminoMasCorto>posible.size()) {
-							if(posible.size()<=movimientos) {
-								casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
-								valorPuerta = Gestion.tablero.get(i).get(j);
-								Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta=valorPuerta;
-							}else {
-								casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
-							}
-							longCaminoMasCorto = posible.size();
-							valorPuerta = Gestion.tablero.get(i).get(j);
-						}
-					}
-				}
-			}
+			
+			
+			
+			
+			
+			
+			
+			
+//			Lógica mover
+			
+			ArrayList<Integer>casillaMasCercanaAPuerta = Gestion.logicaMover(jugador, movimientos);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 				
 			
 			filaSeleccionada=casillaMasCercanaAPuerta.get(0);
@@ -678,11 +593,16 @@ public class VentanaTablero extends JPanel{
 				sprite = new ImageIcon(Gestion.sprites.get(jugador.getPersonaje().getNombre()).get(TipoSprite.AndarAbajo).get(0));
 				labelJugador.setIcon(sprite);
 				jugador.posicion= new int[] {filaSeleccionada,columnaSeleccionada};
+				if(Gestion.tablero.get(filaSeleccionada).get(columnaSeleccionada)!=1) {
+					Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta=Gestion.tablero.get(filaSeleccionada).get(columnaSeleccionada);
+				}
 				try {
 					Thread.sleep(1500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				botonDesplegar.setEnabled(false);
+				botonPlegar.setEnabled(false);
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
 					Gestion.aumentarTurno();
 					new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
@@ -697,59 +617,88 @@ public class VentanaTablero extends JPanel{
 					}
 					new VentanaTablero();
 				}else {
-					Gestion.cartasEnsenyadas.clear();
-					//Aquí se añade un nuevo panel con VentanaAcusacion
-					if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
-//						Hacer acusacion
-						Gestion.jugadores.get(Gestion.getNumTurno()).anteriorPuerta=0;
-						Gestion.acusacion=new ArrayList<>();
-						Gestion.acusacion.add(Gestion.datosPartida.armas.get((int)(Math.random()*Gestion.datosPartida.armas.size())));
-						Gestion.acusacion.add(Gestion.datosPartida.sospechosos.get((int)(Math.random()*Gestion.datosPartida.sospechosos.size())));
-						Gestion.acusacion.add(Gestion.datosPartida.lugares.get((int)(Math.random()*Gestion.datosPartida.lugares.size())));
-						int jug = (Gestion.getNumTurno()+1)%Gestion.jugadores.size();
-						while(Gestion.jugadores.get(jug).npc&&Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
-//							Enseñar carta
-							ArrayList<Asesinato>posiblesCartas = new ArrayList<>();
-							for (Asesinato carta: Gestion.jugadores.get(jug).cartas) {
-								if(Gestion.acusacion.contains(carta)) {
-									posiblesCartas.add(carta);
+					if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])!=11){
+						Gestion.cartasEnsenyadas.clear();
+						//Aquí se añade un nuevo panel con VentanaAcusacion
+						if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+//							Hacer acusacion
+							Gestion.acusacion=new ArrayList<>();
+							Gestion.logicaAcusar(jugador);
+							Gestion.acusacion.add(Gestion.datosPartida.lugares.get(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])-2));
+							Gestion.aumentarTurnosSinEnsenyar(Gestion.datosPartida.lugares.get(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])-2), jugador);
+							int jug = (Gestion.getNumTurno()+1)%Gestion.jugadores.size();
+							while(Gestion.jugadores.get(jug).npc&&Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+//								Enseñar carta
+								ArrayList<Asesinato>posiblesCartas = new ArrayList<>();
+								for (Asesinato carta: Gestion.jugadores.get(jug).cartas) {
+									if(Gestion.acusacion.contains(carta)) {
+										posiblesCartas.add(carta);
+									}
 								}
-							}
-							if(!posiblesCartas.isEmpty()) {
-								Gestion.cartasEnsenyadas.put(posiblesCartas.get((int)(Math.random()*posiblesCartas.size())), Gestion.jugadores.get(jug));
-							}
-							jug = (jug+1)%Gestion.jugadores.size();
-						}
-						if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
-							new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
-							eliminarPanel();
-							String lockSiguienteVentana = "siguienteVentana";
-							synchronized (lockSiguienteVentana) {
-								try {
-									lockSiguienteVentana.wait();
-								} catch (InterruptedException e) {
-									e.printStackTrace();
+								if(!posiblesCartas.isEmpty()) {
+									Gestion.cartasEnsenyadas.put(posiblesCartas.get((int)(Math.random()*posiblesCartas.size())), Gestion.jugadores.get(jug));
 								}
+								jug = (jug+1)%Gestion.jugadores.size();
 							}
-							new VentanaDarCarta(jug);
+							if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
+								eliminarPanel();
+								String lockSiguienteVentana = "siguienteVentana";
+								synchronized (lockSiguienteVentana) {
+									try {
+										lockSiguienteVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								new VentanaDarCarta(jug);
+							}else {
+								Gestion.logicaMarcarLista(Gestion.jugadores.get(Gestion.getNumTurno()));
+								Gestion.aumentarTurno();
+								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+								eliminarPanel();
+								String lockSiguienteVentana = "siguienteVentana";
+								synchronized (lockSiguienteVentana) {
+									try {
+										lockSiguienteVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								new VentanaTablero();
+							}
 						}else {
-							Gestion.aumentarTurno();
-							new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+							new VentanaAcusacion();
 							eliminarPanel();
-							String lockSiguienteVentana = "siguienteVentana";
-							synchronized (lockSiguienteVentana) {
-								try {
-									lockSiguienteVentana.wait();
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-							new VentanaTablero();
 						}
 					}else {
-						new VentanaAcusacion();
-						eliminarPanel();
+						if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
+							Gestion.acusacion.clear();
+							Gestion.logicaAcusar(jugador);
+							if(Gestion.acusacion.get(0).equals(Gestion.datosPartida.implicados.get(Implicados.PERSONA))&&
+									Gestion.acusacion.get(1).equals(Gestion.datosPartida.implicados.get(Implicados.ARMA))&&
+									Gestion.acusacion.get(2).equals(Gestion.datosPartida.implicados.get(Implicados.LUGAR))) {
+								new VentanaVictoria();
+								eliminarPanel();
+							}else {
+								new VentanaDerrota();
+								eliminarPanel();
+							}
+						}else {
+							new VentanaTexto("ACUSACIÓN FINAL DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+							eliminarPanel();
+							String lockSiguienteVentana = "siguienteVentana";
+							synchronized (lockSiguienteVentana) {
+								try {
+									lockSiguienteVentana.wait();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							new VentanaAcusacion();
+						}
 					}
+					
 					
 				}
 			}
@@ -787,7 +736,7 @@ public class VentanaTablero extends JPanel{
 			panelTablero.setComponentZOrder(labelDestino, 1);
 			
 			
-			caminoMasCorto = caminoMasCorto(jugador.posicion[0], jugador.posicion[1], filaSeleccionada, columnaSeleccionada);
+			caminoMasCorto = Gestion.caminoMasCorto(jugador.posicion[0], jugador.posicion[1], filaSeleccionada, columnaSeleccionada);
 			
 			for(int i = 1; i<caminoMasCorto.size()-1;i++) {
 				JLabel siguienteCasilla= new JLabel() {

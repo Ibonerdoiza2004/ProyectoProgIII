@@ -257,12 +257,15 @@ public class VentanaAcusacion extends JPanel{
 					
 					@Override
 					public void run() {
+						System.out.println(Gestion.datosPartida.implicados);
 						btnAcusar.setEnabled(false);
+						cbArma.setEnabled(false);
+						cbSospechoso.setEnabled(false);
+						cbLugar.setEnabled(false);
+						panelLista.setVisible(false);
 						Gestion.acusacion = new ArrayList<>();
-						System.out.println(cbSospechoso.getSelectedIndex());
 						sospechosoElegido = Gestion.datosPartida.sospechosos.get(cbSospechoso.getSelectedIndex());
 						Gestion.acusacion.add(sospechosoElegido);
-						System.out.println(cbArma.getSelectedIndex());
 						armaElegida = Gestion.datosPartida.armas.get(cbArma.getSelectedIndex());
 						Gestion.acusacion.add(armaElegida);
 						if(devuelveComp() instanceof JLabel) {
@@ -312,6 +315,7 @@ public class VentanaAcusacion extends JPanel{
 									}
 								}
 								new VentanaTablero();
+								eliminarPanel();
 							}
 							
 						}else {
@@ -321,6 +325,7 @@ public class VentanaAcusacion extends JPanel{
 									Gestion.acusacion.get(1).equals(Gestion.datosPartida.implicados.get(Implicados.ARMA))&&
 									Gestion.acusacion.get(2).equals(Gestion.datosPartida.implicados.get(Implicados.LUGAR))) {
 								new VentanaVictoria();
+								eliminarPanel();
 							}else {
 								new VentanaDerrota();
 								eliminarPanel();
