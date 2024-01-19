@@ -30,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Clases.Jugador;
+import Clases.Partida;
 
 enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
 enum NombrePersonaje{Rojo, Amarillo, Negro, Verde, Azul, Morado};
@@ -38,6 +39,7 @@ enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInves
 public class MainBD {
 	
 	private static int NumJugadoresRegistrados = 0;
+	private static int numPartidaMes = 0;
 	private static Connection conn;
 	private static Statement statement;
 	private static ResultSet rs;
@@ -444,7 +446,7 @@ public class MainBD {
 		}
 	}
 	
-	//Meter datos en tablas al crear partida real:
+	//Meter datos en tablas al crear partida real (usar este método al meter datos partida):
 	public boolean anyadirJugador(Jugador jugador) {
 		try {
 			rs = statement.executeQuery("SELECT * FROM jugador");
@@ -453,7 +455,7 @@ public class MainBD {
 			}
 			String sent = "INSERT INTO jugador VALUES (" +
 					"'J" + NumJugadoresRegistrados + "', " +
-					"'" + jugador.getNick() + "', " +
+					"'" + jugador.getNick() + "', " + "'" + jugador.getPersonajeElegido() + "'" +
 					null + ", " + 0 + ")";
 			statement.executeUpdate(sent);
 			return true;
@@ -464,9 +466,41 @@ public class MainBD {
 		
 	}
 	
-//	public boolean anyadirPartida(Partida p) {
-//		
-//	}
+	public boolean anyadirRelacion(String idJugador, String idPartida, String fecha) {
+		try {
+			String sent = "INSERT INTO participa (" +
+					"'" + idJugador + "', " + "'" + idPartida + "', '" + fecha + "')";
+			statement.executeUpdate(sent);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean anyadirPartida(Partida p) {
+		try {
+			rs = statement.executeQuery("SELECT * FROM partida");
+			while (rs.next()) {
+				numPartidaMes ++;
+			}
+			//Añadir la partida:
+			String sent = "INSERT INTO partida VALUES ('"
+					+ p.getIdPartida() + "', '" + p.getFecha() + "', " +
+					p.getDuracion() + ", '" + null + "', " + p.getJugadoresPartida().size() + ")";
+			statement.executeUpdate(sent);
+			//Insertar los datos de los jugadores de la partida
+			for (Jugador j: p.getJugadoresPartida()) {
+				anyadirJugador(j); //Añado cada jugador
+				String idJ = "J" + NumJugadoresRegistrados;
+				anyadirRelacion(idJ, p.getIdPartida(), p.getFecha()); //Añado cada relación
+			}
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	private static void cambiarTabla() {
 		modeloTabla.setRowCount(0);
