@@ -132,6 +132,8 @@ public class VentanaNJugadores extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (vr != null) {
+					vr.getTfUsuario().setText("");
+					vr.getTfContrasenya().setText("");
 					vr.setVisible(true);
 				} else {
 					vr = new VentanaRegistrarUsuario();
@@ -205,9 +207,14 @@ public class VentanaNJugadores extends JPanel {
 		});
 		 
 		continuar.addActionListener(new ActionListener() {
-
+			
+			int numVeces = 0;
 			@Override
 			public void actionPerformed(ActionEvent e) {
+//				while (numVeces < (int) spnJugs.getValue()) {
+//					JOptionPane.showMessageDialog(null, "Todavía faltan " + 
+//				(((int) spnJugs.getValue()) - numVeces) + " jugadores por registrarse", "Error en login/registro", JOptionPane.ERROR_MESSAGE );
+//				}
 				Number valor1 = (Number) spnTots.getValue();
 				int valorInt1 = valor1.intValue();
 				Number valor2 = (Number) spnJugs.getValue();

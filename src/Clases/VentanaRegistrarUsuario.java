@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -69,6 +71,26 @@ public class VentanaRegistrarUsuario extends JFrame {
         getContentPane().setBackground(new Color(240, 248, 255));
 
         getRootPane().setDefaultButton(botonIniciarSesion);
+        
+        
+        botonIniciarSesion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Lógica para iniciar sesión con usurio (hacer desde MainBD)
+				
+				//Lógica de ventanas
+				dispose(); //ver si el usuario está en la BD
+			}
+		});
+        
+        botonRegistrarse.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
     }
 
     public JTextField getTfUsuario() {

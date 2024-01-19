@@ -502,6 +502,8 @@ public class MainBD {
 		}
 	}
 	
+	//Métodos para comprobar si jugador está registrado depués de registrarse al iniciar la partida
+	
 	private static void cambiarTabla() {
 		modeloTabla.setRowCount(0);
 		modeloTabla.setColumnCount(0);
