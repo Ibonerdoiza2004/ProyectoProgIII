@@ -23,6 +23,7 @@ public class VentanaVerCartas extends JPanel{
 		
 		this.setLayout(new GridLayout(1,2));
 		setSize(Gestion.sizePantalla);
+		
 		pnlIzquierda = new JPanel();
 		pnlIzquierda.setLayout(null);
 		
@@ -35,7 +36,7 @@ public class VentanaVerCartas extends JPanel{
 		
 		
 		JPanel panelLista = new JPanel(null);
-		panelLista.setBounds((int)Gestion.sizePantalla.getWidth()/2, 0, (int)(Gestion.sizePantalla.getWidth()/2) ,(int)Gestion.sizePantalla.getHeight()-150);
+		panelLista.setBounds(0, 0, (int)(Gestion.sizePantalla.getWidth()/2) ,(int)Gestion.sizePantalla.getHeight()-150);
 		panelLista.add(new Lista(panelLista, Gestion.getNumTurno()).sPane);
 		pnlDerecha.add(panelLista);
 		
@@ -44,18 +45,24 @@ public class VentanaVerCartas extends JPanel{
 		
 		carta1 = new JLabel();
 		carta1.setIcon(acusacion.get(0).getFoto());
-		carta1.setBounds((int)pnlIzquierda.getWidth()*2/17, (int)(Gestion.sizePantalla.getHeight()*1/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+		carta1.setBounds(0, 0 ,(int)pnlIzquierda.getWidth(), (int)pnlIzquierda.getHeight());
+		pnlIzquierda.add(carta1);
+		
 		
 		carta2 = new JLabel();
 		carta2.setIcon(acusacion.get(1).getFoto());
-		carta2.setBounds((int)pnlIzquierda.getWidth()*2/17, (int)(Gestion.sizePantalla.getHeight()*6/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+		carta2.setBounds(0, 0,(int)pnlIzquierda.getWidth()*6/19, (int)pnlIzquierda.getHeight()*4/19);
+		pnlIzquierda.add(carta2);
 		
 		carta3 = new JLabel();
 		carta3.setIcon(Gestion.acusacion.get(2).getFoto());
-		carta3.setBounds((int)pnlIzquierda.getWidth()*2/17, (int)(Gestion.sizePantalla.getHeight()*11/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+		carta3.setBounds((int)pnlIzquierda.getWidth()*2/17, (int)(pnlIzquierda.getHeight()*11/19) ,(int)pnlIzquierda.getWidth()*6/19, (int)pnlIzquierda.getHeight()*4/19);
+		pnlIzquierda.add(carta3);
 		
-		continuar = new JButton("Continuar");
-		continuar.setBounds((int)pnlIzquierda.getWidth()*2/17, (int)(Gestion.sizePantalla.getHeight()*16/19) ,(int)Gestion.sizePantalla.getWidth(), (int)Gestion.sizePantalla.getHeight()*3/19);
+		continuar = new JButton("CONTINUAR");
+		continuar.setBounds(0, (int)(Gestion.sizePantalla.getHeight()*16/19) ,(int)Gestion.sizePantalla.getWidth()/2, (int)Gestion.sizePantalla.getHeight()*3/19);
+		pnlDerecha.add(continuar);
+		
 		continuar.addActionListener(new ActionListener() {
 			
 			@Override
@@ -78,27 +85,33 @@ public class VentanaVerCartas extends JPanel{
 		});
 		
 		for (int i=0; i<acusacion.size(); i++) {
+			JLabel label = new JLabel();
 			if (dadas.containsKey(acusacion.get(i))) {
 				Personaje personaje = dadas.get(acusacion.get(i)).getPersonaje();
 				NombrePersonaje nombre= personaje.getNombre();
-				JLabel label = new JLabel();
 				label.setIcon(new ImageIcon(Gestion.sprites.get(nombre).get(TipoSprite.AndarAbajo).get(0)));
 				if (i==0) {
-					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*2/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					label.setBounds((int)Math.round(pnlIzquierda.getWidth()*3/4), (int)(Gestion.sizePantalla.getHeight()*2/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					
 				} else if (i== 1) {
 					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*8/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					
 				} else {
 					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*14/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					
 				}
 			} else {
-				JLabel label = new JLabel();
+				
 				label.setIcon(new ImageIcon("tachado.png"));
 				if (i==0) {
 					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*2/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					
 				} else if (i== 1) {
 					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*8/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					
 				} else {
 					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*14/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
+					
 				}
 			}
 		}
