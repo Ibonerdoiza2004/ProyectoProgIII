@@ -71,7 +71,40 @@ public class VentanaRegistrarUsuario extends JFrame {
         getRootPane().setDefaultButton(botonIniciarSesion);
     }
 
-    public static void main(String[] args) {
+    public JTextField getTfUsuario() {
+		return tfUsuario;
+	}
+
+	public void setTfUsuario(JTextField tfUsuario) {
+		this.tfUsuario = tfUsuario;
+	}
+
+	public JPasswordField getTfContrasenya() {
+		return tfContrasenya;
+	}
+
+	public void setTfContrasenya(JPasswordField tfContrasenya) {
+		this.tfContrasenya = tfContrasenya;
+	}
+
+	public JButton getBotonRegistrarse() {
+		return botonRegistrarse;
+	}
+
+	public void setBotonRegistrarse(JButton botonRegistrarse) {
+		this.botonRegistrarse = botonRegistrarse;
+	}
+
+	public JButton getBotonIniciarSesion() {
+		return botonIniciarSesion;
+	}
+
+	public void setBotonIniciarSesion(JButton botonIniciarSesion) {
+		this.botonIniciarSesion = botonIniciarSesion;
+	}
+
+
+	public static void main(String[] args) {
         VentanaRegistrarUsuario vr = new VentanaRegistrarUsuario();
         vr.setVisible(true);
     }

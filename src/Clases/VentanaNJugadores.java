@@ -17,9 +17,12 @@ public class VentanaNJugadores extends JPanel {
 	protected JLabel nBots;
 	protected JButton continuar;
 	
+	private static VentanaRegistrarUsuario vr;
 	private BotonRedondo btnRegistro;
 
 	public VentanaNJugadores() {
+		
+		vr = new VentanaRegistrarUsuario();
 		
 		Gestion.jugadores.clear();
 		lblTots = new JLabel("Nº Jugadores Totales");
@@ -102,25 +105,52 @@ public class VentanaNJugadores extends JPanel {
 		lblSel.setFont(new Font(selFont.getName(), selFont.BOLD, 45));
 		lblSel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSel.setForeground(Color.WHITE);
-		//____________________
-//		JButton btnOtro = new JButton("OTRO BOTÓN");
-//		btnOtro.setFont(new Font(selFont.getName(), selFont.getStyle(), 20));
-//		JPanel pnlNorte = new JPanel(new GridLayout(1, 2));
-//		pnlNorte.setOpaque(false);
-//		pnlNorte.add(lblSel);
-//		pnlNorte.add(btnOtro);
-//
-//		this.add(pnlNorte, BorderLayout.NORTH);
-		//____________________
-		JPanel pnlN = new JPanel(new GridLayout(2,1));
-		JPanel pnlArriba = new JPanel();
-//		pnlArriba.add(new JLabel(""));
-//		pnlArriba.add(new JButton(""));
-//		pnlN.add(pnlArriba);
+
+		
+		JPanel pnlN = new JPanel(new GridLayout(2, 1));
+		JPanel pnlArriba = new JPanel(new GridLayout(2, 1));
+		pnlArriba.setOpaque(false);
+		pnlArriba.add(new JLabel(""));
+
+		JPanel pnlRegistro = new JPanel(new GridLayout(1, 2));
+		pnlRegistro.setOpaque(false);
+		btnRegistro = new BotonRedondo("Registrar");
+
+		// Ajustar el tamaño del botón
+		Dimension btnSize = new Dimension(150, 50);
+		btnRegistro.setPreferredSize(btnSize);
+
+		ImageIcon iconoLogo = new ImageIcon(BotonRedondo.class.getResource("Registro.png"));
+		Image img = iconoLogo.getImage();
+		Image newImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH); 
+		iconoLogo = new ImageIcon(newImg);
+		btnRegistro.getLblLogo().setIcon(iconoLogo);
+		
+		//Listener:
+		btnRegistro.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (vr != null) {
+					vr.setVisible(true);
+				} else {
+					vr = new VentanaRegistrarUsuario();
+					vr.setVisible(true);
+				}
+			}
+		});
+		
+		//Añadir labels para ajustar las coordenadas
+		pnlRegistro.add(new JLabel("")); pnlRegistro.add(new JLabel("")); pnlRegistro.add(new JLabel(""));
+		pnlRegistro.add(btnRegistro);
+		pnlRegistro.add(btnRegistro.getLblLogo());
+		pnlRegistro.add(new JLabel("")); pnlRegistro.add(new JLabel(""));
+		pnlArriba.add(pnlRegistro);
+
+		pnlN.add(pnlArriba);
 		pnlN.setOpaque(false);
 		pnlN.add(lblSel);
 		this.add(pnlN);
-		//this.add(new JButton("udfud"));
 		this.add(pnlPaneles);
         
         JPanel pnlSur = new JPanel(new GridLayout(1,3));
