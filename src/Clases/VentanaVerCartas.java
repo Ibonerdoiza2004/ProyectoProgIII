@@ -44,19 +44,31 @@ public class VentanaVerCartas extends JPanel{
 		HashMap<Asesinato, Jugador> dadas = Gestion.cartasEnsenyadas;
 		
 		carta1 = new JLabel();
-		carta1.setIcon(acusacion.get(0).getFoto());
-		carta1.setBounds(0, 0 ,(int)pnlIzquierda.getWidth(), (int)pnlIzquierda.getHeight());
+		ImageIcon imgCarta1 = acusacion.get(0).getFoto();
+		Image image1 = imgCarta1.getImage();
+		Image newImage1 = image1.getScaledInstance((int)Gestion.sizePantalla.getHeight()*7/34, (int)Gestion.sizePantalla.getHeight()*5/19, Image.SCALE_SMOOTH);
+		ImageIcon newIcon1 = new ImageIcon(newImage1);
+		carta1.setIcon(newIcon1);
+		carta1.setBounds((int)Gestion.sizePantalla.getWidth()*3/34, (int)Gestion.sizePantalla.getHeight()*1/19, (int)Gestion.sizePantalla.getHeight()*7/34, (int)Gestion.sizePantalla.getHeight()*5/19);
 		pnlIzquierda.add(carta1);
 		
 		
 		carta2 = new JLabel();
-		carta2.setIcon(acusacion.get(1).getFoto());
-		carta2.setBounds(0, 0,(int)pnlIzquierda.getWidth()*6/19, (int)pnlIzquierda.getHeight()*4/19);
+		ImageIcon imgCarta2 = acusacion.get(1).getFoto();
+		Image image2 = imgCarta2.getImage();
+		Image newImage2 = image2.getScaledInstance((int)Gestion.sizePantalla.getHeight()*7/34, (int)Gestion.sizePantalla.getHeight()*5/19, Image.SCALE_SMOOTH);
+		ImageIcon newIcon2 = new ImageIcon(newImage2);
+		carta2.setIcon(newIcon2);
+		carta2.setBounds((int)Gestion.sizePantalla.getWidth()*3/34, (int)Gestion.sizePantalla.getHeight()*7/19, (int)Gestion.sizePantalla.getHeight()*7/34, (int)Gestion.sizePantalla.getHeight()*5/19);
 		pnlIzquierda.add(carta2);
 		
 		carta3 = new JLabel();
-		carta3.setIcon(Gestion.acusacion.get(2).getFoto());
-		carta3.setBounds((int)pnlIzquierda.getWidth()*2/17, (int)(pnlIzquierda.getHeight()*11/19) ,(int)pnlIzquierda.getWidth()*6/19, (int)pnlIzquierda.getHeight()*4/19);
+		ImageIcon imgCarta3 = acusacion.get(2).getFoto();
+		Image image3 = imgCarta3.getImage();
+		Image newImage3 = image3.getScaledInstance((int)Gestion.sizePantalla.getHeight()*7/34, (int)Gestion.sizePantalla.getHeight()*5/19, Image.SCALE_SMOOTH);
+		ImageIcon newIcon3 = new ImageIcon(newImage3);
+		carta3.setIcon(newIcon3);
+		carta3.setBounds((int)Gestion.sizePantalla.getWidth()*3/34, (int)Gestion.sizePantalla.getHeight()*13/19, (int)Gestion.sizePantalla.getHeight()*7/34, (int)Gestion.sizePantalla.getHeight()*5/19);
 		pnlIzquierda.add(carta3);
 		
 		continuar = new JButton("CONTINUAR");
@@ -89,29 +101,36 @@ public class VentanaVerCartas extends JPanel{
 			if (dadas.containsKey(acusacion.get(i))) {
 				Personaje personaje = dadas.get(acusacion.get(i)).getPersonaje();
 				NombrePersonaje nombre= personaje.getNombre();
-				label.setIcon(new ImageIcon(Gestion.sprites.get(nombre).get(TipoSprite.AndarAbajo).get(0)));
+				ImageIcon sprite = new ImageIcon(Gestion.sprites.get(nombre).get(TipoSprite.AndarAbajo).get(0));
+				Image image = sprite.getImage();
+				Image newImage = image.getScaledInstance(180, 190, Image.SCALE_SMOOTH);
+				ImageIcon newIcon = new ImageIcon(newImage);
+				label.setIcon(newIcon);
 				if (i==0) {
-					label.setBounds((int)Math.round(pnlIzquierda.getWidth()*3/4), (int)(Gestion.sizePantalla.getHeight()*2/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
-					
+					label.setBounds((int)Gestion.sizePantalla.getWidth()*10/34, (int)Gestion.sizePantalla.getHeight()*1/19, (int)Gestion.sizePantalla.getHeight()*6/34, (int)Gestion.sizePantalla.getHeight()*4/19);
+					pnlIzquierda.add(label);
 				} else if (i== 1) {
-					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*8/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
-					
+					label.setBounds((int)Gestion.sizePantalla.getWidth()*10/34, (int)Gestion.sizePantalla.getHeight()*7/19, (int)Gestion.sizePantalla.getHeight()*6/34, (int)Gestion.sizePantalla.getHeight()*4/19);
+					pnlIzquierda.add(label);
 				} else {
-					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*14/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
-					
+					label.setBounds((int)Gestion.sizePantalla.getWidth()*10/34, (int)Gestion.sizePantalla.getHeight()*13/19, (int)Gestion.sizePantalla.getHeight()*6/34, (int)Gestion.sizePantalla.getHeight()*4/19);
+					pnlIzquierda.add(label);
 				}
 			} else {
-				
-				label.setIcon(new ImageIcon("tachado.png"));
+				ImageIcon tachado = new ImageIcon(getClass().getResource("tachado.png"));
+				Image image = tachado.getImage();
+				Image newImage = image.getScaledInstance(180, 190, Image.SCALE_SMOOTH);
+				ImageIcon newIcon = new ImageIcon(newImage);
+				label.setIcon(newIcon);
 				if (i==0) {
-					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*2/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
-					
+					label.setBounds((int)Gestion.sizePantalla.getWidth()*10/34, (int)Gestion.sizePantalla.getHeight()*1/19, (int)Gestion.sizePantalla.getHeight()*6/34, (int)Gestion.sizePantalla.getHeight()*4/19);
+					pnlIzquierda.add(label);
 				} else if (i== 1) {
-					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*8/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
-					
+					label.setBounds((int)Gestion.sizePantalla.getWidth()*10/34, (int)Gestion.sizePantalla.getHeight()*7/19, (int)Gestion.sizePantalla.getHeight()*6/34, (int)Gestion.sizePantalla.getHeight()*4/19);
+					pnlIzquierda.add(label);
 				} else {
-					label.setBounds((int)pnlIzquierda.getWidth()*9/17, (int)(Gestion.sizePantalla.getHeight()*14/19) ,(int)Gestion.sizePantalla.getWidth()*6/19, (int)Gestion.sizePantalla.getHeight()*4/19);
-					
+					label.setBounds((int)Gestion.sizePantalla.getWidth()*10/34, (int)Gestion.sizePantalla.getHeight()*13/19, (int)Gestion.sizePantalla.getHeight()*6/34, (int)Gestion.sizePantalla.getHeight()*4/19);
+					pnlIzquierda.add(label);
 				}
 			}
 		}
