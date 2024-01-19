@@ -23,8 +23,6 @@ public class VentanaSeleccionPersonaje extends JPanel{
 	protected boolean p6ocp;
 	protected JButton continuar;
 	protected JButton atras;
-	protected ArrayList<Personaje> personajes;
-	protected ArrayList<Personaje> elegidos;
 	private int cont;
 	protected int jugadores;
 	protected JLabel lblScarlett;
@@ -47,9 +45,6 @@ public class VentanaSeleccionPersonaje extends JPanel{
 		lblElige.setHorizontalAlignment(SwingConstants.CENTER);
 		lblElige.setForeground(Color.WHITE);
 		this.add(lblElige);
-
-		personajes = new ArrayList<Personaje>();
-		elegidos = new ArrayList<Personaje>();	
 		
 		continuar = new JButton("Continuar");
 		continuar.setFocusable(false);
