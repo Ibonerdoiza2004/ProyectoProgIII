@@ -16,6 +16,8 @@ public class VentanaNJugadores extends JPanel {
 	protected JSpinner spnJugs;
 	protected JLabel nBots;
 	protected JButton continuar;
+	
+	private BotonRedondo btnRegistro;
 
 	public VentanaNJugadores() {
 		
@@ -100,7 +102,25 @@ public class VentanaNJugadores extends JPanel {
 		lblSel.setFont(new Font(selFont.getName(), selFont.BOLD, 45));
 		lblSel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSel.setForeground(Color.WHITE);
-		this.add(lblSel);
+		//____________________
+//		JButton btnOtro = new JButton("OTRO BOTÓN");
+//		btnOtro.setFont(new Font(selFont.getName(), selFont.getStyle(), 20));
+//		JPanel pnlNorte = new JPanel(new GridLayout(1, 2));
+//		pnlNorte.setOpaque(false);
+//		pnlNorte.add(lblSel);
+//		pnlNorte.add(btnOtro);
+//
+//		this.add(pnlNorte, BorderLayout.NORTH);
+		//____________________
+		JPanel pnlN = new JPanel(new GridLayout(2,1));
+		JPanel pnlArriba = new JPanel();
+//		pnlArriba.add(new JLabel(""));
+//		pnlArriba.add(new JButton(""));
+//		pnlN.add(pnlArriba);
+		pnlN.setOpaque(false);
+		pnlN.add(lblSel);
+		this.add(pnlN);
+		//this.add(new JButton("udfud"));
 		this.add(pnlPaneles);
         
         JPanel pnlSur = new JPanel(new GridLayout(1,3));
