@@ -103,8 +103,8 @@ public class VentanaVerCartas extends JPanel{
 			}
 		}
 		
-		Gestion.ventanaJuego.add(this);
-		revalidate();
+//		Gestion.ventanaJuego.add(this);
+//		revalidate();
 	}
 	
 	public void eliminarPanel() {
@@ -113,7 +113,41 @@ public class VentanaVerCartas extends JPanel{
 	}
 	
 	public static void main(String[] args) {
-		VentanaVerCartas vent = new VentanaVerCartas();
+		Jugador j1;
+		Jugador j2;
+		Jugador j3;
+		Jugador j4;
+		Gestion.jugadores = new ArrayList<>();
+		j1 = new Jugador(new Personaje(), true);
+		Gestion.jugadores.add(j1);
+		j2 = new Jugador(new Personaje(), true);
+		Gestion.jugadores.add(j2);
+		j3 = new Jugador(new Personaje(), true);
+		Gestion.jugadores.add(j3);
+		j4 = new Jugador(new Personaje(), true);
+		Gestion.jugadores.add(j4);
+		Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
+		Gestion.cartasEnsenyadas=new HashMap<>();
+		int i = 0;
+		Asesinato cartaJ2 = j2.cartas.get(i);
+		while(!(cartaJ2 instanceof Sospechoso)) {
+			i++;
+			cartaJ2 = j2.cartas.get(i);
+		}
+		Gestion.cartasEnsenyadas.put(cartaJ2, j2);
+		Gestion.cartasEnsenyadas.put(Gestion.datosPartida.armas.get(0), j2);
+
+		Gestion.acusacion=new ArrayList<>();
+		Gestion.acusacion.add(cartaJ2);
+		Gestion.acusacion.add(Gestion.datosPartida.armas.get(0));
+		Gestion.acusacion.add(Gestion.datosPartida.lugares.get(0));
+		JFrame ventana = new JFrame();
+		ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		ventana.setUndecorated(true);
+		ventana.add(new VentanaVerCartas());
+		ventana.setVisible(true);
+		
 	}
 
 }
