@@ -23,6 +23,13 @@ public class VentanaVerCartas extends JPanel{
 		
 		this.setLayout(new GridLayout(1,2));
 		setSize(Gestion.sizePantalla);
+		pnlIzquierda = new JPanel();
+		pnlIzquierda.setLayout(null);
+		
+		
+		pnlDerecha = new JPanel();
+		pnlDerecha.setLayout(null);
+		
 		this.add(pnlIzquierda);
 		this.add(pnlDerecha);
 		
@@ -54,7 +61,19 @@ public class VentanaVerCartas extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				Gestion.aumentarTurno();
+				new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+				eliminarPanel();
+				String lockSiguienteVentana = "siguienteVentana";
+				synchronized (lockSiguienteVentana) {
+					try {
+						lockSiguienteVentana.wait();
+					} catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
+				}
+				new VentanaTablero();
+				eliminarPanel();
 			}
 		});
 		
@@ -86,6 +105,11 @@ public class VentanaVerCartas extends JPanel{
 		
 		Gestion.ventanaJuego.add(this);
 		revalidate();
+	}
+	
+	public void eliminarPanel() {
+		Gestion.ventanaJuego.remove(this);
+		Gestion.ventanaJuego.repaint();
 	}
 	
 	public static void main(String[] args) {
