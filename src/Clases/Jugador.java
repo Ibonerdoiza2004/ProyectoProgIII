@@ -96,8 +96,9 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 		this.personajeElegido = personajeElegido;
 	}
 	
-	public Jugador(String nick) {
+	public Jugador(String nick, String pass) {
 		this.nick = nick;
+		this.pass = pass;
 	}
 
 	public Jugador(Personaje personaje, boolean npc) {

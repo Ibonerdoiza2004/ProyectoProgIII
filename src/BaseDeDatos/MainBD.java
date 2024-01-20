@@ -58,6 +58,7 @@ public class MainBD {
 	private static final LocalDate currentMonth = LocalDate.of(2024, 01, 01);
 	private static ConexionSQlite conexion;
 	private static int num_partidas_mes;
+	private static VentanaNJugadores vn;
 	private int numJugsPartida = 0;
 	private ArrayList<String> jugsPartida;
 
@@ -458,6 +459,7 @@ public class MainBD {
 	//Meter datos en tablas al crear partida real (usar este método al meter datos partida):
 	public boolean anyadirJugador(Jugador jugador) {
 		try {
+			NumJugadoresRegistrados = 1;
 			rs = statement.executeQuery("SELECT * FROM jugador");
 			while (rs.next()){
 				NumJugadoresRegistrados ++; //Para que sea el id de un nuevo jugador
@@ -515,8 +517,8 @@ public class MainBD {
 	}
 	
 	//Métodos para comprobar si jugador está registrado depués de registrarse al iniciar la partida
-	public boolean registrarJugador(String nick) {
-		return registrarJugador(new Jugador(nick));
+	public boolean registrarJugador(String nick, String pass) {
+		return registrarJugador(new Jugador(nick, pass));
 	}
 	
 	public boolean registrarJugador(Jugador jugador) {
@@ -534,6 +536,7 @@ public class MainBD {
 				return false;
 			} else {
 				//LO AÑADO
+				//System.out.println(jugador);
 				anyadirJugador(jugador);
 				return loginJugador(jugador.getNick());
 			}
@@ -562,6 +565,7 @@ public class MainBD {
 		}
 	}
 	
+	
 	public void cogerJugs(VentanaNJugadores vn) {
 		numJugsPartida = (int) vn.getSpnJugs().getValue();
 		//System.out.println((int) vn.getSpnJugs().getValue());
@@ -586,7 +590,8 @@ public class MainBD {
 	}
 	
 	public void setterarPersonaje(int numElegido, String personajeElegido) {
-		String idVerdadero = "J"+jugsPartida.get(numElegido-1);
+		String idVerdadero = jugsPartida.get(numElegido-1);
+		//System.out.println("Mirar " + idVerdadero);
 		try {
 			statement.executeUpdate("UPDATE jugador set PERSONAJE_ASIGNADO = '" +
 			personajeElegido + "' WHERE ID_JUGADOR = '" + idVerdadero + "';");

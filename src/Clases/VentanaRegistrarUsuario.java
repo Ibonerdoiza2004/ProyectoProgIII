@@ -26,11 +26,12 @@ public class VentanaRegistrarUsuario extends JFrame {
     private JButton botonIniciarSesion;
     private static MainBD bd;
 
-    public VentanaRegistrarUsuario() {
+    public VentanaRegistrarUsuario(VentanaNJugadores vn, MainBD bd) {
 
 //    	bd = new MainBD();
 //    	bd.iniciarBD();
-//    	bd.anyadirJugador(new Jugador("Ander")); //ESTO HACERLO EN LA PRINCIPAL (esto es prueba)
+    	//bd.anyadirJugador(new Jugador("Ander")); //ESTO HACERLO EN LA PRINCIPAL (esto es prueba)
+    	this.bd = bd;
     	
         setTitle("Registro/Inicio Sesión");
         setSize(400, 200);
@@ -86,6 +87,7 @@ public class VentanaRegistrarUsuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//Lógica para iniciar sesión con usurio (hacer desde MainBD)
 				bd.loginJugador(tfUsuario.getText());
+				vn.numVecesRegistrado ++;
 				//Lógica de ventanas
 				dispose();
 			}
@@ -95,7 +97,8 @@ public class VentanaRegistrarUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				bd.registrarJugador(tfUsuario.getText());
+				bd.registrarJugador(tfUsuario.getText(), new String(tfContrasenya.getPassword()));
+				vn.numVecesRegistrado ++;
 				dispose();
 			}
 		});
@@ -135,7 +138,7 @@ public class VentanaRegistrarUsuario extends JFrame {
 
 
 	public static void main(String[] args) {
-        VentanaRegistrarUsuario vr = new VentanaRegistrarUsuario();
+        VentanaRegistrarUsuario vr = new VentanaRegistrarUsuario(new VentanaNJugadores(new MainBD()), new MainBD());
         vr.setVisible(true);
     }
 }
