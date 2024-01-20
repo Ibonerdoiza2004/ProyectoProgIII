@@ -76,23 +76,28 @@ public class VentanaVerCartas extends JPanel{
 		pnlDerecha.add(continuar);
 		
 		continuar.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Gestion.aumentarTurno();
-				new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
-				eliminarPanel();
-				String lockSiguienteVentana = "siguienteVentana";
-				synchronized (lockSiguienteVentana) {
-					try {
-						lockSiguienteVentana.wait();
-					} catch (InterruptedException ex) {
-						ex.printStackTrace();
+				Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Gestion.aumentarTurno();
+						new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+						eliminarPanel();
+						String lockSiguienteVentana = "siguienteVentana";
+						synchronized (lockSiguienteVentana) {
+							try {
+								lockSiguienteVentana.wait();
+							} catch (InterruptedException ex) {
+								ex.printStackTrace();
+							}
+						}
+						new VentanaTablero();
+						eliminarPanel();
 					}
-				}
-				new VentanaTablero();
-				eliminarPanel();
+				});
+				t.start();
 			}
 		});
 		
@@ -134,9 +139,8 @@ public class VentanaVerCartas extends JPanel{
 				}
 			}
 		}
-		
-//		Gestion.ventanaJuego.add(this);
-//		revalidate();
+		Gestion.ventanaJuego.add(this);
+		revalidate();
 	}
 	
 	public void eliminarPanel() {

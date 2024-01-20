@@ -302,7 +302,7 @@ public class VentanaAcusacion extends JPanel{
 									}
 								}
 								new VentanaDarCarta(jug);
-							}else {
+							} else {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
 								String lockSiguienteVentana = "siguienteVentana";
