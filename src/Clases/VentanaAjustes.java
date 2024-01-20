@@ -111,13 +111,22 @@ public class VentanaAjustes extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Gestion.dejarDeSonar.get() == true) {
+					Gestion.tMusica = new Thread(new Runnable() {
+						@Override
+							public void run() {
+								Gestion.sonar();
+									
+							}
+					});
+			    	Gestion.tMusica.start();
+					btnMusica.setText("Parar música");
 					Gestion.dejarDeSonar.set(false);
-					btnMusica.setText("Reproducir Música");
-					Gestion.player.close();
 				} else {
 					Gestion.dejarDeSonar.set(true);
-					btnMusica.setText("Parar Música");
-					Gestion.tMusica.start();
+					Gestion.player.close();
+					Gestion.tMusica.interrupt();
+					btnMusica.setText("Reproducir música");
+					
 					
 				}
 			}

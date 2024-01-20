@@ -125,7 +125,7 @@ public class VentanaInicio extends JPanel{
 				Gestion.tMusica = new Thread(new Runnable() {
 					@Override
 						public void run() {
-							sonar();
+							Gestion.sonar();
 								
 						}
 					});
@@ -165,18 +165,7 @@ public class VentanaInicio extends JPanel{
 	public static void main(String[] args) throws FileNotFoundException, JavaLayerException {
 		VentanaInicio ventana = new VentanaInicio();
 	}
-	public void sonar() {
-		try {
-			Gestion.player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
-			Gestion.player.play ();
-			Gestion.player.close ();
-			if(!Gestion.dejarDeSonar.get()) {
-				sonar();
-			}
-		} catch (JavaLayerException | FileNotFoundException e) {
-			e.printStackTrace();
-		}			
-	}
+	
 	public void eliminarPanel() {
 		Gestion.ventanaJuego.remove(this);
         Gestion.ventanaJuego.repaint();

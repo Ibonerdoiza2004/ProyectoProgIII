@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 
@@ -573,6 +575,17 @@ public class Gestion {
 		   
 		return mapaPorPersonaje;
 	}
-	
+	public static void sonar() {
+		try {
+			Gestion.player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
+			Gestion.player.play ();
+			Gestion.player.close ();
+			if(!Gestion.dejarDeSonar.get()) {
+				sonar();
+			}
+		} catch (JavaLayerException | FileNotFoundException e) {
+			e.printStackTrace();
+		}			
+	}
 	
 }
