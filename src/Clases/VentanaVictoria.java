@@ -51,7 +51,7 @@ public class VentanaVictoria extends JPanel{
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("VentanaVictoriaFondo.jpg"));
+        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("VentanaVictoriaFondo.jpeg"));
         Image imagenFondo = iconoFondo.getImage();
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
     }

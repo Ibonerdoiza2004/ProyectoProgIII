@@ -99,7 +99,7 @@ public class VentanaDerrota extends JPanel{
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("VentanaDerrotaFondo.jpg"));
+        ImageIcon iconoFondo = new ImageIcon(getClass().getResource("VentanaDerrotaFondo.jpeg"));
         Image imagenFondo = iconoFondo.getImage();
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
     }
