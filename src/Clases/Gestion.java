@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -32,6 +33,8 @@ public class Gestion {
 	protected static JFrame ventanaJuego;
 	protected static HashMap<Asesinato, Jugador>cartasEnsenyadas = new HashMap<>();
 	protected static VentanaInicio vInicio= null;
+	protected static Thread tMusica;
+	protected static AtomicBoolean dejarDeSonar = new AtomicBoolean();
 	public static int getNumTurno() {
 		return numTurno;
 	}

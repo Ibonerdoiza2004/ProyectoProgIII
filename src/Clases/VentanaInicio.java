@@ -33,8 +33,8 @@ public class VentanaInicio extends JPanel{
 	protected JButton cargarLocal;
 	protected JButton opciones;
 	protected JButton cerrar;
-	AtomicBoolean dejarDeSonar = new AtomicBoolean();
-	Thread t;
+	
+	
 	Player player;
 	
 	private static MainBD bd;
@@ -102,7 +102,7 @@ public class VentanaInicio extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Gestion.ventanaJuego.dispose();
-				t.interrupt();
+				Gestion.tMusica.interrupt();
 			}
 		});
 		
@@ -122,14 +122,14 @@ public class VentanaInicio extends JPanel{
 		
 		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 			public void windowOpened (WindowEvent e) {
-				t = new Thread(new Runnable() {
+				Gestion.tMusica = new Thread(new Runnable() {
 					@Override
 						public void run() {
 							sonar();
 								
 						}
 					});
-		    		t.start();
+		    		Gestion.tMusica.start();
 			}
 	});
 		
@@ -137,7 +137,7 @@ public class VentanaInicio extends JPanel{
 	Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 		public void windowClosed (WindowEvent e) {
 			player.close();
-			dejarDeSonar.set(true);
+			Gestion.dejarDeSonar.set(true);
 		   	}
 	});
 
@@ -170,7 +170,7 @@ public class VentanaInicio extends JPanel{
 			player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
 			player.play ();
 			player.close ();
-			if(!dejarDeSonar.get()) {
+			if(!Gestion.dejarDeSonar.get()) {
 				sonar();
 			}
 		} catch (JavaLayerException | FileNotFoundException e) {
