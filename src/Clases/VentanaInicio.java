@@ -35,7 +35,7 @@ public class VentanaInicio extends JPanel{
 	protected JButton cerrar;
 	
 	
-	Player player;
+	
 	
 	private static MainBD bd;
 	
@@ -136,7 +136,7 @@ public class VentanaInicio extends JPanel{
 	
 	Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 		public void windowClosed (WindowEvent e) {
-			player.close();
+			Gestion.player.close();
 			Gestion.dejarDeSonar.set(true);
 		   	}
 	});
@@ -167,9 +167,9 @@ public class VentanaInicio extends JPanel{
 	}
 	public void sonar() {
 		try {
-			player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
-			player.play ();
-			player.close ();
+			Gestion.player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
+			Gestion.player.play ();
+			Gestion.player.close ();
 			if(!Gestion.dejarDeSonar.get()) {
 				sonar();
 			}

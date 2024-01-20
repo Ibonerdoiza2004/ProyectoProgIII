@@ -14,6 +14,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import javazoom.jl.player.Player;
+
 
 
 enum TipoSprite{AndarArriba, AndarIzquierda, AndarAbajo, AndarDerecha, AgarrarArriba, AgarrarDerecha, AgarrarAbajo, AgarrarIzquierda};
@@ -35,6 +37,7 @@ public class Gestion {
 	protected static VentanaInicio vInicio= null;
 	protected static Thread tMusica;
 	protected static AtomicBoolean dejarDeSonar = new AtomicBoolean();
+	protected static Player player;
 	public static int getNumTurno() {
 		return numTurno;
 	}
