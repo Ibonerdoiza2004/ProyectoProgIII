@@ -27,7 +27,12 @@ public class VentanaAjustes extends JFrame {
 		lblAjustes.setForeground(Color.WHITE);
 		this.add(lblAjustes);
 		
-		btnMusica = new JButton("Parar Música");
+		btnMusica = new JButton("");
+		if (Gestion.dejarDeSonar.get()==false) {
+			btnMusica.setText("Parar Música");
+		} else {
+			btnMusica.setText("Reproducir Música");
+		}
 		btnMusica.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*3/7, (int) this.getWidth()*1/3, (int) this.getHeight()*1/7);
 		this.add(btnMusica);
 		
@@ -103,19 +108,17 @@ public class VentanaAjustes extends JFrame {
 		});
 		
 		btnMusica.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (btnMusica.getText().equals("Parar Música")) {
+				if (Gestion.dejarDeSonar.get() == true) {
+					Gestion.dejarDeSonar.set(false);
 					btnMusica.setText("Reproducir Música");
 					Gestion.player.close();
 				} else {
+					Gestion.dejarDeSonar.set(true);
 					btnMusica.setText("Parar Música");
-					try {
-						Gestion.player.play();
-					} catch (JavaLayerException e1) {
-						e1.printStackTrace();
-					}
+					Gestion.tMusica.start();
+					
 				}
 			}
 			
