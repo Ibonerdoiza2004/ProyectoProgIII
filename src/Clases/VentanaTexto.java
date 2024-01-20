@@ -13,6 +13,7 @@ import java.net.URL;
 
 import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -38,6 +39,9 @@ public class VentanaTexto extends JPanel{
 		texto.setOpaque(false);
 		texto.setBounds(0, 0, getWidth(), getHeight());
 		
+		JButton btnPausa = new JButton("||");
+		btnPausa.setBounds((int) Gestion.sizePantalla.getWidth()*33/34, 0, (int) Gestion.sizePantalla.getWidth()*1/34, (int) Gestion.sizePantalla.getHeight()*1/19);
+		
 		JLabel consejo = new JLabel("Pulsa ENTER para continuar");
 		consejo.setFont(new Font("Serif", Font.BOLD, 20));
 		consejo.setForeground(Color.WHITE);
@@ -49,6 +53,7 @@ public class VentanaTexto extends JPanel{
 		if(!Gestion.jugadores.get(jug).npc) {
 			add(consejo);
 		}
+		add(btnPausa);
 		add(lFondo);
 		Gestion.ventanaJuego.add(this);
 		repaint();
