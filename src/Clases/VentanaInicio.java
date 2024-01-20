@@ -49,7 +49,7 @@ public class VentanaInicio extends JPanel{
 		nuevaOnline = new JButton("NUEVA PARTIDA ONLINE");
 		pnlCentral.add(nuevaOnline);
 		
-		
+	
 		nuevaLocal = new JButton("<html><div style='text-align: center;'>NUEVA PARTIDA<br>LOCAL</div></html>");
 		nuevaLocal.setHorizontalAlignment(SwingConstants.CENTER);
 		nuevaLocal.setVerticalAlignment(SwingConstants.CENTER);
