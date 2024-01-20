@@ -1,47 +1,24 @@
 package Clases;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
 
 
 
@@ -269,9 +246,13 @@ public class VentanaAcusacion extends JPanel{
 						armaElegida = Gestion.datosPartida.armas.get(cbArma.getSelectedIndex());
 						Gestion.acusacion.add(armaElegida);
 						if(devuelveComp() instanceof JLabel) {
+							int[] posicionJugador = Gestion.jugadores.get(Gestion.getNumTurno()).posicion;
+							int posibleHabitacion = Gestion.tablero.get(posicionJugador[0]).get(posicionJugador[1]);
+							Sitio habitacion = Gestion.datosPartida.lugares.get(posibleHabitacion-2).getNombre();
 							for (Lugar l:Gestion.datosPartida.lugares) {
-								if (l.getNombre().equals(((Sitio)cbLugar.getSelectedItem()))) {
+								if (l.getNombre().equals(habitacion)) {
 									lugarElegido = l;
+									System.out.println("Habitacion "+l);
 								}
 							}
 
@@ -302,7 +283,7 @@ public class VentanaAcusacion extends JPanel{
 									}
 								}
 								new VentanaDarCarta(jug);
-							} else {
+							}else {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
 								String lockSiguienteVentana = "siguienteVentana";

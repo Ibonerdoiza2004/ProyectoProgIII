@@ -50,8 +50,6 @@ public class VentanaDarCarta extends JPanel{
 		pCartasPedidas.setOpaque(false);
 		setBounds(0, 0, (int)Gestion.sizePantalla.getWidth(),(int) Gestion.sizePantalla.getHeight());
 		Gestion.ventanaJuego.add(this);
-		JLabel l = new JLabel("AAAAAAAAAA");
-		l.setBounds(0, 0, 100, 100);
 		pArriba.add(pCartasPedidas);
 		pArriba.add(pCartaElegida);
 		this.add(pArriba);

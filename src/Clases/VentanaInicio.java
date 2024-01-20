@@ -1,7 +1,5 @@
 package Clases;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -12,16 +10,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
 import BaseDeDatos.MainBD;
@@ -38,11 +33,14 @@ public class VentanaInicio extends JPanel{
 	protected JButton cargarLocal;
 	protected JButton opciones;
 	protected JButton cerrar;
+	AtomicBoolean dejarDeSonar = new AtomicBoolean();
+	Thread t;
 	Player player;
 	
 	private static MainBD bd;
 	
 	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
+		
 		
 		pnlCentral = new JPanel(new GridLayout(4,1));
 		
@@ -103,7 +101,8 @@ public class VentanaInicio extends JPanel{
 		cerrar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Gestion.ventanaJuego.dispose();	
+				Gestion.ventanaJuego.dispose();
+				t.interrupt();
 			}
 		});
 		
@@ -123,7 +122,7 @@ public class VentanaInicio extends JPanel{
 		
 		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 			public void windowOpened (WindowEvent e) {
-				Thread t = new Thread(new Runnable() {
+				t = new Thread(new Runnable() {
 					@Override
 						public void run() {
 							sonar();
@@ -138,6 +137,7 @@ public class VentanaInicio extends JPanel{
 	Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
 		public void windowClosed (WindowEvent e) {
 			player.close();
+			dejarDeSonar.set(true);
 		   	}
 	});
 
@@ -170,7 +170,9 @@ public class VentanaInicio extends JPanel{
 			player = new Player (new FileInputStream ("src/Clases/musicaproyecto.mp3"));
 			player.play ();
 			player.close ();
-			sonar();
+			if(!dejarDeSonar.get()) {
+				sonar();
+			}
 		} catch (JavaLayerException | FileNotFoundException e) {
 			e.printStackTrace();
 		}			

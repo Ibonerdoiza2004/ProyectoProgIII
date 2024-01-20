@@ -40,6 +40,7 @@ public class VentanaTexto extends JPanel{
 		texto.setBounds(0, 0, getWidth(), getHeight());
 		
 		JButton btnPausa = new JButton("||");
+		btnPausa.setFocusable(false);
 		btnPausa.setBounds((int) Gestion.sizePantalla.getWidth()*33/34, 0, (int) Gestion.sizePantalla.getWidth()*1/34, (int) Gestion.sizePantalla.getHeight()*1/19);
 		
 		JLabel consejo = new JLabel("Pulsa ENTER para continuar");
