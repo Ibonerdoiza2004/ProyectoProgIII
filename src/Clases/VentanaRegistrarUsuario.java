@@ -16,15 +16,22 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import BaseDeDatos.MainBD;
+
 public class VentanaRegistrarUsuario extends JFrame {
 
     private JTextField tfUsuario;
     private JPasswordField tfContrasenya;
     private JButton botonRegistrarse;
     private JButton botonIniciarSesion;
+    private static MainBD bd;
 
     public VentanaRegistrarUsuario() {
 
+    	bd = new MainBD();
+    	bd.iniciarBD();
+    	bd.anyadirJugador(new Jugador("Holaaaaaaaaaaaaa")); //ESTO HACERLO EN LA PRINCIPAL (esto es prueba)
+    	
         setTitle("Registro/Inicio Sesión");
         setSize(400, 200);
         setLocationRelativeTo(null);
@@ -78,9 +85,9 @@ public class VentanaRegistrarUsuario extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Lógica para iniciar sesión con usurio (hacer desde MainBD)
-				
+				bd.loginJugador(tfUsuario.getText());
 				//Lógica de ventanas
-				dispose(); //ver si el usuario está en la BD
+				dispose();
 			}
 		});
         
@@ -88,6 +95,7 @@ public class VentanaRegistrarUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				bd.registrarJugador(tfUsuario.getText());
 				dispose();
 			}
 		});

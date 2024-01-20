@@ -40,7 +40,7 @@ public class VentanaInicio extends JPanel{
 	Player player;
 	
 	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
-		
+		//Cargar aquí la BD y esperar unos segundos
 		
 		pnlCentral = new JPanel(new GridLayout(4,1));
 		

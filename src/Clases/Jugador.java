@@ -8,6 +8,7 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	
 	private static int contador = 1;
 	private String nick;
+	private String pass;
 	private String personajeElegido;
 	protected int codigo;
 	protected ArrayList<Asesinato> cartas = new ArrayList<>(); //Cartas que le tocan
@@ -77,6 +78,15 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 	public void setNick(String nick) {
 		this.nick = nick;
 	}
+	
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
 
 	public String getPersonajeElegido() {
 		return personajeElegido;
@@ -84,6 +94,10 @@ public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener to
 
 	public void setPersonajeElegido(String personajeElegido) {
 		this.personajeElegido = personajeElegido;
+	}
+	
+	public Jugador(String nick) {
+		this.nick = nick;
 	}
 
 	public Jugador(Personaje personaje, boolean npc) {

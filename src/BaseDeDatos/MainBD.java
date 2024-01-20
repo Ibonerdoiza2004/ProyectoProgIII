@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -59,6 +60,9 @@ public class MainBD {
 
 	public static void main(String[] args) {
 		
+	}
+	
+	public void iniciarBD() {
 		conexion = new ConexionSQlite();
 		
 		try {
@@ -204,7 +208,10 @@ public class MainBD {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	
+	public void cargarVentanaDatos() {
 		//Después de cargar todo, se carga la parte visual, las JTables
 		ini();
 		ventBD.setVisible( true );
@@ -267,7 +274,6 @@ public class MainBD {
 			}
 
 		});
-		
 	}
 	
 	private static void ini() {
@@ -453,10 +459,13 @@ public class MainBD {
 			while (rs.next()){
 				NumJugadoresRegistrados ++; //Para que sea el id de un nuevo jugador
 			}
+//			String sent = "INSERT INTO jugador VALUES (" +
+//					"'J" + NumJugadoresRegistrados + "', " +
+//					"'" + jugador.getNick() + "', " + "'" + null + "'" + 
+//					null + ", " + 0 + ")";
 			String sent = "INSERT INTO jugador VALUES (" +
-					"'J" + NumJugadoresRegistrados + "', " +
-					"'" + jugador.getNick() + "', " + "'" + jugador.getPersonajeElegido() + "'" +
-					null + ", " + 0 + ")";
+			"'J" + NumJugadoresRegistrados + "', " +
+			"'" + jugador.getNick() + "', " + "' holaaaa ', ' noooooooo ', " + 0 + ")"; //Esto cambiarlo 
 			statement.executeUpdate(sent);
 			return true;
 		} catch (SQLException e) {
@@ -503,6 +512,52 @@ public class MainBD {
 	}
 	
 	//Métodos para comprobar si jugador está registrado depués de registrarse al iniciar la partida
+	public boolean registrarJugador(String nick) {
+		return registrarJugador(new Jugador(nick));
+	}
+	
+	public boolean registrarJugador(Jugador jugador) {
+		if (jugador.getNick() == null || jugador.getPass() == null || 
+			jugador.getNick().isEmpty() || jugador.getPass().isEmpty()) {
+			return false;
+			}
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador WHERE NOMBRE = '" + jugador.getNick() + "'");
+			int contador = 0;
+			while (rs.next()) {
+				contador ++;
+			}
+			if (contador != 0) {
+				return false;
+			} else {
+				//LO AÑADO
+				anyadirJugador(jugador);
+				return loginJugador(jugador.getNick());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	public boolean loginJugador(String nick) {
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador WHERE NOMBRE = '" + nick + "'");
+			int contador = 0;
+			while (rs.next()) {
+				contador ++;
+			}
+			if (contador == 0) {
+				return false;
+			}
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	private static void cambiarTabla() {
 		modeloTabla.setRowCount(0);
