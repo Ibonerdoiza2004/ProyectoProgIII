@@ -28,9 +28,9 @@ public class VentanaRegistrarUsuario extends JFrame {
 
     public VentanaRegistrarUsuario() {
 
-    	bd = new MainBD();
-    	bd.iniciarBD();
-    	bd.anyadirJugador(new Jugador("Holaaaaaaaaaaaaa")); //ESTO HACERLO EN LA PRINCIPAL (esto es prueba)
+//    	bd = new MainBD();
+//    	bd.iniciarBD();
+//    	bd.anyadirJugador(new Jugador("Ander")); //ESTO HACERLO EN LA PRINCIPAL (esto es prueba)
     	
         setTitle("Registro/Inicio Sesión");
         setSize(400, 200);

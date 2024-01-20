@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import BaseDeDatos.MainBD;
+
 public class VentanaNJugadores extends JPanel {
 	
 	protected JLabel lblTots;
@@ -17,12 +19,14 @@ public class VentanaNJugadores extends JPanel {
 	protected JLabel nBots;
 	protected JButton continuar;
 	
+	private static MainBD bd;
 	private static VentanaRegistrarUsuario vr;
 	private BotonRedondo btnRegistro;
 
 	public VentanaNJugadores() {
 		
 		vr = new VentanaRegistrarUsuario();
+		bd = new MainBD();
 		
 		Gestion.jugadores.clear();
 		lblTots = new JLabel("Nº Jugadores Totales");
@@ -211,6 +215,7 @@ public class VentanaNJugadores extends JPanel {
 			int numVeces = 0;
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				bd.cogerJugs(VentanaNJugadores.this); //HACERLO DESPÚES DE QUE TODOS SE REGISTREN
 //				while (numVeces < (int) spnJugs.getValue()) {
 //					JOptionPane.showMessageDialog(null, "Todavía faltan " + 
 //				(((int) spnJugs.getValue()) - numVeces) + " jugadores por registrarse", "Error en login/registro", JOptionPane.ERROR_MESSAGE );
@@ -306,6 +311,11 @@ public class VentanaNJugadores extends JPanel {
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
     }
 
+	public JSpinner getSpnJugs() {
+		return spnJugs;
+	}
+
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Gestion.ventanaJuego= new JFrame();

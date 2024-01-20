@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
+import BaseDeDatos.MainBD;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
@@ -39,8 +40,9 @@ public class VentanaInicio extends JPanel{
 	protected JButton cerrar;
 	Player player;
 	
+	private static MainBD bd;
+	
 	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
-		//Cargar aquí la BD y esperar unos segundos
 		
 		pnlCentral = new JPanel(new GridLayout(4,1));
 		
@@ -114,6 +116,9 @@ public class VentanaInicio extends JPanel{
 		
 		
 		Gestion.ventanaJuego = new JFrame();
+		//Cargar aquí la BD:
+		bd = new MainBD();
+		bd.iniciarBD();
 		
 		
 		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {

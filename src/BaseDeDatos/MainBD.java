@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Clases.Jugador;
 import Clases.Partida;
+import Clases.VentanaNJugadores;
 
 enum Sitio{CERO_UNO, ASEO, SALA_DE_ORDENADORES, CAFETERIA, LABORATORIO, DECANATO, TREINTA_Y_TRES, GIMNASIO, CLAUSTRO}
 enum NombrePersonaje{Rojo, Amarillo, Negro, Verde, Azul, Morado};
@@ -39,7 +40,7 @@ enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInves
 
 public class MainBD {
 	
-	private static int NumJugadoresRegistrados = 0;
+	private static int NumJugadoresRegistrados = 1;
 	private static int numPartidaMes = 0;
 	private static Connection conn;
 	private static Statement statement;
@@ -57,6 +58,8 @@ public class MainBD {
 	private static final LocalDate currentMonth = LocalDate.of(2024, 01, 01);
 	private static ConexionSQlite conexion;
 	private static int num_partidas_mes;
+	private int numJugsPartida = 0;
+	private ArrayList<String> jugsPartida;
 
 	public static void main(String[] args) {
 		
@@ -157,7 +160,7 @@ public class MainBD {
 				String sent = "insert into estadisticas values ( '" + fechaTexto + "', "+ num_partidas_mes + ", " + num_jugadores_reales
 						+ ", " + num_npcs + ", " + duracion_partida + ", " + miss_scarlet + ", " + colonel_Mustard
 						+ ", " + mrs_white + ", " + mr_green + ", " + mrs_peacock + ", " + profesor_plum + ")";
-				System.out.println(sent);
+				//System.out.println(sent);
 				statement.executeUpdate(sent);
 				fechaInicial = fechaInicial.plusMonths(1);
 		        
@@ -557,6 +560,52 @@ public class MainBD {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public void cogerJugs(VentanaNJugadores vn) {
+		numJugsPartida = (int) vn.getSpnJugs().getValue();
+		//System.out.println((int) vn.getSpnJugs().getValue());
+		//Leer los jugadores de la base de datos y quedarte con estos últimos:
+		ArrayList<String> arr = new ArrayList<String>();
+		int numJugs = verNumJugsRegistrado();
+		//System.out.println(numJugs - numJugsPartida);
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador;");
+			while (rs.next()) {
+				String id = rs.getString(1);
+				int numId = Integer.parseInt(id.substring(1)); //Coger la parte numérica del id 
+				if (numId > (numJugs - numJugsPartida)) {
+					arr.add(id);
+				}
+			}
+			System.out.println(arr); //Ya tengo los ids de los jugadores de esta partida
+			jugsPartida = new ArrayList<String>(arr);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setterarPersonaje(int numElegido, String personajeElegido) {
+		String idVerdadero = "J"+jugsPartida.get(numElegido-1);
+		try {
+			statement.executeUpdate("UPDATE jugador set PERSONAJE_ASIGNADO = '" +
+			personajeElegido + "' WHERE ID_JUGADOR = '" + idVerdadero + "';");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Integer verNumJugsRegistrado() {
+		int numJugs = 0;
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador");
+			while (rs.next()){
+				numJugs ++; //Para que sea el id de un nuevo jugador
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return numJugs;
 	}
 	
 	private static void cambiarTabla() {
