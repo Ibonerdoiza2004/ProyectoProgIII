@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
@@ -42,6 +44,13 @@ public class VentanaTexto extends JPanel{
 		JButton btnPausa = new JButton("||");
 		btnPausa.setFocusable(false);
 		btnPausa.setBounds((int) Gestion.sizePantalla.getWidth()*33/34, 0, (int) Gestion.sizePantalla.getWidth()*1/34, (int) Gestion.sizePantalla.getHeight()*1/19);
+		
+		btnPausa.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AjustesPartida();	
+			}
+		});
 		
 		JLabel consejo = new JLabel("Pulsa ENTER para continuar");
 		consejo.setFont(new Font("Serif", Font.BOLD, 20));

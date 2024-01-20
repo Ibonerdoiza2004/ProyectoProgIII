@@ -1,45 +1,61 @@
 package Clases;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import javazoom.jl.decoder.JavaLayerException;
 
-public class VentanaAjustes extends JFrame {
-	
+public class AjustesPartida extends JFrame{
 	private JLabel lblAjustes;
+	private JButton guardar;
 	private JButton btnMusica;
+	private JButton btnMenu;
 	private JButton btnCerrar;
 	
-	public VentanaAjustes() {
+	public AjustesPartida() {
+		
+		
 		
 		this.setSize((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
 		
 		this.setLayout(null);
 		
 		lblAjustes = new JLabel("AJUSTES");
-		lblAjustes.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*1/7, (int) this.getWidth()*1/3, (int) this.getHeight()*1/7);
+		lblAjustes.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*1/9, (int) this.getWidth()*1/3, (int) this.getHeight()*1/9);
 		Font totFont = lblAjustes.getFont();
 		lblAjustes.setFont(new Font(totFont.getName(), totFont.getStyle(), 30));
-		lblAjustes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAjustes.setForeground(Color.WHITE);
+		lblAjustes.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblAjustes);
 		
 		btnMusica = new JButton("Parar Música");
-		btnMusica.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*3/7, (int) this.getWidth()*1/3, (int) this.getHeight()*1/7);
+		btnMusica.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*3/9, (int) this.getWidth()*1/3, (int) this.getHeight()*1/9);
 		this.add(btnMusica);
 		
-		btnCerrar = new JButton("Cerrar");
-		btnCerrar.setBounds((int)this.getWidth()*1/3, (int)this.getHeight()*5/7, (int) this.getWidth()*1/3, (int) this.getHeight()*1/7);
+		guardar = new JButton("Guardar");
+		guardar.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*5/9, (int) this.getWidth()*1/6, (int) this.getHeight()*1/9);
+		this.add(guardar);
+		
+		btnCerrar = new JButton("Seguir");
+		btnCerrar.setBounds((int)this.getWidth()*1/3+(int)this.getWidth()*1/6, (int)this.getHeight()*5/9, (int) this.getWidth()*1/6, (int) this.getHeight()*1/9);
 		this.add(btnCerrar);
 		
-		ImageIcon fondo = new ImageIcon(getClass().getResource("FondoAjustes2.jpg"));
-		Image image = fondo.getImage();
-		Image newImage = image.getScaledInstance((int) Gestion.sizePantalla.getWidth()*1/9, (int) Gestion.sizePantalla.getHeight()*1/9, Image.SCALE_SMOOTH);
-		ImageIcon newIcon = new ImageIcon(newImage);
-		
+		btnMenu = new JButton("Salir al Menú");
+		btnMenu.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*7/9, (int) this.getWidth()*1/3, (int) this.getHeight()*1/9);
+		this.add(btnMenu);
+        
 		JLabel label = new JLabel();
 		JLabel label2 = new JLabel();
 		JLabel label3 = new JLabel();
@@ -49,6 +65,11 @@ public class VentanaAjustes extends JFrame {
 		JLabel label7 = new JLabel();
 		JLabel label8 = new JLabel();
 		JLabel label9 = new JLabel();
+		
+		ImageIcon fondo = new ImageIcon(getClass().getResource("FondoAjustes2.jpg"));
+		Image image = fondo.getImage();
+		Image newImage = image.getScaledInstance((int) Gestion.sizePantalla.getWidth()*1/9, (int) Gestion.sizePantalla.getHeight()*1/9, Image.SCALE_SMOOTH);
+		ImageIcon newIcon = new ImageIcon(newImage);
 		
 		label.setIcon(newIcon);
 		label2.setIcon(newIcon);
@@ -102,6 +123,18 @@ public class VentanaAjustes extends JFrame {
 			}
 		});
 		
+		guardar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Falta el metodo
+				
+			}
+			
+		});
+		
+		
+		
 		btnMusica.addActionListener(new ActionListener() {
 
 			@Override
@@ -120,5 +153,24 @@ public class VentanaAjustes extends JFrame {
 			}
 			
 		});
+		
+		btnMenu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		
 	}
-}
+	
+
+	
+	
+	public static void main (String[]args){
+		AjustesPartida v = new AjustesPartida();
+	}
+
+	}
+	
+
