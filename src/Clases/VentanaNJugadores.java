@@ -137,6 +137,8 @@ public class VentanaNJugadores extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				//Meter todo esto en un if (para el setEnabled)
 				if (vr != null) {
 					vr.getTfUsuario().setText("");
 					vr.getTfContrasenya().setText("");

@@ -598,7 +598,12 @@ public class MainBD {
 	}
 	
 	public void setterarPersonaje(int numElegido, String personajeElegido) {
-		String idVerdadero = jugsPartida.get(numElegido-1);
+		String idVerdadero;
+		if (jugsPartida.size() == 1) {
+			idVerdadero = jugsPartida.get(0);
+		} else {
+			idVerdadero = jugsPartida.get(numElegido-1);
+		}
 		//System.out.println("Mirar " + idVerdadero);
 		try {
 			statement.executeUpdate("UPDATE jugador set PERSONAJE_ASIGNADO = '" +
