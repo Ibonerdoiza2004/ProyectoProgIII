@@ -315,6 +315,11 @@ public class VentanaNJugadores extends JPanel {
 		});;
 	}
 	
+	public BotonRedondo getBtnRegistro() {
+		return btnRegistro;
+	}
+
+
 	public void eliminarPanel() {
 		Gestion.ventanaJuego.remove(this);
         Gestion.ventanaJuego.repaint();

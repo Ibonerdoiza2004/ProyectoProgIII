@@ -31,15 +31,19 @@ public class DatosPartida implements Serializable {
 	private ArrayList<Jugador> jugadoresPartida;
 	private ArrayList<Asesinato> acusacion;
 	private HashMap<Asesinato, Jugador> cartasEnsenyadas;
-	private JPanel siguientePanel;
+	private Class siguientePanel;
 
-	public static void main(String[] args) {
-		DatosPartida dp = new DatosPartida(0, null, null, null, new JPanel());
-		dp.guardarPartida(new DatosPartida(3, null, null, null, new JPanel()));
-		dp.cargarPartidaJO();
+//	public static void main(String[] args) {
+//		DatosPartida dp = new DatosPartida(0, null, null, null, null);
+//		//dp.guardarPartida(new DatosPartida(3, null, null, null, null);
+//		dp.cargarPartidaJO();
+//	}
+	
+	public DatosPartida() {
+		identificadorPartida = "";
 	}
 	
-	public DatosPartida(int numturno, ArrayList<Jugador> jugadores, ArrayList<Asesinato> acus, HashMap<Asesinato, Jugador> cartasensenyadas, JPanel sigPanel) { //Aquí vienen los datos desde Gestión
+	public DatosPartida(int numturno, ArrayList<Jugador> jugadores, ArrayList<Asesinato> acus, HashMap<Asesinato, Jugador> cartasensenyadas, Class sigPanel) { //Aquí vienen los datos desde Gestión
 		numTurno = numturno;
 		jugadoresPartida = jugadores;
 		acusacion = acus;
@@ -93,15 +97,15 @@ public class DatosPartida implements Serializable {
 		this.cartasEnsenyadas = cartasEnsenyadas;
 	}
 
-	public JPanel getSiguientePanel() {
+	public Class getSiguientePanel() {
 		return siguientePanel;
 	}
 
-	public void setSiguientePanel(JPanel siguientePanel) {
+	public void setSiguientePanel(Class siguientePanel) {
 		this.siguientePanel = siguientePanel;
 	}
 
-	private void guardarPartida(DatosPartida dp) {
+	public void guardarPartida(DatosPartida dp) {
 		File f = new File(nomFichero);
 		
 		FileOutputStream fos = null;
@@ -112,8 +116,9 @@ public class DatosPartida implements Serializable {
 			oos = new ObjectOutputStream(fos);
 			
 			oos.writeObject(dp);
-			
+			JOptionPane.showMessageDialog(null, "Se han guardado los datos");
 		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "No se han guardado los datos correctamente");
 			e.printStackTrace();
 		}
 	}

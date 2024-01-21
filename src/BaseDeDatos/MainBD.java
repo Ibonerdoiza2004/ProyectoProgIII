@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -532,6 +533,7 @@ public class MainBD {
 	public boolean registrarJugador(Jugador jugador) {
 		if (jugador.getNick() == null || jugador.getPass() == null || 
 			jugador.getNick().isEmpty() || jugador.getPass().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "No has insertado tus datos en algún campo", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 			}
 		try {
@@ -541,6 +543,7 @@ public class MainBD {
 				contador ++;
 			}
 			if (contador != 0) {
+				JOptionPane.showMessageDialog(null, "Ya te has registrado previamente, inicia sesión", "Error", JOptionPane.ERROR_MESSAGE);
 				return false;
 			} else {
 				//LO AÑADO
@@ -564,6 +567,7 @@ public class MainBD {
 				contador ++;
 			}
 			if (contador == 0) {
+				JOptionPane.showMessageDialog(null, "No puedes iniciar sesión, tienes que registrate", "Error", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 			return true;

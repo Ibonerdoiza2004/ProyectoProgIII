@@ -86,6 +86,14 @@ public class VentanaRegistrarUsuario extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Lógica para iniciar sesión con usurio (hacer desde MainBD)
+//				if (bd.loginJugador(tfUsuario.getText())) {
+//					vn.numVecesRegistrado ++;
+//					//Lógica de ventanas
+//					dispose();
+//				} else {
+//					vn.numVecesRegistrado --;
+//					vn.getBtnRegistro().setEnabled(true);
+//				}
 				bd.loginJugador(tfUsuario.getText());
 				vn.numVecesRegistrado ++;
 				//Lógica de ventanas

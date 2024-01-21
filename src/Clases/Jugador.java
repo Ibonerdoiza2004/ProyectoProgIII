@@ -1,8 +1,9 @@
 package Clases;
 
+import java.io.Serializable;
 import java.util.*;
 enum INFONPCS{SINENSENYARME, ENSENYADA}
-public class Jugador { //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
+public class Jugador implements Serializable{ //Al crear un nuevo jugador el jugador tiene que tener todos estos datos.
 	
 	private Random r = new Random();
 	

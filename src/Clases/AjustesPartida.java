@@ -29,6 +29,8 @@ public class AjustesPartida extends JInternalFrame{
 	private JButton btnMenu;
 	private JButton btnCerrar;
 	
+	private static DatosPartida datosP = new DatosPartida();
+	
 	public AjustesPartida() {
 		setOpaque(false);
 		setTitle("Ventana de ajustes");
@@ -136,26 +138,29 @@ public class AjustesPartida extends JInternalFrame{
 		guardar.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        String nombreArchivo = JOptionPane.showInputDialog("Por favor, introduce el nombre del archivo:");
-		        if (nombreArchivo != null) {
-		            try {
-		                FileOutputStream fileOut = new FileOutputStream(nombreArchivo + ".dat");
-		                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-		                out.writeInt(Gestion.numTurno);
-		                out.writeObject(Gestion.jugadores);
-		                out.writeObject(Gestion.acusacion);
-		                out.writeObject(Gestion.cartasEnsenyadas);
-		                out.writeObject(Gestion.datosPartida);
-		                out.writeObject(Gestion.siguientePanel);
-		                out.close();
-		                fileOut.close();
-		                System.out.printf("Los datos se han guardado en %s.dat", nombreArchivo);
-		            } catch (IOException i) {
-		                i.printStackTrace();
-		            }
-		        } else {
-		            System.out.println("No se introdujo ningún nombre de archivo.");
-		        }
+//		        String nombreArchivo = JOptionPane.showInputDialog("Por favor, introduce el nombre del archivo:");
+//		        if (nombreArchivo != null) {
+//		            try {
+//		                FileOutputStream fileOut = new FileOutputStream(nombreArchivo + ".dat");
+//		                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+//		                out.writeInt(Gestion.numTurno);
+//		                out.writeObject(Gestion.jugadores);
+//		                out.writeObject(Gestion.acusacion);
+//		                out.writeObject(Gestion.cartasEnsenyadas);
+//		                out.writeObject(Gestion.datosPartida);
+//		                out.writeObject(Gestion.siguientePanel);
+//		                out.close();
+//		                fileOut.close();
+//		                System.out.printf("Los datos se han guardado en %s.dat", nombreArchivo);
+//		            } catch (IOException i) {
+//		                i.printStackTrace();
+//		            }
+//		        }
+//		        else {
+//		            System.out.println("No se introdujo ningún nombre de archivo.");
+//		        }
+		    	DatosPartida dp = new DatosPartida(Gestion.numTurno, Gestion.jugadores, Gestion.acusacion, Gestion.cartasEnsenyadas, VentanaTablero.class);
+		    	datosP.guardarPartida(dp);
 		    }
 		});
 		

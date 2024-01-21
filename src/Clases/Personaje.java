@@ -1,10 +1,11 @@
 package Clases;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 enum NombrePersonaje{Rojo, Amarillo, Negro, Verde, Azul, Morado};
-public class Personaje {
+public class Personaje implements Serializable{
 	
 	protected Random r = new Random();
 	//Atributos

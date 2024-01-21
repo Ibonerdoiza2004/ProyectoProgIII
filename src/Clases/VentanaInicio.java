@@ -113,7 +113,7 @@ public class VentanaInicio extends JPanel{
 		                Gestion.acusacion = (ArrayList<Asesinato>) in.readObject();
 		                Gestion.cartasEnsenyadas = (HashMap<Asesinato, Jugador>) in.readObject();
 		                //Gestion.acusacion  = (Contenedor) in.readObject();
-		                Gestion.siguientePanel = (JPanel) in.readObject();
+		                //Gestion.siguientePanel = (JPanel) in.readObject();
 		                in.close();
 		                fileIn.close();
 		                System.out.printf("Los datos se han cargado desde %s.dat", nombreArchivo);

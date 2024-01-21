@@ -1,8 +1,10 @@
 package Clases;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public class Asesinato {
+public class Asesinato implements Serializable{
 	
 	protected boolean implicado;
 	protected ImageIcon foto;

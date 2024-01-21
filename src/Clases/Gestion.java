@@ -42,7 +42,7 @@ public class Gestion {
 	protected static Thread tMusica;
 	protected static AtomicBoolean dejarDeSonar = new AtomicBoolean();
 	protected static Player player;
-	protected static JPanel siguientePanel;
+	protected static Class siguientePanel;
 	static JDesktopPane dPane;
 	public static int getNumTurno() {
 		return numTurno;
