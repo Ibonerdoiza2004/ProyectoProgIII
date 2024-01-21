@@ -24,6 +24,7 @@ public class VentanaNJugadores extends JPanel {
 	private BotonRedondo btnRegistro;
 	
 	protected static int numVecesRegistrado = 0;
+	private int contador = 0;
 
 	public VentanaNJugadores(MainBD bd) {
 		
@@ -132,12 +133,15 @@ public class VentanaNJugadores extends JPanel {
 		iconoLogo = new ImageIcon(newImg);
 		btnRegistro.getLblLogo().setIcon(iconoLogo);
 		
+		
 		//Listener:
 		btnRegistro.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				if (numVecesRegistrado >= ((int) spnJugs.getValue())-1) { //Después del último registro no se puede volver a pulsar el botón
+					btnRegistro.setEnabled(false);
+				}
 				//Meter todo esto en un if (para el setEnabled)
 				if (vr != null) {
 					vr.getTfUsuario().setText("");
