@@ -30,7 +30,7 @@ public class Gestion {
 	 //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.s
 	protected static int numFilas = 25;
 	protected static int numColumnas = 24;
-	protected static Contenedor datosPartida = new Contenedor();
+	protected static Contenedor datosPartida;
 	protected static ArrayList<ArrayList<Integer>> tablero = Gestion.crearTablero(numFilas, numColumnas);
 	protected static HashMap<NombrePersonaje,HashMap<TipoSprite,ArrayList<Image>>> sprites = crearSprites();
 	protected static ArrayList<Asesinato>acusacion = new ArrayList<>();

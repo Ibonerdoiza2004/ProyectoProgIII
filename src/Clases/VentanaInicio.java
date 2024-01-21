@@ -39,19 +39,17 @@ public class VentanaInicio extends JPanel{
 	
 	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
 		
+		Gestion.datosPartida = new Contenedor();
 		
-		pnlCentral = new JPanel(new GridLayout(4,1));
+		pnlCentral = new JPanel(new GridLayout(3,1));
 		
 		pnlLocal = new JPanel(new GridLayout(1,2));
-		
-		nuevaOnline = new JButton("NUEVA PARTIDA ONLINE");
-		pnlCentral.add(nuevaOnline);
 		
 	
 		nuevaLocal = new JButton("<html><div style='text-align: center;'>NUEVA PARTIDA<br>LOCAL</div></html>");
 		nuevaLocal.setHorizontalAlignment(SwingConstants.CENTER);
 		nuevaLocal.setVerticalAlignment(SwingConstants.CENTER);
-		pnlLocal.add(nuevaLocal);
+		pnlLocal  .add(nuevaLocal);
 		
 		cargarLocal = new JButton("<html><div style='text-align: center;'>CARGAR PARTIDA<br>LOCAL</div></html>");
 		cargarLocal.setHorizontalAlignment(SwingConstants.CENTER);

@@ -5,12 +5,15 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import javazoom.jl.decoder.JavaLayerException;
 
 public class AjustesPartida extends JInternalFrame{
 	private JLabel lblAjustes;
@@ -164,7 +167,24 @@ public class AjustesPartida extends JInternalFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				Thread t = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						dispose();
+						String lockAnyadirALaVentana = "AnyadirALaVentana";
+						synchronized (lockAnyadirALaVentana) {
+							lockAnyadirALaVentana.notifyAll();
+						}
+						Gestion.ventanaJuego.removeAll();
+						Gestion.ventanaJuego.add(Gestion.vInicio);
+						Gestion.ventanaJuego.repaint();
+						
+					}
+					
+				});
+				
+				t.start();
 			}
 		});
 		
