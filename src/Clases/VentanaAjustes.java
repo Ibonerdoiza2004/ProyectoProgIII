@@ -5,14 +5,14 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 public class VentanaAjustes extends JInternalFrame {
 	
@@ -21,13 +21,14 @@ public class VentanaAjustes extends JInternalFrame {
 	private JButton btnCerrar;
 	
 	public VentanaAjustes() {
+		setOpaque(false);
 		setTitle("Ventana de ajustes");
 		setClosable(true);
 		setSize((int)Gestion.sizePantalla.getWidth()/3, (int) Gestion.sizePantalla.getHeight()*1/3);
+		setLocation((int)Gestion.sizePantalla.getWidth()/2-(int)Gestion.sizePantalla.getWidth()/6, (int)Gestion.sizePantalla.getHeight()/2 - this.getHeight()/2);
 		setFocusable(false);
-		Gestion.ventanaJuego.add(this);
+		Gestion.dPane.add(this);
 		this.setLayout(null);
-		this.setLocation((int)Gestion.sizePantalla.getWidth()/2 - this.getWidth()/2, (int)Gestion.sizePantalla.getHeight()/2 - this.getHeight()/2);
 		lblAjustes = new JLabel("AJUSTES");
 		lblAjustes.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*1/7, (int) this.getWidth()*1/3, (int) this.getHeight()*1/7);
 		Font totFont = lblAjustes.getFont();
@@ -98,21 +99,31 @@ public class VentanaAjustes extends JInternalFrame {
 		this.add(label8);
 		this.add(label9);
 		
-		this.setLocation((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
         this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setVisible(true);
-		
+		repaint();
+		Gestion.dPane.repaint();
 		
 		btnCerrar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+			}
+		});
+		addInternalFrameListener(new InternalFrameAdapter() {
+			
+			
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				String lockAjustesCerrado = "AjustesCerrado";
+				synchronized (lockAjustesCerrado) {
+					lockAjustesCerrado.notifyAll();
+				}
 				
 			}
 		});
-		
 		btnMusica.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

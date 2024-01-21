@@ -1,6 +1,6 @@
 package Clases;
 
-import java.awt.Font;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -105,7 +105,48 @@ public class VentanaInicio extends JPanel{
 		opciones.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new VentanaAjustes();
+				Thread t = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						for (Component component : pnlCentral.getComponents()) {
+						    if (component instanceof JButton) {
+						        component.setEnabled(false);
+						    }
+						}
+						for (Component component : pnlLocal.getComponents()) {
+						    if (component instanceof JButton) {
+						        component.setEnabled(false);
+						    }
+						}
+						VentanaAjustes v =new VentanaAjustes();
+						Gestion.ventanaJuego.revalidate();
+						Gestion.ventanaJuego.repaint();
+						Gestion.dPane.revalidate();
+						Gestion.dPane.repaint();
+						v.revalidate();
+						v.repaint();
+						String lockAjustesCerrado = "AjustesCerrado";
+						synchronized (lockAjustesCerrado) {
+							try {
+								lockAjustesCerrado.wait();
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+						for (Component component : pnlCentral.getComponents()) {
+						    if (component instanceof JButton) {
+						        component.setEnabled(true);
+						    }
+						}
+						for (Component component : pnlLocal.getComponents()) {
+						    if (component instanceof JButton) {
+						        component.setEnabled(true);
+						    }
+						}
+					}
+				});
+				t.start();	
 			}
 		});
 		
@@ -141,16 +182,16 @@ public class VentanaInicio extends JPanel{
 		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
 		this.setSize(Gestion.sizePantalla);
-		JDesktopPane desktopPane = new JDesktopPane();
-        Gestion.ventanaJuego.setContentPane(desktopPane);
+		Gestion.dPane= new JDesktopPane();
+		Gestion.dPane.setOpaque(false);
+		Gestion.dPane.setBounds(0,0, (int)Gestion.sizePantalla.getWidth(),(int)Gestion.sizePantalla.getHeight());
+		Gestion.ventanaJuego.add(Gestion.dPane);
 		Gestion.ventanaJuego.add(this);
 		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		Gestion.ventanaJuego.setUndecorated(true);
 		
 		Gestion.ventanaJuego.setVisible(true);
 		
-		Font defaultFont = nuevaOnline.getFont();
-		System.out.println(defaultFont);
 		Gestion.vInicio=this;
 	}
 	
@@ -169,5 +210,7 @@ public class VentanaInicio extends JPanel{
 		Gestion.ventanaJuego.remove(this);
         Gestion.ventanaJuego.repaint();
 	}
-
+	public void deshabilitarBotones() {
+		
+	}
 }

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 
 import javazoom.jl.decoder.JavaLayerException;
@@ -40,6 +41,7 @@ public class Gestion {
 	protected static Thread tMusica;
 	protected static AtomicBoolean dejarDeSonar = new AtomicBoolean();
 	protected static Player player;
+	static JDesktopPane dPane;
 	public static int getNumTurno() {
 		return numTurno;
 	}

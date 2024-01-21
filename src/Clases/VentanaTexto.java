@@ -12,8 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.swing.FocusManager;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 
 public class VentanaTexto extends JPanel{
 	float alpha = 1;
+	Boolean ajustesCreada=false;
 	public VentanaTexto(String sTexto, int jug) {
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
@@ -48,7 +49,28 @@ public class VentanaTexto extends JPanel{
 		btnPausa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new AjustesPartida();	
+				Thread t = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						new AjustesPartida();
+						btnPausa.setEnabled(false);
+						ajustesCreada=true;
+						String lockAjustesCerrado = "AjustesCerrado";
+						synchronized (lockAjustesCerrado) {
+							try {
+								lockAjustesCerrado.wait();
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+						btnPausa.setEnabled(true);
+						ajustesCreada=false;
+						requestFocus();
+						System.out.println(ajustesCreada);
+					}
+				});
+				t.start();
 			}
 		});
 		
@@ -73,6 +95,21 @@ public class VentanaTexto extends JPanel{
 			
 			@Override
 			public void run() {
+				System.out.println("He llegado al hilo del enter");
+				System.out.println(ajustesCreada);
+				if(ajustesCreada) {
+					System.out.println("AAAAAAAAAAAAAAAA");
+					String lockAjustesCerrado = "AjustesCerrado";
+					synchronized (lockAjustesCerrado) {
+						try {
+							lockAjustesCerrado.wait();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+				System.out.println("BBBBBBBBBBBBBBBBB");
+				btnPausa.setEnabled(false);
 				while(alpha>0) {
 				    if(alpha>=0.03) {
 				    	alpha -= 0.03;

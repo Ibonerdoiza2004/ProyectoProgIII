@@ -11,7 +11,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import javazoom.jl.decoder.JavaLayerException;
 
@@ -23,14 +26,14 @@ public class AjustesPartida extends JInternalFrame{
 	private JButton btnCerrar;
 	
 	public AjustesPartida() {
-		
-		
+		setOpaque(false);
 		setTitle("Ventana de ajustes");
 		setClosable(true);
-		this.setSize((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
-		this.setLocation((int)Gestion.sizePantalla.getWidth()/2 - this.getWidth()/2, (int)Gestion.sizePantalla.getHeight()/2 - this.getHeight()/2);
+		setSize((int)Gestion.sizePantalla.getWidth()/3, (int) Gestion.sizePantalla.getHeight()*1/3);
+		setLocation((int)Gestion.sizePantalla.getWidth()/2-(int)Gestion.sizePantalla.getWidth()/6, (int)Gestion.sizePantalla.getHeight()/2 - this.getHeight()/2);
+		setFocusable(false);
+		Gestion.dPane.add(this);
 		this.setLayout(null);
-		Gestion.ventanaJuego.add(this);
 		lblAjustes = new JLabel("AJUSTES");
 		lblAjustes.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*1/9, (int) this.getWidth()*1/3, (int) this.getHeight()*1/9);
 		Font totFont = lblAjustes.getFont();
@@ -113,7 +116,8 @@ public class AjustesPartida extends JInternalFrame{
         this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setVisible(true);
-		
+		repaint();
+		Gestion.dPane.repaint();
 		
 		
 		btnCerrar.addActionListener(new ActionListener() {
@@ -168,7 +172,7 @@ public class AjustesPartida extends JInternalFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Thread t = new Thread(new Runnable() {
-
+					
 					@Override
 					public void run() {
 						dispose();
@@ -176,18 +180,27 @@ public class AjustesPartida extends JInternalFrame{
 						synchronized (lockAnyadirALaVentana) {
 							lockAnyadirALaVentana.notifyAll();
 						}
-						Gestion.ventanaJuego.removeAll();
+						Gestion.ventanaJuego.setContentPane(new JPanel(null));
+						Gestion.ventanaJuego.add(Gestion.dPane);
 						Gestion.ventanaJuego.add(Gestion.vInicio);
 						Gestion.ventanaJuego.repaint();
-						
 					}
-					
 				});
-				
 				t.start();
 			}
 		});
-		
+		addInternalFrameListener(new InternalFrameAdapter() {
+			
+			
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				String lockAjustesCerrado = "AjustesCerrado";
+				synchronized (lockAjustesCerrado) {
+					lockAjustesCerrado.notifyAll();
+				}
+				
+			}
+		});
 	}
 	
 
