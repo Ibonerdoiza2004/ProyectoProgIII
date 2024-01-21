@@ -206,6 +206,10 @@ public class VentanaNJugadores extends JPanel {
 		spnJugs.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				//Aquí, eliminar los los jugadores registrados para añadir los nuevos:
+				btnRegistro.setEnabled(true);
+				bd.eliminarJugadores();
+				numVecesRegistrado = 0;
 				
 				Number valor1 = (Number) spnTots.getValue();
 				int valorInt1 = valor1.intValue();
@@ -226,6 +230,7 @@ public class VentanaNJugadores extends JPanel {
 				if (numVecesRegistrado < (int) spnJugs.getValue()) { // numVecesRegistrado < (int) spnJugs.getValue()
 					JOptionPane.showMessageDialog(null, "Todavía faltan " + 
 				(((int) spnJugs.getValue()) - numVecesRegistrado) + " jugadores por registrarse", "Error en login/registro", JOptionPane.ERROR_MESSAGE );
+					//bd.cogerJugs(VentanaNJugadores.this);
 				}
 				
 				else {

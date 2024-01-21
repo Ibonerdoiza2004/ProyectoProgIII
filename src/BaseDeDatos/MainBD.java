@@ -60,7 +60,7 @@ public class MainBD {
 	private static int num_partidas_mes;
 	private static VentanaNJugadores vn;
 	private int numJugsPartida = 0;
-	private ArrayList<String> jugsPartida;
+	private ArrayList<String> jugsPartida = new ArrayList<String>();
 	public static Partida partida;
 
 	public static void main(String[] args) {
@@ -580,18 +580,23 @@ public class MainBD {
 		//Leer los jugadores de la base de datos y quedarte con estos últimos:
 		ArrayList<String> arr = new ArrayList<String>();
 		int numJugs = verNumJugsRegistrado();
+		//System.out.println(numJugs + " y " + numJugsPartida);
 		//System.out.println(numJugs - numJugsPartida);
 		try {
 			rs = statement.executeQuery("SELECT * FROM jugador;");
 			while (rs.next()) {
 				String id = rs.getString(1);
 				int numId = Integer.parseInt(id.substring(1)); //Coger la parte numérica del id 
-				if (numId > (numJugs - numJugsPartida)) {
+				//System.out.println(numId);
+				if (numId > (numJugs - numJugsPartida)) { //>=
 					arr.add(id);
 				}
 			}
 			System.out.println(arr); //Ya tengo los ids de los jugadores de esta partida
-			jugsPartida = new ArrayList<String>(arr);
+			//jugsPartida = new ArrayList<String>(arr);
+			for (String s: arr) {
+				jugsPartida.add(s);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -613,8 +618,19 @@ public class MainBD {
 		}
 	}
 	
+	//Quitar jugadores al cambiar el spinner:
+	public void eliminarJugadores() {
+		String sent = "DELETE FROM jugador WHERE PERSONAJE_ASIGNADO IS NULL";
+		try {
+			statement.executeUpdate(sent);
+			partida.getJugadoresPartida().clear();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Integer verNumJugsRegistrado() {
-		int numJugs = 0;
+		int numJugs = 0; //MIRAR ESTO 
 		try {
 			rs = statement.executeQuery("SELECT * FROM jugador");
 			while (rs.next()){
