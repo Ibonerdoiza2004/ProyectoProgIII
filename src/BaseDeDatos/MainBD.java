@@ -55,18 +55,20 @@ public class MainBD {
 	private static JButton btnJugador = new JButton("Tabla Jugador");
 	private static JButton btnParticipa = new JButton("Tabla de realción Participa");
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-	private static final LocalDate currentMonth = LocalDate.of(2024, 01, 01);
+	private static final LocalDate currentMonth = LocalDate.of(2023, 12, 01);
 	private static ConexionSQlite conexion;
 	private static int num_partidas_mes;
 	private static VentanaNJugadores vn;
 	private int numJugsPartida = 0;
 	private ArrayList<String> jugsPartida;
+	public static Partida partida;
 
 	public static void main(String[] args) {
 		
 	}
 	
 	public void iniciarBD() {
+		partida = new Partida();
 		conexion = new ConexionSQlite();
 		
 		try {
@@ -127,8 +129,6 @@ public class MainBD {
                     + "FOREIGN KEY (ID_PARTIDA) REFERENCES PARTIDA(ID_PARTIDA)"
                     + ")";
             statement.executeUpdate(crearTablaRelacion);
-            //PUEDO CREAR UN MAPA PARA ASOCIAR JUGADRO-PARTIDA-FECHA CON UN MISMO COLOR EN LAS FILAS DE SUS TABLAS
-			//HACER LOGIN Y REGISTRO PARA JUGADORES. SI YA ESTÁN EN LA BD, YA TIENEN SU ID DE JUGADOR, SI NO,SE LES DA EL SIGUIENTE ID QUE SERÁ J+EL INT STATIC
             
 			//Datos para tabla Estadísticas
 			int i = 0;
@@ -182,7 +182,8 @@ public class MainBD {
 				String id_partida = "P"+(i+1);
 				//String fechaAleatoria = "2023-11-13";
 				//LocalDate fechaAleatoria = LocalDate.of(2023, 11, r.nextInt(29) + 1);
-				String fechaFormateada = fechaInicial.minusMonths(1).toString();
+				//String fechaFormateada = fechaInicial.minusMonths(1).toString();
+				String fechaFormateada = formatter.format(currentMonth);
 		        int duracion_p = r.nextInt(3)+1;
 		        String ganador = valores[r.nextInt(valores.length-1)+1].name();
 		        int numJugadores = r.nextInt(6)+1; //Atributo a utilizar
@@ -470,7 +471,7 @@ public class MainBD {
 //					null + ", " + 0 + ")";
 			String sent = "INSERT INTO jugador VALUES (" +
 			"'J" + NumJugadoresRegistrados + "', " +
-			"'" + jugador.getNick() + "', " + "' holaaaa ', ' noooooooo ', " + 0 + ")"; //Esto cambiarlo 
+			"'" + jugador.getNick() + "', " + " NULL , NULL , " + 0 + ")"; //Esto cambiarlo 
 			statement.executeUpdate(sent);
 			return true;
 		} catch (SQLException e) {
@@ -482,7 +483,7 @@ public class MainBD {
 	
 	public boolean anyadirRelacion(String idJugador, String idPartida, String fecha) {
 		try {
-			String sent = "INSERT INTO participa (" +
+			String sent = "INSERT INTO participa VALUES (" +
 					"'" + idJugador + "', " + "'" + idPartida + "', '" + fecha + "')";
 			statement.executeUpdate(sent);
 			return true;
@@ -494,21 +495,27 @@ public class MainBD {
 	
 	public boolean anyadirPartida(Partida p) {
 		try {
-			rs = statement.executeQuery("SELECT * FROM partida");
+			numPartidaMes = 1;
+			rs = statement.executeQuery("SELECT * FROM partida"); //Where fecha es = la de este mes
 			while (rs.next()) {
 				numPartidaMes ++;
 			}
 			//Añadir la partida:
-			String sent = "INSERT INTO partida VALUES ('"
-					+ p.getIdPartida() + "', '" + p.getFecha() + "', " +
-					p.getDuracion() + ", '" + null + "', " + p.getJugadoresPartida().size() + ")";
+			String sent = "INSERT INTO partida VALUES ('P" + numPartidaMes + "', '" + p.getFecha() + "', " +
+			        p.getDuracion() + ", NULL, " + p.getJugadoresPartida().size() + ")";
 			statement.executeUpdate(sent);
-			//Insertar los datos de los jugadores de la partida
-			for (Jugador j: p.getJugadoresPartida()) {
-				anyadirJugador(j); //Añado cada jugador
-				String idJ = "J" + NumJugadoresRegistrados;
-				anyadirRelacion(idJ, p.getIdPartida(), p.getFecha()); //Añado cada relación
+			partida.setIdPartida("P"+numPartidaMes);
+			//Y ahora meter los datos en la tabla relación:
+			for (int i = 0; i < partida.getJugadoresPartida().size(); i ++) {
+				anyadirRelacion(jugsPartida.get(i), partida.getIdPartida(), partida.getFecha());
 			}
+			
+			//Insertar los datos de los jugadores de la partida
+//			for (Jugador j: p.getJugadoresPartida()) {
+//				anyadirJugador(j); //Añado cada jugador
+//				String idJ = "J" + NumJugadoresRegistrados;
+//				anyadirRelacion(idJ, p.getIdPartida(), p.getFecha()); //Añado cada relación
+//			}
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -518,6 +525,7 @@ public class MainBD {
 	
 	//Métodos para comprobar si jugador está registrado depués de registrarse al iniciar la partida
 	public boolean registrarJugador(String nick, String pass) {
+		partida.getJugadoresPartida().add(new Jugador(nick, pass));
 		return registrarJugador(new Jugador(nick, pass));
 	}
 	

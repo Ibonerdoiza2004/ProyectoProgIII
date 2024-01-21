@@ -994,9 +994,12 @@ public class VentanaSeleccionPersonaje extends JPanel{
 					}
 				}
 			} else if (cont > jugadores + 1) {
-				//Empezar partida
+				//Empezar partida y añadir los datos de la partida a la BD
 				eliminarPanel();
 				Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
+				
+				bd.anyadirPartida(bd.partida);
+				
 				new VentanaAsignarTurnos();
 			}
 		}

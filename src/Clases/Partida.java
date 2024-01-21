@@ -57,7 +57,8 @@ public class Partida {
 		YearMonth ym = YearMonth.now();
 		DateTimeFormatter formatoAnyoMes = DateTimeFormatter.ofPattern("yyyy-MM");
 		fecha = ym.format(formatoAnyoMes);
-		
+		numJugadores = 0;
+		duracion = 0;
 	}
 	
 	public Partida(int numPartida, int numJugadores) {
