@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -26,7 +27,7 @@ public class Gestion {
 
 	//Atributos
 	protected static Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
-	private static int numTurno = 0;
+	protected static int numTurno = 0;
 	protected static ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
 	 //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.s
 	protected static int numFilas = 25;
@@ -41,6 +42,7 @@ public class Gestion {
 	protected static Thread tMusica;
 	protected static AtomicBoolean dejarDeSonar = new AtomicBoolean();
 	protected static Player player;
+	protected static JPanel siguientePanel;
 	static JDesktopPane dPane;
 	public static int getNumTurno() {
 		return numTurno;

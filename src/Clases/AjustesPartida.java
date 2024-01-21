@@ -6,11 +6,15 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameAdapter;
@@ -130,13 +134,29 @@ public class AjustesPartida extends JInternalFrame{
 		});
 		
 		guardar.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Falta el metodo
-				
-			}
-			
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        String nombreArchivo = JOptionPane.showInputDialog("Por favor, introduce el nombre del archivo:");
+		        if (nombreArchivo != null) {
+		            try {
+		                FileOutputStream fileOut = new FileOutputStream(nombreArchivo + ".dat");
+		                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		                out.writeInt(Gestion.numTurno);
+		                out.writeObject(Gestion.jugadores);
+		                out.writeObject(Gestion.acusacion);
+		                out.writeObject(Gestion.cartasEnsenyadas);
+		                out.writeObject(Gestion.datosPartida);
+		                out.writeObject(Gestion.siguientePanel);
+		                out.close();
+		                fileOut.close();
+		                System.out.printf("Los datos se han guardado en %s.dat", nombreArchivo);
+		            } catch (IOException i) {
+		                i.printStackTrace();
+		            }
+		        } else {
+		            System.out.println("No se introdujo ningún nombre de archivo.");
+		        }
+		    }
 		});
 		
 		

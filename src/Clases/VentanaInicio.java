@@ -8,13 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -92,6 +97,36 @@ public class VentanaInicio extends JPanel{
 		        new VentanaNJugadores(bd);
 		        eliminarPanel();
 			}
+		});
+		
+		
+		cargarLocal.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        String nombreArchivo = JOptionPane.showInputDialog("Por favor, introduce el nombre del archivo:");
+		        if (nombreArchivo != null) {
+		            try {
+		                FileInputStream fileIn = new FileInputStream(nombreArchivo + ".dat");
+		                ObjectInputStream in = new ObjectInputStream(fileIn);
+		                Gestion.numTurno = in.readInt();
+		                Gestion.jugadores = (ArrayList<Jugador>) in.readObject();
+		                Gestion.acusacion = (ArrayList<Asesinato>) in.readObject();
+		                Gestion.cartasEnsenyadas = (HashMap<Asesinato, Jugador>) in.readObject();
+		                //Gestion.acusacion  = (Contenedor) in.readObject();
+		                Gestion.siguientePanel = (JPanel) in.readObject();
+		                in.close();
+		                fileIn.close();
+		                System.out.printf("Los datos se han cargado desde %s.dat", nombreArchivo);
+		            } catch (IOException i) {
+		                i.printStackTrace();
+		            } catch (ClassNotFoundException c) {
+		                System.out.println("No se encontró la clase.");
+		                c.printStackTrace();
+		            }
+		        } else {
+		            System.out.println("No se introdujo ningún nombre de archivo.");
+		        }
+		    }
 		});
 		
 		cerrar.addActionListener(new ActionListener() {
