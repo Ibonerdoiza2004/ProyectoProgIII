@@ -20,7 +20,7 @@ public class VentanaVerCartas extends JPanel{
 	protected JButton continuar;
 	
 	public VentanaVerCartas() {
-		
+		setVisible(false);
 		this.setLayout(new GridLayout(1,2));
 		setSize(Gestion.sizePantalla);
 		
@@ -85,16 +85,7 @@ public class VentanaVerCartas extends JPanel{
 						Gestion.aumentarTurno();
 						new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 						eliminarPanel();
-						String lockSiguienteVentana = "siguienteVentana";
-						synchronized (lockSiguienteVentana) {
-							try {
-								lockSiguienteVentana.wait();
-							} catch (InterruptedException ex) {
-								ex.printStackTrace();
-							}
-						}
-						new VentanaTablero();
-						eliminarPanel();
+						VentanaTablero v = new VentanaTablero();
 					}
 				});
 				t.start();

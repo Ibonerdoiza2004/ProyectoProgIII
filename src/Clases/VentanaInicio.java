@@ -8,12 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +20,6 @@ import javax.swing.SwingConstants;
 
 import BaseDeDatos.MainBD;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 
 
 public class VentanaInicio extends JPanel{
@@ -33,7 +31,7 @@ public class VentanaInicio extends JPanel{
 	protected JButton cargarLocal;
 	protected JButton opciones;
 	protected JButton cerrar;
-	
+	VentanaAjustes v;
 	
 	
 	
@@ -145,9 +143,12 @@ public class VentanaInicio extends JPanel{
 		Gestion.ventanaJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Gestion.ventanaJuego.setSize(Gestion.sizePantalla);
 		this.setSize(Gestion.sizePantalla);
+		JDesktopPane desktopPane = new JDesktopPane();
+        Gestion.ventanaJuego.setContentPane(desktopPane);
 		Gestion.ventanaJuego.add(this);
 		Gestion.ventanaJuego.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		Gestion.ventanaJuego.setUndecorated(true);
+		
 		Gestion.ventanaJuego.setVisible(true);
 		
 		Font defaultFont = nuevaOnline.getFont();

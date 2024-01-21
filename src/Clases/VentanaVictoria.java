@@ -1,6 +1,8 @@
 package Clases;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -22,7 +24,12 @@ public class VentanaVictoria extends JPanel{
 		btnVolverAlMenu = new JButton("Volver al menú");
 		btnVolverAlMenu.setPreferredSize(new Dimension(220,80));
 		btnVolverAlMenu.setSize(new Dimension(220,80));
-		
+		JLabel l = new JLabel(Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase()+" HA GANADO");
+		l.setHorizontalAlignment(JLabel.CENTER);
+		l.setForeground(Color.WHITE);
+		l.setFont(new Font("Serif", Font.BOLD, 60));
+		l.setBounds((int)(Gestion.sizePantalla.getWidth()/2-400),20,800,80);
+		add(l);
       
         this.add(btnVolverAlMenu);
         this.setLayout(null);

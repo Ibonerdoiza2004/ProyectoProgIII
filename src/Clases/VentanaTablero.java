@@ -414,28 +414,9 @@ public class VentanaTablero extends JPanel{
 				e.printStackTrace();
 			}
 			
-			
-			
-			
-			
-			
-			
-			
 //			Lógica mover
 			
 			ArrayList<Integer>casillaMasCercanaAPuerta = Gestion.logicaMover(jugador, movimientos);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-				
 			
 			filaSeleccionada=casillaMasCercanaAPuerta.get(0);
 			columnaSeleccionada=casillaMasCercanaAPuerta.get(1);
@@ -607,15 +588,16 @@ public class VentanaTablero extends JPanel{
 					Gestion.aumentarTurno();
 					new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 					eliminarPanel();
-					String lockSiguienteVentana = "siguienteVentana";
-					synchronized (lockSiguienteVentana) {
+					VentanaTablero v = new VentanaTablero();
+					String lockAnyadirALaVentana = "AnyadirALaVentana";
+					synchronized (lockAnyadirALaVentana) {
 						try {
-							lockSiguienteVentana.wait();
+							lockAnyadirALaVentana.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
-					new VentanaTablero();
+					v.setVisible(true);
 				}else {
 					if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])!=11){
 						Gestion.cartasEnsenyadas.clear();
@@ -643,32 +625,27 @@ public class VentanaTablero extends JPanel{
 							if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
 								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
+								VentanaDarCarta v = new VentanaDarCarta(jug);
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
 									try {
-										lockSiguienteVentana.wait();
+										lockAnyadirALaVentana.wait();
 									} catch (InterruptedException e) {
 										e.printStackTrace();
 									}
 								}
-								new VentanaDarCarta(jug);
+								v.setVisible(true);
+								
 							}else {
 								Gestion.logicaMarcarLista(Gestion.jugadores.get(Gestion.getNumTurno()));
 								Gestion.aumentarTurno();
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
-									try {
-										lockSiguienteVentana.wait();
-									} catch (InterruptedException e) {
-										e.printStackTrace();
-									}
-								}
-								new VentanaTablero();
+								VentanaTablero v = new VentanaTablero();
 							}
 						}else {
-							new VentanaAcusacion();
+							VentanaAcusacion v=new VentanaAcusacion();
+							v.setVisible(true);
 							eliminarPanel();
 						}
 					}else {
@@ -687,15 +664,16 @@ public class VentanaTablero extends JPanel{
 						}else {
 							new VentanaTexto("ACUSACIÓN FINAL DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 							eliminarPanel();
-							String lockSiguienteVentana = "siguienteVentana";
-							synchronized (lockSiguienteVentana) {
+							VentanaAcusacion v=new VentanaAcusacion();
+							String lockAnyadirALaVentana = "AnyadirALaVentana";
+							synchronized (lockAnyadirALaVentana) {
 								try {
-									lockSiguienteVentana.wait();
+									lockAnyadirALaVentana.wait();
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
 							}
-							new VentanaAcusacion();
+							v.setVisible(true);
 						}
 					}
 					

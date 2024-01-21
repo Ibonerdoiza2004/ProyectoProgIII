@@ -2,22 +2,17 @@ package Clases;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import javazoom.jl.decoder.JavaLayerException;
-
-public class AjustesPartida extends JFrame{
+public class AjustesPartida extends JInternalFrame{
 	private JLabel lblAjustes;
 	private JButton guardar;
 	private JButton btnMusica;
@@ -27,11 +22,12 @@ public class AjustesPartida extends JFrame{
 	public AjustesPartida() {
 		
 		
-		
+		setTitle("Ventana de ajustes");
+		setClosable(true);
 		this.setSize((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
-		
+		this.setLocation((int)Gestion.sizePantalla.getWidth()/2 - this.getWidth()/2, (int)Gestion.sizePantalla.getHeight()/2 - this.getHeight()/2);
 		this.setLayout(null);
-		
+		Gestion.ventanaJuego.add(this);
 		lblAjustes = new JLabel("AJUSTES");
 		lblAjustes.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*1/9, (int) this.getWidth()*1/3, (int) this.getHeight()*1/9);
 		Font totFont = lblAjustes.getFont();
@@ -112,9 +108,7 @@ public class AjustesPartida extends JFrame{
 		
 		this.setLocation((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
         this.setResizable(false);
-		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setUndecorated(true);
 		this.setVisible(true);
 		
 		
@@ -144,13 +138,22 @@ public class AjustesPartida extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Gestion.dejarDeSonar.get() == true) {
+					Gestion.tMusica = new Thread(new Runnable() {
+						@Override
+							public void run() {
+								Gestion.sonar();
+									
+							}
+					});
+			    	Gestion.tMusica.start();
+					btnMusica.setText("Parar música");
 					Gestion.dejarDeSonar.set(false);
-					btnMusica.setText("Reproducir Música");
-					Gestion.player.close();
 				} else {
 					Gestion.dejarDeSonar.set(true);
-					btnMusica.setText("Parar Música");
-					Gestion.tMusica.start();
+					Gestion.player.close();
+					Gestion.tMusica.interrupt();
+					btnMusica.setText("Reproducir música");
+					
 					
 				}
 			}

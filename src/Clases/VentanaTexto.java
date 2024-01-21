@@ -96,10 +96,7 @@ public class VentanaTexto extends JPanel{
 						e.printStackTrace();
 					}
 				}
-				String lockSiguienteVentana = "siguienteVentana";
-				synchronized (lockSiguienteVentana) {
-					lockSiguienteVentana.notifyAll();
-				}try {
+				try {
 					Thread.sleep(800);
 				} catch (InterruptedException e) {
 					e.printStackTrace();

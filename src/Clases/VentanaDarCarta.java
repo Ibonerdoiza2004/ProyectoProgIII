@@ -39,7 +39,7 @@ public class VentanaDarCarta extends JPanel{
 	int numeroJugador;
 	private ImageIcon recuadroCarta = null;
 	public VentanaDarCarta(int numJugador) {
-		
+		setVisible(false);
 		numeroJugador = numJugador;
 		setLayout(new GridLayout(2,1));
 		setOpaque(false);
@@ -199,42 +199,36 @@ public class VentanaDarCarta extends JPanel{
 							if(Gestion.jugadores.get(numeroJugador)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
 								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
+								VentanaDarCarta v = new VentanaDarCarta(numeroJugador);
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
 									try {
-										lockSiguienteVentana.wait();
-									} catch (InterruptedException ex) {
-										ex.printStackTrace();
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
 									}
 								}
-								new VentanaDarCarta(numeroJugador);
+								v.setVisible(true);
 							}else {
 								if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
 									Gestion.logicaMarcarLista(Gestion.jugadores.get(Gestion.getNumTurno()));
 									Gestion.aumentarTurno();
 									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 									eliminarPanel();
-									String lockSiguienteVentana = "siguienteVentana";
-									synchronized (lockSiguienteVentana) {
-										try {
-											lockSiguienteVentana.wait();
-										} catch (InterruptedException ex) {
-											ex.printStackTrace();
-										}
-									}
-									new VentanaTablero();
+									VentanaTablero v = new VentanaTablero();
 								}else {
 									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 									eliminarPanel();
-									String lockSiguienteVentana = "siguienteVentana";
-									synchronized (lockSiguienteVentana) {
+									VentanaVerCartas v = new VentanaVerCartas();
+									String lockAnyadirALaVentana = "AnyadirALaVentana";
+									synchronized (lockAnyadirALaVentana) {
 										try {
-											lockSiguienteVentana.wait();
-										} catch (InterruptedException ex) {
-											ex.printStackTrace();
+											lockAnyadirALaVentana.wait();
+										} catch (InterruptedException e) {
+											e.printStackTrace();
 										}
 									}
-									new VentanaVerCartas();
+									v.setVisible(true);
 								}
 								
 							}

@@ -253,29 +253,21 @@ public class VentanaAsignarTurnos extends JPanel{
 			if(Gestion.jugadores.get((numeroJugador+1)%Gestion.jugadores.size())!=Gestion.jugadores.get(Gestion.getNumTurno())) {
 				new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
 				eliminarPanel();
-				VentanaCartasInicio v =new VentanaCartasInicio(numeroJugador);
+				VentanaCartasInicio v = new VentanaCartasInicio(numeroJugador);
 				v.setVisible(false);
-				String lockSiguienteVentana = "siguienteVentana";
-				synchronized (lockSiguienteVentana) {
+				String lockAnyadirALaVentana = "AnyadirALaVentana";
+				synchronized (lockAnyadirALaVentana) {
 					try {
-						lockSiguienteVentana.wait();
-					} catch (InterruptedException ex) {
-						ex.printStackTrace();
+						lockAnyadirALaVentana.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 				v.setVisible(true);
 			}else {
 				new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 				eliminarPanel();
-				String lockSiguienteVentana = "siguienteVentana";
-				synchronized (lockSiguienteVentana) {
-					try {
-						lockSiguienteVentana.wait();
-					} catch (InterruptedException ex) {
-						ex.printStackTrace();
-					}
-				}
-				new VentanaTablero();
+				VentanaTablero v = new VentanaTablero();
 			}
 		}
 	}

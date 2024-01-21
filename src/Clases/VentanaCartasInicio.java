@@ -23,7 +23,7 @@ public class VentanaCartasInicio extends JPanel{
 	private ImageIcon recuadroCarta = null;
 	
 	public VentanaCartasInicio(int numJugador) {
-		
+		setVisible(false);
 		Gestion.ventanaJuego.add(this);
 		numeroJugador = numJugador;
 		setLayout(null);
@@ -129,27 +129,19 @@ public class VentanaCartasInicio extends JPanel{
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
 								eliminarPanel();
 								VentanaCartasInicio v = new VentanaCartasInicio(numeroJugador);
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
 									try {
-										lockSiguienteVentana.wait();
-									} catch (InterruptedException ex) {
-										ex.printStackTrace();
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
 									}
 								}
 								v.setVisible(true);
 							}else {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
-									try {
-										lockSiguienteVentana.wait();
-									} catch (InterruptedException ex) {
-										ex.printStackTrace();
-									}
-								}
-								new VentanaTablero();
+								VentanaTablero v = new VentanaTablero();
 							}
 						}
 					});

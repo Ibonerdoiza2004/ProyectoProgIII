@@ -66,7 +66,7 @@ public class VentanaAcusacion extends JPanel{
 	
 
 	public VentanaAcusacion() {
-		
+		setVisible(false);
 		setSize(Gestion.sizePantalla);
 		setLayout(null);
 		anchoCarta = altoCarta*Gestion.datosPartida.armas.get(0).getFoto().getIconWidth()/Gestion.datosPartida.armas.get(0).getFoto().getIconHeight();
@@ -80,21 +80,21 @@ public class VentanaAcusacion extends JPanel{
 		lblSospechoso.setOpaque(false);
 		lblSospechoso.setFont(font);
 		pnlLabels.add(lblSospechoso);
-		pnlFotoSospechoso = new JPanel();
+		pnlFotoSospechoso = new JPanel(null);
 		pnlFotoSospechoso.setBorder(border);
 		pnlFotos.add(pnlFotoSospechoso);
 		lblArma = new JLabel("Arma", SwingConstants.CENTER);
 		lblArma.setFont(font);
 		lblArma.setOpaque(false);
 		pnlLabels.add(lblArma);
-		pnlFotoArma = new JPanel();
+		pnlFotoArma = new JPanel(null);
 		pnlFotoArma.setBorder(border);
 		pnlFotos.add(pnlFotoArma);
 		lblLugar = new JLabel("Lugar", SwingConstants.CENTER);
 		lblLugar.setFont(font);
 		lblLugar.setOpaque(false);
 		pnlLabels.add(lblLugar);
-		pnlFotoLugar = new JPanel();
+		pnlFotoLugar = new JPanel(null);
 		pnlFotoLugar.setBorder(border);
 		pnlFotos.add(pnlFotoLugar);
        
@@ -154,8 +154,9 @@ public class VentanaAcusacion extends JPanel{
 				JLabel lblSel = new JLabel();
 		        ImageIcon imageIcon = new ImageIcon("src/cartasArmas/"+arma+".png");
 		        Image image = imageIcon.getImage();
-		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+		        Image newimg = image.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
 		        lblSel.setIcon(new ImageIcon(newimg));
+		        lblSel.setBounds(2,2,anchoCarta-4,altoCarta-4);
 		        pnlFotoArma.removeAll();
 		        pnlFotoArma.add(lblSel,BorderLayout.CENTER);
 		        Gestion.ventanaJuego.repaint();
@@ -173,8 +174,9 @@ public class VentanaAcusacion extends JPanel{
 				JLabel lblSel = new JLabel();
 				ImageIcon imageIcon = new ImageIcon("src/cartasSospechosos/"+sospechoso+".png");
 		        Image image = imageIcon.getImage();
-		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+		        Image newimg = image.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
 		        lblSel.setIcon(new ImageIcon(newimg));
+		        lblSel.setBounds(2,2,anchoCarta-4,altoCarta-4);
 		        pnlFotoSospechoso.removeAll();
 		        pnlFotoSospechoso.add(lblSel, BorderLayout.CENTER);
 		        Gestion.ventanaJuego.repaint();
@@ -191,8 +193,9 @@ public class VentanaAcusacion extends JPanel{
 				JLabel lblSel = new JLabel();
 				ImageIcon imageIcon = new ImageIcon("src/cartasLugares/"+sitio+".png");
 		        Image image = imageIcon.getImage();
-		        Image newimg = image.getScaledInstance(pnlFotoLugar.getWidth()-10, pnlFotoLugar.getHeight(),  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+		        Image newimg = image.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
 		        lblSel.setIcon(new ImageIcon(newimg));
+		        lblSel.setBounds(2,2,anchoCarta-4,altoCarta-4);
 		        pnlFotoLugar.removeAll();
 		        pnlFotoLugar.add(lblSel, BorderLayout.CENTER);
 		        Gestion.ventanaJuego.repaint();
@@ -200,19 +203,70 @@ public class VentanaAcusacion extends JPanel{
 				
 			}
 		});
-		
+		Armas arma =(Armas) cbArma.getSelectedItem();
+		for (Arma a:Gestion.datosPartida.armas) {
+			if (a.nombreArma.equals(arma)) {
+				armaElegida = a;
+			}
+		}
+		ImageIcon imageIconArma = armaElegida.getFoto();
+        Image imageArma = imageIconArma.getImage();
+        Image newimgArma = imageArma.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        JLabel lblArmaSel = new JLabel();
+        lblArmaSel.setIcon(new ImageIcon(newimgArma));
+        lblArmaSel.setBounds(2,2,anchoCarta-4,altoCarta-4);
+        pnlFotoArma.add(lblArmaSel);
+        
+        Sospechosos sospechoso =(Sospechosos) cbSospechoso.getSelectedItem();
+		for (Sospechoso s:Gestion.datosPartida.sospechosos) {
+			if (s.nombre.equals(sospechoso)) {
+				sospechosoElegido = s;
+			}
+		}
+		ImageIcon imageIconSospechoso = sospechosoElegido.getFoto();
+        Image imageSospechoso = imageIconSospechoso.getImage();
+        Image newimgSospechoso = imageSospechoso.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+        JLabel lblSospechosoSel = new JLabel();
+        lblSospechosoSel.setIcon(new ImageIcon(newimgSospechoso));
+        lblSospechosoSel.setBounds(2,2,anchoCarta-4,altoCarta-4);
+        pnlFotoSospechoso.add(lblSospechosoSel);
 		//Primero añadir estos combos
 		pnlCombo.add(cbSospechoso);
 		pnlCombo.add(cbArma);
-		
+		JLabel lblHabitacionSel =new JLabel();
+        lblHabitacionSel.setBounds(2,2,anchoCarta-4,altoCarta-4);
 		//Llamar al método para decidir que componente poner
 		if (devuelveComp() instanceof JLabel) {
-			lblPorHabitacion = (JLabel) devuelveComp();
-			pnlCombo.add(lblPorHabitacion);
+			int[] posicionJugador = Gestion.jugadores.get(Gestion.getNumTurno()).posicion;
+			int posibleHabitacion = Gestion.tablero.get(posicionJugador[0]).get(posicionJugador[1]);
+			Sitio habitacion = Gestion.datosPartida.lugares.get(posibleHabitacion-2).getNombre();
+			for (Lugar l:Gestion.datosPartida.lugares) {
+				if (l.getNombre().equals(habitacion)) {
+					lugarElegido = l;
+				}
+			}
+			ImageIcon imageIcon = lugarElegido.getFoto();
+	        Image image = imageIcon.getImage();
+	        Image newimg = image.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+	        lblHabitacionSel.setIcon(new ImageIcon(newimg));
+	        lblPorHabitacion = (JLabel) devuelveComp();
+	        pnlCombo.add(lblPorHabitacion);
 		} else {
 			cbLugar = (JComboBox<Sitio>) devuelveComp();
+			Sitio habitacion =(Sitio) cbLugar.getSelectedItem();
+			for (Lugar l:Gestion.datosPartida.lugares) {
+				if (l.getNombre().equals(habitacion)) {
+					lugarElegido = l;
+					System.out.println("Habitacion "+l);
+				}
+			}
+			ImageIcon imageIcon = lugarElegido.getFoto();
+	        Image image = imageIcon.getImage();
+	        Image newimg = image.getScaledInstance(anchoCarta-4,altoCarta-4,  java.awt.Image.SCALE_SMOOTH); // redimensiona la imagen
+	        lblHabitacionSel.setIcon(new ImageIcon(newimg));
 			pnlCombo.add(cbLugar);
 		}
+		pnlFotoLugar.add(lblHabitacionSel);
 		pnlCombo.setBounds(anchoCarta/4, 0, (int)Gestion.sizePantalla.getWidth()/2-2*anchoCarta-200, (int)Gestion.sizePantalla.getHeight());
 		this.add(pnlCombo);
 		pnlLabels.setBounds((int)Gestion.sizePantalla.getWidth()/2-3*anchoCarta/2-200, 0, 200, (int)Gestion.sizePantalla.getHeight());
@@ -252,7 +306,6 @@ public class VentanaAcusacion extends JPanel{
 							for (Lugar l:Gestion.datosPartida.lugares) {
 								if (l.getNombre().equals(habitacion)) {
 									lugarElegido = l;
-									System.out.println("Habitacion "+l);
 								}
 							}
 
@@ -274,27 +327,29 @@ public class VentanaAcusacion extends JPanel{
 							if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
 								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
+								VentanaDarCarta v = new VentanaDarCarta(jug);
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
 									try {
-										lockSiguienteVentana.wait();
+										lockAnyadirALaVentana.wait();
 									} catch (InterruptedException e) {
 										e.printStackTrace();
 									}
 								}
-								new VentanaDarCarta(jug);
+								v.setVisible(true);
 							}else {
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
+								VentanaVerCartas v = new VentanaVerCartas();
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
 									try {
-										lockSiguienteVentana.wait();
-									} catch (InterruptedException ex) {
-										ex.printStackTrace();
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException e) {
+										e.printStackTrace();
 									}
 								}
-								new VentanaVerCartas();
+								v.setVisible(true);
 							}
 							
 						}else {

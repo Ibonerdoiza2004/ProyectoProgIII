@@ -1,10 +1,9 @@
 package Clases;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -27,7 +25,9 @@ public class VentanaDerrota extends JPanel{
 		btnContinuar.setSize(new Dimension(220,80));
 		JLabel l = new JLabel(Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase()+" HA PERDIDO");
 		l.setHorizontalAlignment(JLabel.CENTER);
-		l.setBounds((int)(Gestion.sizePantalla.getWidth()/2-200),20,400,80);
+		l.setForeground(Color.WHITE);
+		l.setFont(new Font("Serif", Font.BOLD, 60));
+		l.setBounds((int)(Gestion.sizePantalla.getWidth()/2-400),20,800,80);
 		ArrayList<Asesinato>cartasPerdedor = new ArrayList<>(Gestion.jugadores.get(Gestion.getNumTurno()).cartas);
 		Gestion.jugadores.remove(Gestion.getNumTurno());
 		Gestion.repartirCartas(cartasPerdedor);
@@ -58,17 +58,29 @@ public class VentanaDerrota extends JPanel{
 							eliminarPanel();
 						}else {
 							if(quedaJugador) {
-								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
-								eliminarPanel();
-								String lockSiguienteVentana = "siguienteVentana";
-								synchronized (lockSiguienteVentana) {
-									try {
-										lockSiguienteVentana.wait();
-									} catch (InterruptedException e) {
-										e.printStackTrace();
-									}
+								int numeroJugador=Gestion.getNumTurno();
+								while(Gestion.jugadores.get(numeroJugador).npc&&(numeroJugador+1)%Gestion.jugadores.size()!=Gestion.getNumTurno()) {
+									numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
 								}
-								new VentanaTablero();
+								if(Gestion.jugadores.get((numeroJugador+1)%Gestion.jugadores.size())!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
+									eliminarPanel();
+									VentanaCartasInicio v = new VentanaCartasInicio(numeroJugador);
+									v.setVisible(false);
+									String lockAnyadirALaVentana = "AnyadirALaVentana";
+									synchronized (lockAnyadirALaVentana) {
+										try {
+											lockAnyadirALaVentana.wait();
+										} catch (InterruptedException e) {
+											e.printStackTrace();
+										}
+									}
+									v.setVisible(true);
+								}else {
+									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
+									eliminarPanel();
+									VentanaTablero v = new VentanaTablero();
+								}
 							}else {
 								new VentanaTexto("Solo quedan npcs",0);
 								eliminarPanel();

@@ -1,24 +1,33 @@
 package Clases;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import javazoom.jl.decoder.JavaLayerException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
-public class VentanaAjustes extends JFrame {
+public class VentanaAjustes extends JInternalFrame {
 	
 	private JLabel lblAjustes;
 	private JButton btnMusica;
 	private JButton btnCerrar;
 	
 	public VentanaAjustes() {
-		
-		this.setSize((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
-		
+		setTitle("Ventana de ajustes");
+		setClosable(true);
+		setSize((int)Gestion.sizePantalla.getWidth()/3, (int) Gestion.sizePantalla.getHeight()*1/3);
+		setFocusable(false);
+		Gestion.ventanaJuego.add(this);
 		this.setLayout(null);
-		
+		this.setLocation((int)Gestion.sizePantalla.getWidth()/2 - this.getWidth()/2, (int)Gestion.sizePantalla.getHeight()/2 - this.getHeight()/2);
 		lblAjustes = new JLabel("AJUSTES");
 		lblAjustes.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*1/7, (int) this.getWidth()*1/3, (int) this.getHeight()*1/7);
 		Font totFont = lblAjustes.getFont();
@@ -91,11 +100,8 @@ public class VentanaAjustes extends JFrame {
 		
 		this.setLocation((int) Gestion.sizePantalla.getWidth()*1/3, (int) Gestion.sizePantalla.getHeight()*1/3);
         this.setResizable(false);
-		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.setUndecorated(true);
 		this.setVisible(true);
-		
 		
 		
 		btnCerrar.addActionListener(new ActionListener() {
