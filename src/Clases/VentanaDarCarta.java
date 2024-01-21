@@ -197,6 +197,7 @@ public class VentanaDarCarta extends JPanel{
 								numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
 							}
 							if(Gestion.jugadores.get(numeroJugador)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+								Gestion.siguientePanel=VentanaDarCarta.class;
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
 								eliminarPanel();
 								VentanaDarCarta v = new VentanaDarCarta(numeroJugador);
@@ -213,10 +214,12 @@ public class VentanaDarCarta extends JPanel{
 								if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
 									Gestion.logicaMarcarLista(Gestion.jugadores.get(Gestion.getNumTurno()));
 									Gestion.aumentarTurno();
+									Gestion.siguientePanel=VentanaTablero.class;
 									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 									eliminarPanel();
 									VentanaTablero v = new VentanaTablero();
 								}else {
+									Gestion.siguientePanel=VentanaVerCartas.class;
 									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 									eliminarPanel();
 									VentanaVerCartas v = new VentanaVerCartas();

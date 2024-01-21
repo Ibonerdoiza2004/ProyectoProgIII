@@ -245,7 +245,4 @@ public class VentanaInicio extends JPanel{
 		Gestion.ventanaJuego.remove(this);
         Gestion.ventanaJuego.repaint();
 	}
-	public void deshabilitarBotones() {
-		
-	}
 }

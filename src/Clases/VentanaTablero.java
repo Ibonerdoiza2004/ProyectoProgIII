@@ -62,10 +62,10 @@ public class VentanaTablero extends JPanel{
         Image flechaAbajo = iconFlechaAbajo.getImage();
 		int anchoSimbolos = flechaArriba.getWidth(null)*altoBoton/flechaArriba.getHeight(null);
 		int centroBotones = (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight())/2;        
-		coorXInicioTablero =(int) (2*Gestion.sizePantalla.getHeight())/36;
-		coorXFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/19);
-		coorYInicioTablero = (int) (Gestion.sizePantalla.getHeight())/27;
-		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight()-(Gestion.sizePantalla.getHeight())/29);
+		coorXInicioTablero =0;
+		coorXFinalTablero =(int)(Gestion.sizePantalla.getHeight());
+		coorYInicioTablero = (int)(Gestion.sizePantalla.getHeight())/(Gestion.numFilas+1);
+		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight());
 		anchoColumnaTablero = ((double)(-coorXInicioTablero+coorXFinalTablero))/(double)(Gestion.numColumnas);
 		altoFilaTablero = ((double)(-coorYInicioTablero+coorYFinalTablero))/((double)Gestion.numFilas);
 		//PanelIzquierda
@@ -73,7 +73,7 @@ public class VentanaTablero extends JPanel{
 				
 					@Override
 					protected void paintComponent(Graphics g) {
-						Image imagenTablero = (new ImageIcon(getClass().getResource("tablero.jpg"))).getImage();
+						Image imagenTablero = (new ImageIcon(getClass().getResource("tablero.png"))).getImage();
 						g.drawImage(imagenTablero, 0, 0, getWidth(), getHeight(), this);
 //						if (coordsFilas!=null) {
 //							System.out.println(coorYInicioTablero+" "+coorYFinalTablero);
@@ -586,18 +586,10 @@ public class VentanaTablero extends JPanel{
 				botonPlegar.setEnabled(false);
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){
 					Gestion.aumentarTurno();
+					Gestion.siguientePanel=VentanaTablero.class;
 					new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 					eliminarPanel();
 					VentanaTablero v = new VentanaTablero();
-					String lockAnyadirALaVentana = "AnyadirALaVentana";
-					synchronized (lockAnyadirALaVentana) {
-						try {
-							lockAnyadirALaVentana.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					v.setVisible(true);
 				}else {
 					if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])!=11){
 						Gestion.cartasEnsenyadas.clear();
@@ -623,6 +615,7 @@ public class VentanaTablero extends JPanel{
 								jug = (jug+1)%Gestion.jugadores.size();
 							}
 							if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+								Gestion.siguientePanel=VentanaDarCarta.class;
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
 								eliminarPanel();
 								VentanaDarCarta v = new VentanaDarCarta(jug);
@@ -639,6 +632,7 @@ public class VentanaTablero extends JPanel{
 							}else {
 								Gestion.logicaMarcarLista(Gestion.jugadores.get(Gestion.getNumTurno()));
 								Gestion.aumentarTurno();
+								Gestion.siguientePanel=VentanaTablero.class;
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
 								VentanaTablero v = new VentanaTablero();

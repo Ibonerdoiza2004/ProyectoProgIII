@@ -325,6 +325,7 @@ public class VentanaAcusacion extends JPanel{
 								jug = (jug+1)%Gestion.jugadores.size();
 							}
 							if(Gestion.jugadores.get(jug)!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+								Gestion.siguientePanel=VentanaDarCarta.class;
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(jug).getPersonaje().getNombre().toString().toUpperCase(),jug);
 								eliminarPanel();
 								VentanaDarCarta v = new VentanaDarCarta(jug);
@@ -338,6 +339,7 @@ public class VentanaAcusacion extends JPanel{
 								}
 								v.setVisible(true);
 							}else {
+								Gestion.siguientePanel=VentanaVerCartas.class;
 								new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 								eliminarPanel();
 								VentanaVerCartas v = new VentanaVerCartas();

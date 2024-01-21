@@ -72,17 +72,19 @@ public class VentanaVerCartas extends JPanel{
 		pnlIzquierda.add(carta3);
 		
 		continuar = new JButton("CONTINUAR");
-		continuar.setBounds(0, (int)(Gestion.sizePantalla.getHeight()*16/19) ,(int)Gestion.sizePantalla.getWidth()/2, (int)Gestion.sizePantalla.getHeight()*3/19);
+		continuar.setBounds(0, (int)(Gestion.sizePantalla.getHeight())-150 ,(int)Gestion.sizePantalla.getWidth()/2, 150);
 		pnlDerecha.add(continuar);
 		
 		continuar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				continuar.setEnabled(false);
 				Thread t = new Thread(new Runnable() {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
 						Gestion.aumentarTurno();
+						Gestion.siguientePanel=VentanaTablero.class;
 						new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 						eliminarPanel();
 						VentanaTablero v = new VentanaTablero();

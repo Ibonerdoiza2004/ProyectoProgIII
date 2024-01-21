@@ -63,6 +63,7 @@ public class VentanaDerrota extends JPanel{
 									numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
 								}
 								if(Gestion.jugadores.get((numeroJugador+1)%Gestion.jugadores.size())!=Gestion.jugadores.get(Gestion.getNumTurno())) {
+									Gestion.siguientePanel=VentanaCartasInicio.class;
 									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(numeroJugador).getPersonaje().getNombre().toString().toUpperCase(),numeroJugador);
 									eliminarPanel();
 									VentanaCartasInicio v = new VentanaCartasInicio(numeroJugador);
@@ -77,11 +78,13 @@ public class VentanaDerrota extends JPanel{
 									}
 									v.setVisible(true);
 								}else {
+									Gestion.siguientePanel=VentanaTablero.class;
 									new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 									eliminarPanel();
 									VentanaTablero v = new VentanaTablero();
 								}
 							}else {
+								Gestion.siguientePanel=VentanaInicio.class;
 								new VentanaTexto("Solo quedan npcs",0);
 								eliminarPanel();
 								String lockSiguienteVentana = "siguienteVentana";

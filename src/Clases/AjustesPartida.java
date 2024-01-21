@@ -59,6 +59,9 @@ public class AjustesPartida extends JInternalFrame{
 		
 		guardar = new JButton("Guardar");
 		guardar.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*5/9, (int) this.getWidth()*1/6, (int) this.getHeight()*1/9);
+		if(!Gestion.siguientePanel.equals(VentanaTablero.class)) {
+			guardar.setVisible(false);
+		}
 		this.add(guardar);
 		
 		btnCerrar = new JButton("Seguir");
@@ -159,7 +162,12 @@ public class AjustesPartida extends JInternalFrame{
 //		        else {
 //		            System.out.println("No se introdujo ningún nombre de archivo.");
 //		        }
-		    	DatosPartida dp = new DatosPartida(Gestion.numTurno, Gestion.jugadores, Gestion.acusacion, Gestion.cartasEnsenyadas, VentanaTablero.class);
+		    	String nombrePartida;
+		    	nombrePartida = JOptionPane.showInputDialog("Ingresa el nombre para guardar la partida:");
+		    	while(nombrePartida==null||nombrePartida.isBlank()) {
+		    		nombrePartida = JOptionPane.showInputDialog("Ingresa el nombre para guardar la partida:");
+		    	}
+		    	DatosPartida dp = new DatosPartida(Gestion.numTurno, Gestion.jugadores, Gestion.acusacion, Gestion.cartasEnsenyadas, VentanaTablero.class, nombrePartida);
 		    	datosP.guardarPartida(dp);
 		    }
 		});

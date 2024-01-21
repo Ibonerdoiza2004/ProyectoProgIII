@@ -43,15 +43,12 @@ public class DatosPartida implements Serializable {
 		identificadorPartida = "";
 	}
 	
-	public DatosPartida(int numturno, ArrayList<Jugador> jugadores, ArrayList<Asesinato> acus, HashMap<Asesinato, Jugador> cartasensenyadas, Class sigPanel) { //Aquí vienen los datos desde Gestión
+	public DatosPartida(int numturno, ArrayList<Jugador> jugadores, ArrayList<Asesinato> acus, HashMap<Asesinato, Jugador> cartasensenyadas, Class sigPanel, String nombrePartida) { //Aquí vienen los datos desde Gestión
 		numTurno = numturno;
 		jugadoresPartida = jugadores;
-		acusacion = acus;
-		cartasEnsenyadas = cartasensenyadas;
-		siguientePanel = sigPanel;
 		
         //LocalDateTime fechaHoraActual = LocalDateTime.now();
-        String nombrePartida = JOptionPane.showInputDialog("Ingresa el nombre para guardar la partida:");
+        
         
         //identificadorPartida = nombrePartida + " " + fechaHoraActual.format(formateador);
         identificadorPartida = nombrePartida;

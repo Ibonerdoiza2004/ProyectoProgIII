@@ -95,10 +95,7 @@ public class VentanaTexto extends JPanel{
 			
 			@Override
 			public void run() {
-				System.out.println("He llegado al hilo del enter");
-				System.out.println(ajustesCreada);
 				if(ajustesCreada) {
-					System.out.println("AAAAAAAAAAAAAAAA");
 					String lockAjustesCerrado = "AjustesCerrado";
 					synchronized (lockAjustesCerrado) {
 						try {
@@ -108,7 +105,7 @@ public class VentanaTexto extends JPanel{
 						}
 					}
 				}
-				System.out.println("BBBBBBBBBBBBBBBBB");
+
 				btnPausa.setEnabled(false);
 				while(alpha>0) {
 				    if(alpha>=0.03) {
