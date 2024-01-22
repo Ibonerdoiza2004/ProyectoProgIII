@@ -290,7 +290,7 @@ public class Gestion {
 						cartasJugador.add(carta);
 					}
 				}
-				if(cartasJugador.isEmpty()) {
+				if(!cartasJugador.isEmpty()) {
 					s=(Sospechoso) cartasJugador.get((int)(Math.random()*cartasJugador.size()));
 				}else {
 					s=Gestion.datosPartida.sospechosos.get((int)(Math.random()*Gestion.datosPartida.sospechosos.size()));
@@ -313,7 +313,7 @@ public class Gestion {
 						cartasJugador.add(carta);
 					}
 				}
-				if(cartasJugador.isEmpty()) {
+				if(!cartasJugador.isEmpty()) {
 					a=(Arma) cartasJugador.get((int)(Math.random()*cartasJugador.size()));
 				}else {
 					a=Gestion.datosPartida.armas.get((int)(Math.random()*Gestion.datosPartida.armas.size()));

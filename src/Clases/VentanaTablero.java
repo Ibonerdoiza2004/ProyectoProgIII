@@ -647,7 +647,24 @@ public class VentanaTablero extends JPanel{
 					}else {
 						if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
 							Gestion.acusacion.clear();
-							Gestion.logicaAcusar(jugador);
+							Sospechoso sospechoso = null;
+							Arma arma = null;
+							Lugar lugar = null;
+							for(Asesinato carta:Gestion.jugadores.get(Gestion.getNumTurno()).infoParaNpcs.keySet()) {
+								if((int)(Gestion.jugadores.get(Gestion.getNumTurno()).infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME))==Integer.MAX_VALUE) {
+									if(carta instanceof Sospechoso) {
+										sospechoso = (Sospechoso)carta;
+									}else if(carta instanceof Arma) {
+										arma = (Arma)carta;
+									}else if(carta instanceof Lugar) {
+										lugar = (Lugar)carta;
+									}
+								}
+							}
+							Gestion.acusacion.add(sospechoso);
+							Gestion.acusacion.add(arma);
+							Gestion.acusacion.add(lugar);
+							
 							System.out.println("Acusacion final bot: "+Gestion.acusacion);
 							if(Gestion.acusacion.get(0).equals(Gestion.datosPartida.implicados.get(Implicados.PERSONA))&&
 									Gestion.acusacion.get(1).equals(Gestion.datosPartida.implicados.get(Implicados.ARMA))&&
