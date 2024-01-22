@@ -63,9 +63,9 @@ public class VentanaTablero extends JPanel{
 		int anchoSimbolos = flechaArriba.getWidth(null)*altoBoton/flechaArriba.getHeight(null);
 		int centroBotones = (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight())/2;        
 		coorXInicioTablero =0;
-		coorXFinalTablero =(int)(Gestion.sizePantalla.getHeight());
+		coorXFinalTablero =(int)(Gestion.sizePantalla.getHeight()+1);
 		coorYInicioTablero = (int)(Gestion.sizePantalla.getHeight())/(Gestion.numFilas+1)+1;
-		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight());
+		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight()+1);
 		anchoColumnaTablero = ((double)(-coorXInicioTablero+coorXFinalTablero))/(double)(Gestion.numColumnas);
 		altoFilaTablero = ((double)(-coorYInicioTablero+coorYFinalTablero))/((double)Gestion.numFilas);
 		//PanelIzquierda
