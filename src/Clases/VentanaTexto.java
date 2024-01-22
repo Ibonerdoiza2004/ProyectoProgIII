@@ -45,7 +45,16 @@ public class VentanaTexto extends JPanel{
 		JButton btnPausa = new JButton("||");
 		btnPausa.setFocusable(false);
 		btnPausa.setBounds((int) Gestion.sizePantalla.getWidth()*33/34, 0, (int) Gestion.sizePantalla.getWidth()*1/34, (int) Gestion.sizePantalla.getHeight()*1/19);
-		
+		if(Gestion.siguientePanel==VentanaInicio.class) {
+			JLabel labelSolucion = new JLabel("La solución era: "+((Sospechoso)Gestion.datosPartida.implicados.get(Implicados.PERSONA)).nombre+", "+((Arma)Gestion.datosPartida.implicados.get(Implicados.ARMA)).nombreArma+" y "+((Lugar)Gestion.datosPartida.implicados.get(Implicados.LUGAR)).nombre);
+			labelSolucion.setFont(new Font("Serif", Font.BOLD, 40));
+		    labelSolucion.setForeground(Color.WHITE);
+			labelSolucion.setBounds(0, (int)Gestion.sizePantalla.getHeight()/2, (int)Gestion.sizePantalla.getWidth(), (int)Gestion.sizePantalla.getHeight()/2);
+			labelSolucion.setVerticalAlignment(JLabel.CENTER);
+			labelSolucion.setHorizontalAlignment(JLabel.CENTER);
+			labelSolucion.setOpaque(false);
+			add(labelSolucion);
+		}
 		btnPausa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -46,7 +46,7 @@ public class VentanaInicio extends JPanel{
 	public VentanaInicio() throws FileNotFoundException, JavaLayerException {
 		
 		Gestion.datosPartida = new Contenedor();
-		
+		System.out.println("Los implicados son: "+Gestion.datosPartida.implicados.values());
 		pnlCentral = new JPanel(new GridLayout(3,1));
 		
 		pnlLocal = new JPanel(new GridLayout(1,3));

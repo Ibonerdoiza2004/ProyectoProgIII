@@ -357,6 +357,7 @@ public class VentanaAcusacion extends JPanel{
 						}else {
 							lugarElegido=Gestion.datosPartida.lugares.get(cbLugar.getSelectedIndex());
 							Gestion.acusacion.add(lugarElegido);
+							System.out.println("Acusacion jugador: "+Gestion.acusacion);
 							if(Gestion.acusacion.get(0).equals(Gestion.datosPartida.implicados.get(Implicados.PERSONA))&&
 									Gestion.acusacion.get(1).equals(Gestion.datosPartida.implicados.get(Implicados.ARMA))&&
 									Gestion.acusacion.get(2).equals(Gestion.datosPartida.implicados.get(Implicados.LUGAR))) {

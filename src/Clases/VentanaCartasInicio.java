@@ -121,6 +121,7 @@ public class VentanaCartasInicio extends JPanel{
 						public void run() {
 							pLista.setFocusable(false);
 							bContinuar.setEnabled(false);
+							pLista.setVisible(false);
 							numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();
 							while(Gestion.jugadores.get(numeroJugador).npc&&numeroJugador!=Gestion.getNumTurno()) {
 								numeroJugador = (numeroJugador+1)%Gestion.jugadores.size();

@@ -101,7 +101,7 @@ public class VentanaTablero extends JPanel{
 
 		//PanelDesplegable	
 		int inicioPanelDesplegable =0;
-
+		
 		panelDerecha.setLayout(null);
 		panelLista = new JPanel(null);
 		panelLista.setBounds(0, altoBoton, (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight()),(int)Gestion.sizePantalla.getHeight()-altoBoton-inicioPanelDesplegable);
@@ -639,6 +639,7 @@ public class VentanaTablero extends JPanel{
 								VentanaTablero v = new VentanaTablero();
 							}
 						}else {
+							Gestion.acusacion=new ArrayList<>();
 							VentanaAcusacion v=new VentanaAcusacion();
 							v.setVisible(true);
 							eliminarPanel();
@@ -647,6 +648,7 @@ public class VentanaTablero extends JPanel{
 						if(Gestion.jugadores.get(Gestion.getNumTurno()).npc) {
 							Gestion.acusacion.clear();
 							Gestion.logicaAcusar(jugador);
+							System.out.println("Acusacion final bot: "+Gestion.acusacion);
 							if(Gestion.acusacion.get(0).equals(Gestion.datosPartida.implicados.get(Implicados.PERSONA))&&
 									Gestion.acusacion.get(1).equals(Gestion.datosPartida.implicados.get(Implicados.ARMA))&&
 									Gestion.acusacion.get(2).equals(Gestion.datosPartida.implicados.get(Implicados.LUGAR))) {
