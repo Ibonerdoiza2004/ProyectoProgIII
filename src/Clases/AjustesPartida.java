@@ -29,7 +29,6 @@ public class AjustesPartida extends JInternalFrame{
 	private JButton btnMenu;
 	private JButton btnCerrar;
 	
-	private static DatosPartida datosP = new DatosPartida();
 	
 	public AjustesPartida() {
 		setOpaque(false);
@@ -59,9 +58,6 @@ public class AjustesPartida extends JInternalFrame{
 		
 		guardar = new JButton("Guardar");
 		guardar.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*5/9, (int) this.getWidth()*1/6, (int) this.getHeight()*1/9);
-		if(!Gestion.siguientePanel.equals(VentanaTablero.class)) {
-			guardar.setVisible(false);
-		}
 		this.add(guardar);
 		
 		btnCerrar = new JButton("Seguir");
@@ -164,11 +160,13 @@ public class AjustesPartida extends JInternalFrame{
 //		        }
 		    	String nombrePartida;
 		    	nombrePartida = JOptionPane.showInputDialog("Ingresa el nombre para guardar la partida:");
-		    	while(nombrePartida==null||nombrePartida.isBlank()) {
-		    		nombrePartida = JOptionPane.showInputDialog("Ingresa el nombre para guardar la partida:");
+		    	if(nombrePartida==null||nombrePartida.isBlank()) {
+		    		JOptionPane.showMessageDialog( Gestion.ventanaJuego, "No se ha podido guardar la partida", "Error", JOptionPane.ERROR_MESSAGE);
+		    	}else {
+		    		DatosPartida dp = new DatosPartida(Gestion.numTurno, Gestion.jugadores, Gestion.acusacion,Gestion.cartasEnsenyadas,Gestion.siguientePanel, nombrePartida, Gestion.ventanaTexto,Gestion.ventanaTextoInt, Gestion.datosPartida,Gestion.dPane);
+			    	DatosPartida.guardarPartida(dp);
 		    	}
-		    	DatosPartida dp = new DatosPartida(Gestion.numTurno, Gestion.jugadores, Gestion.acusacion, Gestion.cartasEnsenyadas, VentanaTablero.class, nombrePartida);
-		    	datosP.guardarPartida(dp);
+		    	
 		    }
 		});
 		

@@ -44,6 +44,8 @@ public class Gestion {
 	protected static Player player;
 	protected static Class siguientePanel;
 	protected static JDesktopPane dPane;
+	protected static String ventanaTexto;
+	protected static int ventanaTextoInt;
 	public static int getNumTurno() {
 		return numTurno;
 	}

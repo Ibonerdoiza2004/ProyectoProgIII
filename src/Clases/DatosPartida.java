@@ -2,29 +2,23 @@ package Clases;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.tools.FileObject;
 
 public class DatosPartida implements Serializable {
 	
-	private static final String nomFichero = "partidasGuardadas";
+	private static final String nomFichero = "partidasGuardadas.dat";
 			
 	//private DateTimeFormatter formateador = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-	private ArrayList<DatosPartida> partidasGuardadas = new ArrayList<DatosPartida>();
 	
 	private String identificadorPartida; //Se va a identificar con la fecha en la que se guardó
 	private int numTurno;
@@ -32,6 +26,10 @@ public class DatosPartida implements Serializable {
 	private ArrayList<Asesinato> acusacion;
 	private HashMap<Asesinato, Jugador> cartasEnsenyadas;
 	private Class siguientePanel;
+	private String ventanaTexto;
+	private int ventanaTextoInt;
+	private Contenedor contenedor;
+	private JDesktopPane dPane;
 
 //	public static void main(String[] args) {
 //		DatosPartida dp = new DatosPartida(0, null, null, null, null);
@@ -43,15 +41,19 @@ public class DatosPartida implements Serializable {
 		identificadorPartida = "";
 	}
 	
-	public DatosPartida(int numturno, ArrayList<Jugador> jugadores, ArrayList<Asesinato> acus, HashMap<Asesinato, Jugador> cartasensenyadas, Class sigPanel, String nombrePartida) { //Aquí vienen los datos desde Gestión
+	public DatosPartida(int numturno, ArrayList<Jugador> jugadores,ArrayList<Asesinato>acusacion,HashMap<Asesinato,Jugador>cartasEnsenyadas, Class siguientePanel,  String nombrePartida, String ventanaTexto, int ventanaTextoInt, Contenedor contenedor, JDesktopPane dPane) { //Aquí vienen los datos desde Gestión
 		numTurno = numturno;
 		jugadoresPartida = jugadores;
-		
+		this.acusacion=acusacion;
+		this.cartasEnsenyadas=cartasEnsenyadas;
+		this.siguientePanel=siguientePanel;
         //LocalDateTime fechaHoraActual = LocalDateTime.now();
-        
-        
         //identificadorPartida = nombrePartida + " " + fechaHoraActual.format(formateador);
         identificadorPartida = nombrePartida;
+        this.ventanaTexto=ventanaTexto;
+        this.ventanaTextoInt=ventanaTextoInt;
+        this.contenedor=contenedor;
+        this.dPane=dPane;
 	}
 	
 	public String getIdentificadorPartida() {
@@ -101,41 +103,113 @@ public class DatosPartida implements Serializable {
 	public void setSiguientePanel(Class siguientePanel) {
 		this.siguientePanel = siguientePanel;
 	}
+	
+	public String getVentanaTexto() {
+		return ventanaTexto;
+	}
 
-	public void guardarPartida(DatosPartida dp) {
+	public void setVentanaTexto(String ventanaTexto) {
+		this.ventanaTexto = ventanaTexto;
+	}
+
+	public int getVentanaTextoInt() {
+		return ventanaTextoInt;
+	}
+
+	public void setVentanaTextoInt(int ventanaTextoInt) {
+		this.ventanaTextoInt = ventanaTextoInt;
+	}
+
+	public Contenedor getContenedor() {
+		return contenedor;
+	}
+
+	public void setContenedor(Contenedor contenedor) {
+		this.contenedor = contenedor;
+	}
+
+	public JDesktopPane getdPane() {
+		return dPane;
+	}
+
+	public void setdPane(JDesktopPane dPane) {
+		this.dPane = dPane;
+	}
+
+	public static void guardarPartida(DatosPartida dp) {
 		File f = new File(nomFichero);
-		
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		ArrayList<DatosPartida>partidas = new ArrayList<>();
+		try {
+			fis = new FileInputStream(f);
+			ois= new ObjectInputStream(fis);
+			Object partida = ois.readObject();
+			while(partida!=null) {
+				if(partida instanceof DatosPartida) {
+					partidas.add((DatosPartida)partida);
+				}
+				partida = ois.readObject();
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(ois!=null) {
+					ois.close();
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
-		
+		partidas.add(dp);
 		try {
 			fos = new FileOutputStream(f);
 			oos = new ObjectOutputStream(fos);
-			
-			oos.writeObject(dp);
+			for(int i= 0;i<partidas.size();i++) {
+				oos.writeObject(partidas.get(i));
+			}
 			JOptionPane.showMessageDialog(null, "Se han guardado los datos");
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "No se han guardado los datos correctamente");
-			e.printStackTrace();
+		}finally {
+			if(oos!=null) {
+				try {
+					oos.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 	}
 	
-	public void cargarPartidaJO() {
+	public static DatosPartida cargarPartidaJO() {
 		
 		ArrayList<String> ids = new ArrayList<String>();
-		
+		File file = new File("partidasGuardadas.dat");
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		ArrayList<DatosPartida>partidas = new ArrayList<>();
 		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomFichero));
-			DatosPartida dp = (DatosPartida) ois.readObject();
-			while (dp != null) {
-				partidasGuardadas.add(dp);
-				ids.add(dp.getIdentificadorPartida());
+			fis = new FileInputStream(file);
+			ois= new ObjectInputStream(fis);
+			Object partida = ois.readObject();
+			while(partida!=null) {
+				if(partida instanceof DatosPartida) {
+					partidas.add((DatosPartida)partida);
+					ids.add(((DatosPartida)partida).getIdentificadorPartida());
+				}
+				partida = ois.readObject();
 			}
-			
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+		} catch (IOException | ClassNotFoundException e) {
+		}finally {
+			try {
+				ois.close();
+			} catch (IOException e) {
+			}
 		}
-		
 		String[] opciones = new String[ids.size()];
 		for (int i = 0; i < ids.size(); i ++) {
 			opciones[i] = ids.get(i);
@@ -154,11 +228,15 @@ public class DatosPartida implements Serializable {
 
         if (opcionSeleccionada == JOptionPane.OK_OPTION) {
             // Obtener el elemento seleccionado del JComboBox
-            Object opcionSeleccionadaTexto = comboBox.getSelectedItem();
-            JOptionPane.showMessageDialog(null, "Has seleccionado: " + opcionSeleccionadaTexto);
+            int opcionSeleccionadaIndex = comboBox.getSelectedIndex();
+            JOptionPane.showMessageDialog(null, "Has seleccionado: " + comboBox.getItemAt(opcionSeleccionadaIndex));
+            return partidas.get(opcionSeleccionadaIndex);
         } else {
             JOptionPane.showMessageDialog(null, "Operación cancelada");
         }
+		return null;
 	}
+
+	
 	
 }

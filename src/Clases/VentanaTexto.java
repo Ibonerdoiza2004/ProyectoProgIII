@@ -90,7 +90,8 @@ public class VentanaTexto extends JPanel{
 		Gestion.ventanaJuego.add(this);
 		repaint();
 		this.requestFocus();
-		
+		Gestion.ventanaTexto = sTexto;
+		Gestion.ventanaTextoInt = jug;
 		Thread t = new Thread(new Runnable() {
 			
 			@Override

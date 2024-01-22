@@ -103,29 +103,63 @@ public class VentanaInicio extends JPanel{
 		cargarLocal.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		        String nombreArchivo = JOptionPane.showInputDialog("Por favor, introduce el nombre del archivo:");
-		        if (nombreArchivo != null) {
-		            try {
-		                FileInputStream fileIn = new FileInputStream(nombreArchivo + ".dat");
-		                ObjectInputStream in = new ObjectInputStream(fileIn);
-		                Gestion.numTurno = in.readInt();
-		                Gestion.jugadores = (ArrayList<Jugador>) in.readObject();
-		                Gestion.acusacion = (ArrayList<Asesinato>) in.readObject();
-		                Gestion.cartasEnsenyadas = (HashMap<Asesinato, Jugador>) in.readObject();
-		                //Gestion.acusacion  = (Contenedor) in.readObject();
-		                //Gestion.siguientePanel = (JPanel) in.readObject();
-		                in.close();
-		                fileIn.close();
-		                System.out.printf("Los datos se han cargado desde %s.dat", nombreArchivo);
-		            } catch (IOException i) {
-		                i.printStackTrace();
-		            } catch (ClassNotFoundException c) {
-		                System.out.println("No se encontró la clase.");
-		                c.printStackTrace();
-		            }
-		        } else {
-		            System.out.println("No se introdujo ningún nombre de archivo.");
-		        }
+		    	cargarLocal.setEnabled(false);
+		        Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						DatosPartida datosPartida =DatosPartida.cargarPartidaJO();
+				        if(datosPartida!=null) {
+				        	Gestion.acusacion = datosPartida.getAcusacion();
+				        	Gestion.cartasEnsenyadas= datosPartida.getCartasEnsenyadas();
+				        	Gestion.datosPartida = datosPartida.getContenedor();
+				        	Gestion.dPane = datosPartida.getdPane();
+				        	Gestion.jugadores = datosPartida.getJugadoresPartida();
+				        	Gestion.setNumTurno(datosPartida.getNumTurno());
+				        	
+				        	new VentanaTexto(datosPartida.getVentanaTexto(),datosPartida.getVentanaTextoInt());
+				        	eliminarPanel();
+				        	if(datosPartida.getSiguientePanel()==VentanaTablero.class) {
+				        		new VentanaTablero();
+				        	}else if(datosPartida.getSiguientePanel()==VentanaCartasInicio.class) {
+				        		VentanaCartasInicio v=new VentanaCartasInicio(datosPartida.getVentanaTextoInt());
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
+									try {
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException ex) {
+										ex.printStackTrace();
+									}
+								}
+								v.setVisible(true);
+				        	}else if(datosPartida.getSiguientePanel()==VentanaDarCarta.class) {
+				        		VentanaDarCarta v=new VentanaDarCarta(datosPartida.getVentanaTextoInt());
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
+									try {
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException ex) {
+										ex.printStackTrace();
+									}
+								}
+								v.setVisible(true);
+				        	}else if(datosPartida.getSiguientePanel()==VentanaVerCartas.class) {
+				        		VentanaVerCartas v=new VentanaVerCartas();
+								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
+									try {
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException ex) {
+										ex.printStackTrace();
+									}
+								}
+								v.setVisible(true);
+				        	}
+				        }else {
+				        	cargarLocal.setEnabled(true);
+				        }
+					}
+				});
+		        t.start();
 		    }
 		});
 		
