@@ -687,6 +687,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cont++;
+				System.out.println(cont);
 				if (cont <= jugadores) {
 				lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				if (cont == 2) {
@@ -694,6 +695,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 						j1.setForeground(Color.RED);
 						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
 						bd.setterarPersonaje(1, "Rojo");
+						System.out.println("ROJO");
 					} else if (j1.getX() == posicion2.get(0)) {
 						j1.setForeground(Color.YELLOW);
 						Gestion.jugadores.get(0).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
@@ -733,6 +735,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 						j2.setForeground(Color.YELLOW);
 						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[1]));
 						bd.setterarPersonaje(2, "Amarillo");
+						System.out.println("AMARILLO");
 					} else if (j2.getX() == posicion3.get(0)) {
 						j2.setForeground(Color.BLACK);
 						Gestion.jugadores.get(1).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
@@ -763,6 +766,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 					}
 					j3.setVisible(true);
 				} else if (cont == 4) {
+					//System.out.println("xhabhyfevv");
 					if (j3.getX() == posicion1.get(0)) {
 						j3.setForeground(Color.RED);
 						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[0]));
@@ -775,6 +779,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 						j3.setForeground(Color.BLACK);
 						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[2]));
 						bd.setterarPersonaje(3, "Negro");
+						System.out.println("NEGRO");
 					} else if (j3.getX() == posicion4.get(0)) {
 						j3.setForeground(Color.GREEN);
 						Gestion.jugadores.get(2).setPersonaje(new Personaje(NombrePersonaje.values()[3]));

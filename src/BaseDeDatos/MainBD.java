@@ -45,7 +45,7 @@ public class MainBD {
 	private static int numJugParticipa = 1;
 	private static int numJugParticipa2 = 1;
 	private static int numPartidaMes = 0;
-	private static Connection conn;
+	public static Connection conn;
 	private static Statement statement;
 	private static ResultSet rs;
 	
@@ -73,7 +73,7 @@ public class MainBD {
 	public ArrayList<String> getJugsPartida() {
 		return jugsPartida;
 	}
-
+	
 	public void iniciarBD() {
 		partida = new Partida();
 		conexion = new ConexionSQlite();
@@ -478,7 +478,7 @@ public class MainBD {
 //					null + ", " + 0 + ")";
 			String sent = "INSERT INTO jugador VALUES (" +
 			"'J" + NumJugadoresRegistrados + "', " +
-			"'" + jugador.getNick() + "', " + " NULL , " + 0 + ")"; //Esto cambiarlo 
+			"'" + jugador.getNick() + "', " + " NULL , " + 1 + ")"; //Pongo un uno ya que si no se inicia la partida, se borra el jugador
 			statement.executeUpdate(sent);
 			return true;
 		} catch (SQLException e) {
@@ -618,10 +618,11 @@ public class MainBD {
 	
 	public void setterarPersonaje(int numElegido, String personajeElegido) {
 		String idVerdadero;
-		if (jugsPartida.size() == 1) {
+		if (jugsPartida.size() == 1) { //PROBAR ESTO PASANDO EL CONTADOR DE LA OTRA CLASE
 			idVerdadero = jugsPartida.get(0);
 		} else {
 			idVerdadero = jugsPartida.get(numElegido-1);
+			System.out.println(idVerdadero);
 		}
 		//System.out.println("Mirar " + idVerdadero);
 		try {
@@ -657,8 +658,36 @@ public class MainBD {
 	}
 	
 	
-	//AL ACABAR PARTIDA METER EN TABLA PARTIDA GANADOR, DURACION Y EN TABLA JUGADOR SUMAR LAS PARTIDAS JUGADAS
-	
+	//AL ACABAR LA PARTIDA METER EN TABLA PARTIDA GANADOR, DURACION Y EN TABLA JUGADOR SUMAR LAS PARTIDAS JUGADAS
+	public void meterDatosFinales(boolean ganado, String color) { //Para cuando sale la ventana victoria
+		ArrayList<String> ids = new ArrayList<String>();
+		for (String id: jugsPartida) {
+			String sent = "SELECT * FROM jugador WHERE ID_JUGADOR = '" + id + "'";
+			try {
+				rs = statement.executeQuery(sent);
+				String idActual = rs.getString(1);
+				int numPartidas = rs.getInt(4);
+				numPartidas = numPartidas + 1;
+				String updateSent = "UPDATE jugador SET NUM_PARTIDAS_JUGADAS = " + numPartidas + " WHERE ID_JUGADOR = '" + idActual + "'";
+				statement.executeUpdate(updateSent);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		String actPartida = "SELECT * FROM partida WHERE DURACION = 0";
+		try {
+			rs = statement.executeQuery(actPartida);
+			String idPartida = rs.getString(1);
+			String upPartida = "UPDATE partida SET DURACION = 1 WHERE ID_PARTIDA = '" + idPartida + "'";
+			statement.executeUpdate(upPartida);
+			if (ganado) {
+				String upGanador = "UPDATE partida SET GANADOR = '" + color + "' WHERE ID_PARTIDA = '" + idPartida +"'";
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	private static void cambiarTabla() {

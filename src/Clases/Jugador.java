@@ -29,7 +29,7 @@ public class Jugador implements Serializable{ //Al crear un nuevo jugador el jug
 	public int getCodigo() {
 		return codigo;
 	}
-
+	
 	public ArrayList<Asesinato> getCartas() {
 		return cartas;
 	}
