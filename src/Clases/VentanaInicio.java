@@ -222,11 +222,11 @@ public class VentanaInicio extends JPanel{
 						Gestion.ventanaJuego.repaint();
 						Gestion.dPane.revalidate();
 						Gestion.dPane.repaint();
-						v.revalidate();
+						v.revalidate(); 
 						v.repaint();
 						String lockAjustesCerrado = "AjustesCerrado";
 						synchronized (lockAjustesCerrado) {
-							try {
+							try { 
 								lockAjustesCerrado.wait();
 							} catch (InterruptedException e1) {
 								e1.printStackTrace();

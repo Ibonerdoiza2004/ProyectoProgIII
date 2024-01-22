@@ -312,6 +312,10 @@ public class VentanaNJugadores extends JPanel {
 					}
 				}
 				
+				for (int j = 0; j < bd.jugsPartida.size(); j ++) {
+					Gestion.jugadores.get(j).setNick(bd.jugsPartida.get(j));
+				}
+				
 			}
 		});;
 	}

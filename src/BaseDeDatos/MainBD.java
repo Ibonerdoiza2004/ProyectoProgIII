@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import Clases.Gestion;
 import Clases.Jugador;
 import Clases.Partida;
 import Clases.VentanaNJugadores;
@@ -63,7 +64,7 @@ public class MainBD {
 	private static int num_partidas_mes;
 	private static VentanaNJugadores vn;
 	private int numJugsPartida = 0;
-	private ArrayList<String> jugsPartida = new ArrayList<String>();
+	public ArrayList<String> jugsPartida = new ArrayList<String>();
 	public static Partida partida;
 
 	public static void main(String[] args) {
@@ -626,12 +627,15 @@ public class MainBD {
 	
 	public void setterarPersonaje(int numElegido, String personajeElegido) {
 		String idVerdadero;
+		//____
 		if (jugsPartida.size() == 1) { //PROBAR ESTO PASANDO EL CONTADOR DE LA OTRA CLASE
 			idVerdadero = jugsPartida.get(0);
 		} else {
 			idVerdadero = jugsPartida.get(numElegido-1);
 			System.out.println(idVerdadero);
 		}
+		//____
+		
 		//System.out.println("Mirar " + idVerdadero);
 		try {
 			statement.executeUpdate("UPDATE jugador set PERSONAJE_ASIGNADO = '" +
@@ -715,6 +719,21 @@ public class MainBD {
 		String sentAct = "UPDATE jugador SET PERSONAJE_ASIGNADO = '" + colorPersonaje + "' WHERE PERSONAJE_ASIGNADO IS NULL";
 		try {
 			statement.executeUpdate(sentAct);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void meterColor(int i) {
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador WHERE PERSONAJE_ASIGNADO IS NULL");
+			if (rs.next()) {
+				String id = rs.getString(1);
+				String sentAct = "UPDATE jugador SET PERSONAJE_ASIGNADO = '" + Gestion.jugadores.get(i).getPersonaje().getNombre() + "' WHERE ID_JUGADOR = '" + id + "'" ;
+				statement.executeUpdate(sentAct);
+				
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

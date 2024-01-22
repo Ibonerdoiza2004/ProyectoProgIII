@@ -28,7 +28,7 @@ public class Gestion {
 	//Atributos
 	protected static Dimension sizePantalla = Toolkit.getDefaultToolkit().getScreenSize();
 	protected static int numTurno = 0;
-	protected static ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
+	public static ArrayList<Jugador> jugadores = new ArrayList<Jugador>(); //Va a tener todos los jugadores de la partida.
 	 //Esto va a ser la suma del resultado de los dados que te han tocado al tirarlos en tu turno.s
 	protected static int numFilas = 25;
 	protected static int numColumnas = 24;
@@ -290,7 +290,7 @@ public class Gestion {
 						cartasJugador.add(carta);
 					}
 				}
-				if(!cartasJugador.isEmpty()) {
+				if(cartasJugador.isEmpty()) {
 					s=(Sospechoso) cartasJugador.get((int)(Math.random()*cartasJugador.size()));
 				}else {
 					s=Gestion.datosPartida.sospechosos.get((int)(Math.random()*Gestion.datosPartida.sospechosos.size()));
@@ -313,7 +313,7 @@ public class Gestion {
 						cartasJugador.add(carta);
 					}
 				}
-				if(!cartasJugador.isEmpty()) {
+				if(cartasJugador.isEmpty()) {
 					a=(Arma) cartasJugador.get((int)(Math.random()*cartasJugador.size()));
 				}else {
 					a=Gestion.datosPartida.armas.get((int)(Math.random()*Gestion.datosPartida.armas.size()));
