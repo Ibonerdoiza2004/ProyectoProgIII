@@ -57,6 +57,9 @@ public class AjustesPartida extends JInternalFrame{
 		this.add(btnMusica);
 		
 		guardar = new JButton("Guardar");
+		if(Gestion.siguientePanel==VentanaInicio.class) {
+			guardar.setVisible(false);
+		}
 		guardar.setBounds((int) this.getWidth()*1/3, (int)this.getHeight()*5/9, (int) this.getWidth()*1/6, (int) this.getHeight()*1/9);
 		this.add(guardar);
 		
@@ -158,6 +161,7 @@ public class AjustesPartida extends JInternalFrame{
 //		        else {
 //		            System.out.println("No se introdujo ningún nombre de archivo.");
 //		        }
+		    	dispose();
 		    	String nombrePartida;
 		    	nombrePartida = JOptionPane.showInputDialog("Ingresa el nombre para guardar la partida:");
 		    	if(nombrePartida==null||nombrePartida.isBlank()) {

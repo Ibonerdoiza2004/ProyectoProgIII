@@ -115,8 +115,9 @@ public class VentanaInicio extends JPanel{
 				        	Gestion.dPane = datosPartida.getdPane();
 				        	Gestion.jugadores = datosPartida.getJugadoresPartida();
 				        	Gestion.setNumTurno(datosPartida.getNumTurno());
-				        	
+				        	Gestion.ventanaJuego.add(Gestion.dPane);
 				        	new VentanaTexto(datosPartida.getVentanaTexto(),datosPartida.getVentanaTextoInt());
+				        	cargarLocal.setEnabled(true);
 				        	eliminarPanel();
 				        	if(datosPartida.getSiguientePanel()==VentanaTablero.class) {
 				        		new VentanaTablero();
@@ -145,6 +146,17 @@ public class VentanaInicio extends JPanel{
 				        	}else if(datosPartida.getSiguientePanel()==VentanaVerCartas.class) {
 				        		VentanaVerCartas v=new VentanaVerCartas();
 								String lockAnyadirALaVentana = "AnyadirALaVentana";
+								synchronized (lockAnyadirALaVentana) {
+									try {
+										lockAnyadirALaVentana.wait();
+									} catch (InterruptedException ex) {
+										ex.printStackTrace();
+									}
+								}
+								v.setVisible(true);
+				        	}else if(datosPartida.getSiguientePanel()==VentanaAcusacion.class) {
+				        		VentanaAcusacion v=new VentanaAcusacion();
+				        		String lockAnyadirALaVentana = "AnyadirALaVentana";
 								synchronized (lockAnyadirALaVentana) {
 									try {
 										lockAnyadirALaVentana.wait();

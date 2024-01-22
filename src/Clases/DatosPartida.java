@@ -178,7 +178,9 @@ public class DatosPartida implements Serializable {
 		}finally {
 			if(oos!=null) {
 				try {
-					oos.close();
+					if(oos!=null) {
+						oos.close();
+					}
 				} catch (IOException e) {
 				}
 			}
@@ -206,7 +208,10 @@ public class DatosPartida implements Serializable {
 		} catch (IOException | ClassNotFoundException e) {
 		}finally {
 			try {
-				ois.close();
+				if(ois!=null) {
+					ois.close();
+				}
+				
 			} catch (IOException e) {
 			}
 		}

@@ -64,7 +64,7 @@ public class VentanaTablero extends JPanel{
 		int centroBotones = (int)(Gestion.sizePantalla.getWidth()-Gestion.sizePantalla.getHeight())/2;        
 		coorXInicioTablero =0;
 		coorXFinalTablero =(int)(Gestion.sizePantalla.getHeight());
-		coorYInicioTablero = (int)(Gestion.sizePantalla.getHeight())/(Gestion.numFilas+1);
+		coorYInicioTablero = (int)(Gestion.sizePantalla.getHeight())/(Gestion.numFilas+1)+1;
 		coorYFinalTablero =(int) (Gestion.sizePantalla.getHeight());
 		anchoColumnaTablero = ((double)(-coorXInicioTablero+coorXFinalTablero))/(double)(Gestion.numColumnas);
 		altoFilaTablero = ((double)(-coorYInicioTablero+coorYFinalTablero))/((double)Gestion.numFilas);
@@ -656,6 +656,7 @@ public class VentanaTablero extends JPanel{
 								eliminarPanel();
 							}
 						}else {
+							Gestion.siguientePanel=VentanaAcusacion.class;
 							new VentanaTexto("ACUSACIÓN FINAL DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
 							eliminarPanel();
 							VentanaAcusacion v=new VentanaAcusacion();
