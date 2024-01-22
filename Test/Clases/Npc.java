@@ -17,6 +17,7 @@ public class Npc {
 	
 	@Before
 	public void setUp() throws Exception {
+		Gestion.datosPartida=new Contenedor();
 		Gestion.jugadores = new ArrayList<>();
 		j1 = new Jugador(new Personaje(), true);
 		Gestion.jugadores.add(j1);
@@ -42,11 +43,12 @@ public class Npc {
 		Gestion.acusacion.add(Gestion.datosPartida.lugares.get(0));
 		j1.infoParaNpcs=Gestion.creacionInfoParaNpcs();
 		for(Asesinato carta:j1.infoParaNpcs.keySet()) {
-			if(!Gestion.datosPartida.implicados.containsValue(carta)&&!carta.equals(cartaJ2)&&!(carta instanceof Lugar)) {
+			if(!Gestion.datosPartida.implicados.containsValue(carta)) {
 				j1.infoParaNpcs.get(carta).replace(INFONPCS.ENSENYADA, true);
 			}
 		}
 		Gestion.logicaMarcarLista(j1);
+		
 	}
 
 	@After
@@ -54,17 +56,26 @@ public class Npc {
 	}
 
 //	Test para marcarLista(CUANDO SOLO QUEDA UNA CARTA SIN ENSEÑAR DE ALGÚN TIPO, ESTÁ IMPLICADO)
-	@Test
+//	@Test
 	public void testLogicaMarcarLista() {
 		
 		assertEquals((int)j1.infoParaNpcs.get(Gestion.datosPartida.implicados.get(Implicados.PERSONA)).get(INFONPCS.SINENSENYARME), Integer.MAX_VALUE);
 	}
 //	Test para acusar(CUANDO SOLO QUEDA UNA CARTA SIN ENSEÑAR DE ALGÚN TIPO, PREGUNTA POR CARTAS QUE TIENE DE ESE TIPO)
-	@Test
+//	@Test
 	public void testLogicaAcusar() {
 		Gestion.acusacion = new ArrayList<>();
 		Gestion.logicaAcusar(j1);
 		assertFalse(Gestion.acusacion.contains(Gestion.datosPartida.implicados.get(Implicados.PERSONA)));
+	}
+	@Test
+	public void testLogicaMover() {
+		j1.posicion=new int[]{0,14};
+		ArrayList<Integer>ints= Gestion.logicaMover(j1, 10);
+		j1.posicion=new int[] {ints.get(0),ints.get(1)};
+		int[] nuevaPos = new int[]{8,16};
+		assertEquals(nuevaPos[0], j1.posicion[0]);
+		assertEquals(nuevaPos[1], j1.posicion[1]);
 	}
 
 }

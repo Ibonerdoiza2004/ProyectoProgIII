@@ -360,6 +360,7 @@ public class Gestion {
 			}
 			if((int)jug.infoParaNpcs.get(carta).get(INFONPCS.SINENSENYARME)==Integer.MAX_VALUE) {
 				count++;
+				System.out.println("++");
 				if(carta instanceof Lugar) {
 					habitacionConocida= (Lugar)carta;
 				}
@@ -367,20 +368,27 @@ public class Gestion {
 		}
 		ArrayList<Integer>casillaMasCercanaAPuerta=null;
 		if(count==3) {
+			System.out.println("Centro");
 //			Ir al centro para acusar
+			int longCaminoMasCorto = Integer.MAX_VALUE;
 			for (int i = 0; i<Gestion.tablero.size();i++){
 				for(int j =0; j<Gestion.tablero.get(i).size();j++) {
 					if(Gestion.tablero.get(i).get(j)==11) {
+						System.out.println("Es casilla centro");
 						ArrayList<ArrayList<Integer>>posible= caminoMasCorto(Gestion.jugadores.get(Gestion.getNumTurno()).posicion[0], Gestion.jugadores.get(Gestion.getNumTurno()).posicion[1], i, j);
-						if(posible.size()<=movimientos) {
-							casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
-						}else {
-							casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+						if(longCaminoMasCorto>posible.size()) {	
+							if(posible.size()<=movimientos) {
+								casillaMasCercanaAPuerta = new ArrayList<>(posible.get(posible.size()-1));
+							}else {
+								casillaMasCercanaAPuerta = new ArrayList<>(posible.get(movimientos));
+							}
+							longCaminoMasCorto = posible.size();
 						}
 						
 					}
 				}
 			}
+			System.out.println(casillaMasCercanaAPuerta);
 		}else {
 //			Diferenciar si ya conozco alguno, se que lo conozco porque es integer max value
 //			Si no conozco ninguna carta seguir acusando diferentes cartas
