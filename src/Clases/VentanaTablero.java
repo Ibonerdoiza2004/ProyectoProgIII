@@ -582,6 +582,7 @@ public class VentanaTablero extends JPanel{
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				panelDados.btnTirar.setVisible(false);
 				botonDesplegar.setEnabled(false);
 				botonPlegar.setEnabled(false);
 				if(Gestion.tablero.get(jugador.posicion[0]).get(jugador.posicion[1])==1){

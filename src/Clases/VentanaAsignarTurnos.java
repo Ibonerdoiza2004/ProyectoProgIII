@@ -225,20 +225,18 @@ public class VentanaAsignarTurnos extends JPanel{
 			Gestion.setNumTurno(nuevosJugadores.get(0));
 			for(int i = 0;i<Gestion.jugadores.size();i++) {
 				if(Gestion.jugadores.get(i).personaje.nombre==NombrePersonaje.Rojo) {
-					
+					Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {24,8};
 				}else if(Gestion.jugadores.get(i).personaje.nombre==NombrePersonaje.Amarillo) {
-					
+					Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {17,0};
 				}else if(Gestion.jugadores.get(i).personaje.nombre==NombrePersonaje.Negro) {
-					
+					Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {6,23};
 				}else if(Gestion.jugadores.get(i).personaje.nombre==NombrePersonaje.Verde) {
-					
+					Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {0,13};
 				}else if(Gestion.jugadores.get(i).personaje.nombre==NombrePersonaje.Azul) {
-					
+					Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {0,9};
 				}else if(Gestion.jugadores.get(i).personaje.nombre==NombrePersonaje.Morado) {
-					
+					Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {19,23};
 				}
-//				Añadir la posicion de inicio a cada uno
-				Gestion.jugadores.get((Gestion.getNumTurno()+i)%Gestion.jugadores.size()).posicion= new int[] {0,9};
 			}
 			try {
 				Thread.sleep(2000);

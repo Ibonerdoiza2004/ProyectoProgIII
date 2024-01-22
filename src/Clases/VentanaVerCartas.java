@@ -79,10 +79,10 @@ public class VentanaVerCartas extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				continuar.setEnabled(false);
+				panelLista.setVisible(false);
 				Thread t = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						Gestion.aumentarTurno();
 						Gestion.siguientePanel=VentanaTablero.class;
 						new VentanaTexto("TURNO DE "+Gestion.jugadores.get(Gestion.getNumTurno()).getPersonaje().getNombre().toString().toUpperCase(),Gestion.getNumTurno());
