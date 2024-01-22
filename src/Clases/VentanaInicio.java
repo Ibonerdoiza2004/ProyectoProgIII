@@ -34,6 +34,7 @@ public class VentanaInicio extends JPanel{
 	protected JButton nuevaOnline;
 	protected JButton nuevaLocal;
 	protected JButton cargarLocal;
+	protected JButton borrarLocal;
 	protected JButton opciones;
 	protected JButton cerrar;
 	VentanaAjustes v;
@@ -48,19 +49,23 @@ public class VentanaInicio extends JPanel{
 		
 		pnlCentral = new JPanel(new GridLayout(3,1));
 		
-		pnlLocal = new JPanel(new GridLayout(1,2));
+		pnlLocal = new JPanel(new GridLayout(1,3));
 		
 	
 		nuevaLocal = new JButton("<html><div style='text-align: center;'>NUEVA PARTIDA<br>LOCAL</div></html>");
 		nuevaLocal.setHorizontalAlignment(SwingConstants.CENTER);
 		nuevaLocal.setVerticalAlignment(SwingConstants.CENTER);
-		pnlLocal  .add(nuevaLocal);
+		pnlLocal.add(nuevaLocal);
 		
 		cargarLocal = new JButton("<html><div style='text-align: center;'>CARGAR PARTIDA<br>LOCAL</div></html>");
 		cargarLocal.setHorizontalAlignment(SwingConstants.CENTER);
 		cargarLocal.setVerticalAlignment(SwingConstants.CENTER);
 		pnlLocal.add(cargarLocal);
 		
+		borrarLocal= new JButton("<html><div style='text-align: center;'>BORRAR PARTIDA<br>LOCAL</div></html>");
+		borrarLocal.setHorizontalAlignment(SwingConstants.CENTER);
+		borrarLocal.setVerticalAlignment(SwingConstants.CENTER);
+		pnlLocal.add(borrarLocal);
 		pnlCentral.add(pnlLocal);
 		
 		opciones = new JButton("AJUSTES");
@@ -173,6 +178,13 @@ public class VentanaInicio extends JPanel{
 				});
 		        t.start();
 		    }
+		});
+		borrarLocal.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DatosPartida.borrarPartida();
+			}
 		});
 		
 		cerrar.addActionListener(new ActionListener() {

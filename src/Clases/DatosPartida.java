@@ -188,7 +188,6 @@ public class DatosPartida implements Serializable {
 	}
 	
 	public static DatosPartida cargarPartidaJO() {
-		
 		ArrayList<String> ids = new ArrayList<String>();
 		File file = new File("partidasGuardadas.dat");
 		FileInputStream fis = null;
@@ -242,6 +241,79 @@ public class DatosPartida implements Serializable {
 		return null;
 	}
 
-	
+	public static void borrarPartida() {
+		ArrayList<String> ids = new ArrayList<String>();
+		File file = new File("partidasGuardadas.dat");
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+		ArrayList<DatosPartida>partidas = new ArrayList<>();
+		try {
+			fis = new FileInputStream(file);
+			ois= new ObjectInputStream(fis);
+			Object partida = ois.readObject();
+			while(partida!=null) {
+				if(partida instanceof DatosPartida) {
+					partidas.add((DatosPartida)partida);
+					ids.add(((DatosPartida)partida).getIdentificadorPartida());
+				}
+				partida = ois.readObject();
+			}
+		} catch (IOException | ClassNotFoundException e) {
+		}finally {
+			try {
+				if(ois!=null) {
+					ois.close();
+				}
+				
+			} catch (IOException e) {
+			}
+		}
+		String[] opciones = new String[ids.size()];
+		for (int i = 0; i < ids.size(); i ++) {
+			opciones[i] = ids.get(i);
+		}
+        JComboBox<String> comboBox = new JComboBox<>(opciones);
+        
+        int opcionSeleccionada = JOptionPane.showOptionDialog(
+                null,
+                comboBox,
+                "Selecciona la partida a cargar",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                null);
+
+        if (opcionSeleccionada == JOptionPane.OK_OPTION) {
+            // Obtener el elemento seleccionado del JComboBox
+            int opcionSeleccionadaIndex = comboBox.getSelectedIndex();
+            comboBox.remove(opcionSeleccionadaIndex);
+            partidas.remove(opcionSeleccionadaIndex);
+            JOptionPane.showMessageDialog(null, "Has seleccionado: " + comboBox.getItemAt(opcionSeleccionadaIndex));
+            FileOutputStream fos = null;
+    		ObjectOutputStream oos = null;
+    		try {
+    			fos = new FileOutputStream(file);
+    			oos = new ObjectOutputStream(fos);
+    			for(int i= 0;i<partidas.size();i++) {
+    				oos.writeObject(partidas.get(i));
+    			}
+    			JOptionPane.showMessageDialog(null, "Borrado con éxito");
+    		} catch (IOException e) {
+    			JOptionPane.showMessageDialog(null, "No se han guardado los datos correctamente");
+    		}finally {
+    			if(oos!=null) {
+    				try {
+    					if(oos!=null) {
+    						oos.close();
+    					}
+    				} catch (IOException e) {
+    				}
+    			}
+    		}
+        } else {
+            JOptionPane.showMessageDialog(null, "Operación cancelada");
+        }
+	}
 	
 }
