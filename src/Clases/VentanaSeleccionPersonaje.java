@@ -1003,9 +1003,11 @@ public class VentanaSeleccionPersonaje extends JPanel{
 				//Empezar partida y añadir los datos de la partida a la BD
 				eliminarPanel();
 				Gestion.repartirCartas(Gestion.datosPartida.todasLasCartas);
-				
+
 				bd.anyadirPartida(bd.partida);
-				
+				if (bd.hayNull()) {
+					bd.actualizarColor(Gestion.jugadores.get(Gestion.jugadores.size()-1).getPersonaje().getNombre().toString());
+				}
 				new VentanaAsignarTurnos();
 			}
 		}

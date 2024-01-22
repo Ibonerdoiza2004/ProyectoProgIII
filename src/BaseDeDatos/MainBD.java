@@ -277,7 +277,7 @@ public class MainBD {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				try {
-					conexion.disconnect(); //Acabar la conexón con la BD al cerrar la ventana
+					//conexion.disconnect(); //Acabar la conexón con la BD al cerrar la ventana
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -287,7 +287,15 @@ public class MainBD {
 		});
 	}
 	
-	private static void ini() {
+	public void desconectar() { //Esto al cerrar la ventana inicial
+		try {
+			conexion.disconnect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void ini() {
 		ventBD = new JFrame();
 		ventBD.setLayout(new BorderLayout());
 		ventBD.setSize(800, 600);
@@ -684,6 +692,29 @@ public class MainBD {
 				String upGanador = "UPDATE partida SET GANADOR = '" + color + "' WHERE ID_PARTIDA = '" + idPartida +"'";
 			}
 			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean hayNull() {
+		try {
+			rs = statement.executeQuery("SELECT * FROM jugador WHERE PERSONAJE_ASIGNADO IS NULL");
+			if (rs.next()) { //Si hay uno...
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	//Por si hay ese null:
+	public void actualizarColor(String colorPersonaje) {
+		String sentAct = "UPDATE jugador SET PERSONAJE_ASIGNADO = '" + colorPersonaje + "' WHERE PERSONAJE_ASIGNADO IS NULL";
+		try {
+			statement.executeUpdate(sentAct);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

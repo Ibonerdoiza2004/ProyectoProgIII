@@ -117,8 +117,8 @@ public class VentanaVictoria extends JPanel{
         Gestion.ventanaJuego.repaint();
 	}
 	
-	public static void main(String[] args) {
-		new VentanaVictoria();
-	}
+//	public static void main(String[] args) {
+//		new VentanaVictoria();
+//	}
 
 }

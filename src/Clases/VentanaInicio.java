@@ -37,6 +37,7 @@ public class VentanaInicio extends JPanel{
 	protected JButton borrarLocal;
 	protected JButton opciones;
 	protected JButton cerrar;
+	protected JButton tablasBd;
 	VentanaAjustes v;
 	
 	
@@ -47,7 +48,7 @@ public class VentanaInicio extends JPanel{
 		
 		Gestion.datosPartida = new Contenedor();
 		System.out.println("Los implicados son: "+Gestion.datosPartida.implicados.values());
-		pnlCentral = new JPanel(new GridLayout(3,1));
+		pnlCentral = new JPanel(new GridLayout(4,1));
 		
 		pnlLocal = new JPanel(new GridLayout(1,3));
 		
@@ -73,6 +74,9 @@ public class VentanaInicio extends JPanel{
 		
 		cerrar = new JButton("CERRAR CLUEDO");
 		pnlCentral.add(cerrar);
+		
+		tablasBd = new JButton("VER TABLAS BD");
+		pnlCentral.add(tablasBd);
 		
 		
 		JLabel lblLogo = new JLabel();
@@ -192,6 +196,7 @@ public class VentanaInicio extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				Gestion.ventanaJuego.dispose();
 				Gestion.tMusica.interrupt();
+				bd.desconectar();
 			}
 		});
 		
@@ -200,7 +205,7 @@ public class VentanaInicio extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				Thread t = new Thread(new Runnable() {
 					
-					@Override
+					@Override	
 					public void run() {
 						for (Component component : pnlCentral.getComponents()) {
 						    if (component instanceof JButton) {
@@ -248,6 +253,14 @@ public class VentanaInicio extends JPanel{
 		//Cargar aquí la BD:
 		bd = new MainBD();
 		bd.iniciarBD();
+		
+		tablasBd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				bd.cargarVentanaDatos();
+			}
+		});
 		
 		
 		Gestion.ventanaJuego.addWindowListener (new WindowAdapter() {
