@@ -30,6 +30,7 @@ public class VentanaSeleccionPersonaje extends JPanel{
 	protected JLabel lblScarlett;
 	
 	private static MainBD bd;
+	private VentanaNJugadores vn;
 	
 	public VentanaSeleccionPersonaje(MainBD bd) {
 		
@@ -1107,8 +1108,12 @@ public class VentanaSeleccionPersonaje extends JPanel{
 					cont--;
 					lblElige.setText("J"+cont+" ELIGE TU PERSONAJE");
 				} else if (cont == 1){
-					eliminarPanel();
+					eliminarPanel();					
 					anadirPanel();
+					vn.getBtnRegistro().setEnabled(true);
+					bd.eliminarJugadores();
+					vn.numVecesRegistrado = 0;
+					bd.getJugsPartida().clear();
 				} 
 				
 			}	
@@ -1132,7 +1137,8 @@ public class VentanaSeleccionPersonaje extends JPanel{
 	}
 	
 	public void anadirPanel() {
-		Gestion.ventanaJuego.add(new VentanaNJugadores(this.bd));
+		vn = new VentanaNJugadores(this.bd);
+		Gestion.ventanaJuego.add(vn);
 		Gestion.ventanaJuego.repaint();
 	}
 	

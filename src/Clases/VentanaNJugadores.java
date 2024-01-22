@@ -139,6 +139,7 @@ public class VentanaNJugadores extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(numVecesRegistrado);
 				if (numVecesRegistrado >= ((int) spnJugs.getValue())-1) { //Después del último registro no se puede volver a pulsar el botón
 					btnRegistro.setEnabled(false);
 				}

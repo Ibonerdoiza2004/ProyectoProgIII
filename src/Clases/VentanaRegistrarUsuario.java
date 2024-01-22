@@ -86,18 +86,24 @@ public class VentanaRegistrarUsuario extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Lógica para iniciar sesión con usurio (hacer desde MainBD)
-//				if (bd.loginJugador(tfUsuario.getText())) {
-//					vn.numVecesRegistrado ++;
-//					//Lógica de ventanas
-//					dispose();
-//				} else {
+				if (bd.loginJugador(tfUsuario.getText())) {
+					vn.numVecesRegistrado ++;
+					//Lógica de ventanas
+					dispose();
+				} else {
+					vn.getBtnRegistro().setEnabled(true);
+					bd.eliminarJugadores();
+					vn.numVecesRegistrado = 0;
+					dispose();
+				}
+//				else {
 //					vn.numVecesRegistrado --;
 //					vn.getBtnRegistro().setEnabled(true);
 //				}
-				bd.loginJugador(tfUsuario.getText());
-				vn.numVecesRegistrado ++;
-				//Lógica de ventanas
-				dispose();
+//				bd.loginJugador(tfUsuario.getText());
+//				vn.numVecesRegistrado ++;
+//				//Lógica de ventanas
+//				dispose();
 			}
 		});
         
@@ -105,9 +111,15 @@ public class VentanaRegistrarUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				bd.registrarJugador(tfUsuario.getText(), new String(tfContrasenya.getPassword()));
-				vn.numVecesRegistrado ++;
-				dispose();
+				if (bd.registrarJugador(tfUsuario.getText(), new String(tfContrasenya.getPassword()))) {
+					vn.numVecesRegistrado ++;
+					dispose();
+				} else {
+					vn.getBtnRegistro().setEnabled(true);
+					bd.eliminarJugadores();
+					vn.numVecesRegistrado = 0;
+					dispose(); //Lo fuerzo y tiene que pulsar otra vez
+				}
 			}
 		});
     }

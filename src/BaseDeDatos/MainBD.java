@@ -42,6 +42,8 @@ enum PosiblesNicks{DetectiveShadow, MysteryMastermind, SleuthSphinx, CovertInves
 public class MainBD {
 	
 	private static int NumJugadoresRegistrados = 1;
+	private static int numJugParticipa = 1;
+	private static int numJugParticipa2 = 1;
 	private static int numPartidaMes = 0;
 	private static Connection conn;
 	private static Statement statement;
@@ -68,6 +70,10 @@ public class MainBD {
 		
 	}
 	
+	public ArrayList<String> getJugsPartida() {
+		return jugsPartida;
+	}
+
 	public void iniciarBD() {
 		partida = new Partida();
 		conexion = new ConexionSQlite();
@@ -116,7 +122,6 @@ public class MainBD {
                     + "ID_JUGADOR STRING,"
                     + "NOMBRE STRING,"
                     + "PERSONAJE_ASIGNADO STRING,"
-                    + "HABITACION_MAS_VISITADA STRING,"
                     + "NUM_PARTIDAS_JUGADAS INTEGER"
                     + ")";
             statement.executeUpdate(crearTablaJugador);
@@ -202,8 +207,8 @@ public class MainBD {
 		        i ++;
 			}
 			
-			//Cargar los datos de las partidas
-			cargarDatosPartida();
+			//Cargar los datos de los jugadores
+			//cargarDatosJugador();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -373,7 +378,7 @@ public class MainBD {
 		
 		Vector<String> cabeceras = new Vector<String>();
 		cabeceras.add("ID_JUGADOR"); cabeceras.add("NOMBRE"); cabeceras.add("PERSONAJE_ASIGNADO");
-		cabeceras.add("HABITACION_MAS_VISITADA"); cabeceras.add("NUM_PARTIDAS_JUGADAS");
+		cabeceras.add("NUM_PARTIDAS_JUGADAS");
 		modeloTabla.setDataVector(new Vector<Vector<Object>>(), cabeceras);
 		tablaDatos.setModel(modeloTabla);
 		
@@ -385,10 +390,9 @@ public class MainBD {
 				String idJugador = rs.getString(1);
 				String nombre = rs.getString(2);
 				String personajeAsignado = rs.getString(3);
-				String habitacion = rs.getString(4);
-				int partidasJugadas = rs.getInt(5);
+				int partidasJugadas = rs.getInt(4);
 				Vector<Object> fila = new Vector<Object>();
-				fila.add(idJugador); fila.add(nombre); fila.add(personajeAsignado); fila.add(habitacion);
+				fila.add(idJugador); fila.add(nombre); fila.add(personajeAsignado);
 				fila.add(partidasJugadas);
 				modeloTabla.addRow(fila);
 			}
@@ -422,15 +426,15 @@ public class MainBD {
 		}
 	}
 	
-	private static void cargarDatosPartida() throws SQLException {
+	private static void cargarDatosJugador(int numJugadoresP) throws SQLException {
 		Random r = new Random();
 		NombrePersonaje[] valores = NombrePersonaje.values();
 		PosiblesNicks[] valoresNicks = PosiblesNicks.values();
 		Sitio[] valoresSitio = Sitio.values();
-		PreparedStatement psJugador = conn.prepareStatement("INSERT INTO JUGADOR VALUES (?, ?, ?, ?, ?)");
+		PreparedStatement psJugador = conn.prepareStatement("INSERT INTO JUGADOR VALUES (?, ?, ?, ?)");
 		int i = 1;
-		while (i <= num_partidas_mes*6) {
-			String idJugador = "J"+i;
+		while (i <= numJugadoresP) {
+			String idJugador = "J"+numJugParticipa2;
 			String nom = valoresNicks[r.nextInt(valoresNicks.length-1)+1].toString();
 			String personajeAsigando = valores[r.nextInt(valores.length-1)+1].toString();
 			String habitacion = valoresSitio[r.nextInt(valoresSitio.length-1)+1].toString();
@@ -438,23 +442,25 @@ public class MainBD {
 			psJugador.setString(1, idJugador);
 			psJugador.setString(2, nom);
 			psJugador.setString(3, personajeAsigando);
-			psJugador.setString(4, habitacion);
-			psJugador.setInt(5, numPartidas);
+			psJugador.setInt(4, numPartidas);
 			psJugador.executeUpdate();
 			i ++;
+			numJugParticipa2 ++;
 		}
 	}
 	
 	private static void datosParticipa(String idPartda, int numJugadores) throws SQLException {
 		int i = 1;
 		PreparedStatement psParticipa = conn.prepareStatement("INSERT INTO PARTICIPA VALUES (?, ?, ?)");
+		cargarDatosJugador(numJugadores);
 		while (i <= numJugadores) {
-			String idJugador = "J"+i;
+			String idJugador = "J"+numJugParticipa;
 			psParticipa.setString(1, idJugador);
 			psParticipa.setString(2, idPartda);
 			psParticipa.setString(3, formatter.format(currentMonth));
 			psParticipa.executeUpdate();
 			i ++;
+			numJugParticipa ++;
 		}
 	}
 	
@@ -472,7 +478,7 @@ public class MainBD {
 //					null + ", " + 0 + ")";
 			String sent = "INSERT INTO jugador VALUES (" +
 			"'J" + NumJugadoresRegistrados + "', " +
-			"'" + jugador.getNick() + "', " + " NULL , NULL , " + 0 + ")"; //Esto cambiarlo 
+			"'" + jugador.getNick() + "', " + " NULL , " + 0 + ")"; //Esto cambiarlo 
 			statement.executeUpdate(sent);
 			return true;
 		} catch (SQLException e) {
@@ -507,7 +513,11 @@ public class MainBD {
 			statement.executeUpdate(sent);
 			partida.setIdPartida("P"+numPartidaMes);
 			//Y ahora meter los datos en la tabla relación:
+//			for (String s: jugsPartida) {
+//				System.out.println(s);
+//			}
 			for (int i = 0; i < partida.getJugadoresPartida().size(); i ++) {
+				//System.out.println(jugsPartida.get(i) + " " + partida.getIdPartida());
 				anyadirRelacion(jugsPartida.get(i), partida.getIdPartida(), partida.getFecha());
 			}
 			
@@ -645,6 +655,11 @@ public class MainBD {
 		}
 		return numJugs;
 	}
+	
+	
+	//AL ACABAR PARTIDA METER EN TABLA PARTIDA GANADOR, DURACION Y EN TABLA JUGADOR SUMAR LAS PARTIDAS JUGADAS
+	
+	
 	
 	private static void cambiarTabla() {
 		modeloTabla.setRowCount(0);
